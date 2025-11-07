@@ -1,12 +1,12 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "my-xget"
+name = "xget"
 main = "src/index.js"
 compatibility_date = "2024-10-22"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = false
 
-[placement]
-mode = "smart"
+# [placement]
+# mode = "smart"
 
 [observability]
 enabled = false
