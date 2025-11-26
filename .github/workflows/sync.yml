@@ -1,20 +1,20 @@
-name: Sync to Page
+name: Sync to Pages and Functions
 
 on:
   push:
     branches:
       - main
     paths-ignore:
-      - '**.md'
-      - 'LICENSE'
-      - '.gitignore'
-      - '.editorconfig'
-      - '.vscode/**'
-      - 'docs/**'
-      - '.prettierrc*'
-      - '.eslintrc*'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/PULL_REQUEST_TEMPLATE/**'
+      - "**.md"
+      - "LICENSE"
+      - ".gitignore"
+      - ".editorconfig"
+      - ".vscode/**"
+      - "docs/**"
+      - ".prettierrc*"
+      - ".eslintrc*"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/PULL_REQUEST_TEMPLATE/**"
   workflow_dispatch:
 
 concurrency:
@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  convert-and-sync:
+  convert-and-sync-pages:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout main branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 0
@@ -42,22 +42,22 @@ jobs:
 
       - name: Create temporary working directory
         run: |
-          mkdir -p /tmp/page-conversion
-          cd /tmp/page-conversion
+          mkdir -p /tmp/pages-conversion
+          cd /tmp/pages-conversion
 
       - name: Copy source code files only
         run: |
           # Copy only runtime-required files (no documentation, tests, or dev configs)
-          cp -r src /tmp/page-conversion/
-          cp package.json /tmp/page-conversion/
-          cp package-lock.json /tmp/page-conversion/ 2>/dev/null || true
-          cp wrangler.toml /tmp/page-conversion/
-          cp LICENSE /tmp/page-conversion/
+          cp -r src /tmp/pages-conversion/
+          cp package.json /tmp/pages-conversion/
+          cp package-lock.json /tmp/pages-conversion/ 2>/dev/null || true
+          cp wrangler.toml /tmp/pages-conversion/
+          cp LICENSE /tmp/pages-conversion/
 
       - name: Create Pages Function handler
         run: |
-          mkdir -p /tmp/page-conversion/functions
-          cat > /tmp/page-conversion/functions/[[path]].js << 'EOF'
+          mkdir -p /tmp/pages-conversion/functions
+          cat > /tmp/pages-conversion/functions/[[path]].js << 'EOF'
           /**
            * Xget - High-performance acceleration engine for developer resources
            * Copyright (C) 2025 Xi Xu
@@ -79,18 +79,18 @@ jobs:
           import { handleRequest } from '../src/index.js';
 
           /**
-           * Cloudflare Pages Function handler for all routes.
+           * Pages Function handler for all routes.
            *
            * This catch-all route handler processes all incoming requests to the Xget
            * acceleration engine. It delegates request processing to the main handleRequest
-           * function from the Worker code, maintaining full compatibility with the
+           * function from the Workers code, maintaining full compatibility with the
            * existing implementation.
            *
            * The [[path]] syntax in the filename creates a catch-all route that matches
            * any path, allowing this single function to handle all requests to the Pages
            * application.
            *
-           * @param {Object} context - Cloudflare Pages Function context
+           * @param {Object} context - Pages Function context
            * @param {Request} context.request - The incoming HTTP request
            * @param {Object} context.env - Environment variables and bindings (KV, secrets, etc.)
            * @param {Object} context.params - Route parameters (path segments from [[path]])
@@ -100,8 +100,7 @@ jobs:
            * @returns {Promise<Response>} The HTTP response to return to the client
            *
            * @example
-           * // This is called automatically by Cloudflare Pages
-           * // User requests: https://xget.pages.dev/npm/lodash
+           * // This is called automatically by Pages
            * // Runtime invokes: onRequest(context)
            * // Returns: Response with package data
            *
@@ -131,14 +130,14 @@ jobs:
 
       - name: Export handleRequest from src/index.js
         run: |
-          cd /tmp/page-conversion
+          cd /tmp/pages-conversion
           # Add export statement before the default export at the end of the file
           sed -i '/^export default {$/i\
           export { handleRequest };' src/index.js
 
       - name: Update wrangler.toml for Pages (remove observability)
         run: |
-          cd /tmp/page-conversion
+          cd /tmp/pages-conversion
           # Remove observability section (Pages doesn't support it)
           cat > wrangler.toml << 'EOF'
           #:schema node_modules/wrangler/config-schema.json
@@ -150,45 +149,39 @@ jobs:
 
       - name: Update package.json for Pages
         run: |
-          cd /tmp/page-conversion
+          cd /tmp/pages-conversion
           # Update deployment commands to use Pages
           cat package.json | \
           sed 's/"deploy": "wrangler deploy"/"deploy": "wrangler pages deploy ."/' | \
           sed 's/"start": "wrangler dev"/"start": "wrangler pages dev ."/' \
           > package.json.tmp && mv package.json.tmp package.json
 
-      - name: Initialize page branch
+      - name: Initialize pages branch
         run: |
-          cd /tmp/page-conversion
+          cd /tmp/pages-conversion
           git init
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b page
+          git checkout -b pages
           git add .
-          git commit -m "Convert Worker to Page
+          git commit -m "Convert Workers to Pages
 
           Auto-converted from main branch commit ${{ github.sha }}
 
-          Changes:
-          - Add functions/[[path]].js: Catch-all Pages Function handler
-          - Update src/index.js: Export handleRequest for Pages Function import
-          - Update wrangler.toml: Configure for Pages deployment (no observability)
-          - Update package.json: Change scripts to use Pages commands
-
           Runtime files only (documentation, tests, and dev configs excluded)."
 
-      - name: Force push to page branch
+      - name: Force push to pages branch
         run: |
-          cd /tmp/page-conversion
+          cd /tmp/pages-conversion
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git push -f origin page
+          git push -f origin pages
 
       - name: Clean up
         if: always()
         run: |
-          rm -rf /tmp/page-conversion
+          rm -rf /tmp/pages-conversion
 
-  convert-to-edgeone:
+  convert-and-sync-functions:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -196,7 +189,7 @@ jobs:
 
     steps:
       - name: Checkout main branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 0
@@ -208,21 +201,21 @@ jobs:
 
       - name: Create temporary working directory
         run: |
-          mkdir -p /tmp/edgeone-conversion
-          cd /tmp/edgeone-conversion
+          mkdir -p /tmp/functions-conversion
+          cd /tmp/functions-conversion
 
       - name: Copy source code files only
         run: |
-          # Copy only runtime-required files (no documentation, tests, or dev configs)
-          cp -r src /tmp/edgeone-conversion/
-          cp package.json /tmp/edgeone-conversion/
-          cp package-lock.json /tmp/edgeone-conversion/ 2>/dev/null || true
-          cp LICENSE /tmp/edgeone-conversion/
+          # Copy only runtime-required files
+          cp -r src /tmp/functions-conversion/
+          cp package.json /tmp/functions-conversion/
+          cp package-lock.json /tmp/functions-conversion/ 2>/dev/null || true
+          cp LICENSE /tmp/functions-conversion/
 
-      - name: Create EdgeOne Pages Function handler
+      - name: Create Edge Function handler
         run: |
-          mkdir -p /tmp/edgeone-conversion/functions
-          cat > /tmp/edgeone-conversion/functions/[[path]].js << 'EOF'
+          mkdir -p /tmp/functions-conversion/api
+          cat > /tmp/functions-conversion/api/index.js << 'EOF'
           /**
            * Xget - High-performance acceleration engine for developer resources
            * Copyright (C) 2025 Xi Xu
@@ -244,90 +237,98 @@ jobs:
           import { handleRequest } from '../src/index.js';
 
           /**
-           * EdgeOne Pages Function handler for all routes.
+           * Edge Function handler.
            *
-           * This catch-all route handler processes all incoming requests to the Xget
-           * acceleration engine. It delegates request processing to the main handleRequest
-           * function from the Worker code, maintaining full compatibility with the
-           * existing implementation.
-           *
-           * The [[path]] syntax in the filename creates a catch-all route that matches
-           * any path, allowing this single function to handle all requests to the Pages
-           * application.
-           *
-           * EdgeOne Pages Functions are compatible with Cloudflare Pages Functions,
-           * using the same onRequest() handler signature and context object structure.
-           *
-           * @param {Object} context - EdgeOne Pages Function context
-           * @param {Request} context.request - The incoming HTTP request
-           * @param {Object} context.env - Environment variables and bindings (KV, secrets, etc.)
-           * @param {Object} context.params - Route parameters (path segments from [[path]])
-           * @param {Function} context.waitUntil - Extend function execution for background tasks
-           * @param {Function} context.next - Call next middleware in chain (not used here)
-           * @param {Object} context.data - Shared data between functions
-           * @returns {Promise<Response>} The HTTP response to return to the client
+           * @param {Request} request - Standard Web API Request object
+           * @param {Object} [context] - Platform-specific context (Netlify only)
+           * @param {Object} [context.geo] - Geolocation data (Netlify)
+           * @param {string} [context.ip] - Client IP address (Netlify)
+           * @param {Object} [context.env] - Environment variables (Netlify)
+           * @param {Function} [context.waitUntil] - Background task extension (Netlify)
+           * @returns {Promise<Response>} Standard Web API Response
            *
            * @example
-           * // This is called automatically by EdgeOne Pages
-           * // User requests: https://xget.pages.edgeone.app/npm/lodash
-           * // Runtime invokes: onRequest(context)
-           * // Returns: Response with package data
+           * // Netlify invokes with context
+           * handler(request, { geo: {...}, ip: '1.2.3.4', env: {...}, waitUntil: fn })
            *
            * @example
-           * // Environment variables usage
-           * // edgeone.json or Console: TIMEOUT_SECONDS = "60"
-           * // context.env contains: { TIMEOUT_SECONDS: "60" }
-           * // handleRequest uses createConfig(env) to override defaults
+           * // Vercel invokes without context
+           * handler(request)
            */
-          export async function onRequest(context) {
-            // Extract request, env, and create an execution context compatible with Workers
-            const { request, env, waitUntil } = context;
+          export default async function handler(request, context) {
+            // Detect runtime environment
+            const isNetlify = context && (context.geo !== undefined || context.ip !== undefined);
+            const isVercel = !isNetlify && context;
 
-            // Create a minimal ExecutionContext-like object for compatibility
+            // Normalize environment variables
+            // Netlify provides context.env, Vercel Edge uses globalThis
+            let envSource;
+            if (isNetlify) {
+              envSource = context.env || {};
+            } else if (typeof process !== 'undefined' && process.env) {
+              // Vercel or Node.js environment
+              envSource = process.env;
+            } else {
+              // Fallback for other environments
+              envSource = {};
+            }
+
+            const env = {
+              TIMEOUT_SECONDS: envSource.TIMEOUT_SECONDS,
+              MAX_RETRIES: envSource.MAX_RETRIES,
+              RETRY_DELAY_MS: envSource.RETRY_DELAY_MS,
+              CACHE_DURATION: envSource.CACHE_DURATION,
+              ALLOWED_METHODS: envSource.ALLOWED_METHODS,
+              ALLOWED_ORIGINS: envSource.ALLOWED_ORIGINS,
+              MAX_PATH_LENGTH: envSource.MAX_PATH_LENGTH,
+            };
+
+            // Create normalized execution context
             const ctx = {
-              waitUntil: waitUntil,
+              waitUntil: isNetlify && context.waitUntil
+                ? (promise) => context.waitUntil(promise)
+                : (promise) => {
+                    // No-op on Vercel: background tasks not supported
+                    // Cache writes will run synchronously instead
+                    console.warn('waitUntil is not supported in Vercel Edge Runtime');
+                  },
               passThroughOnException: () => {
-                // Pages doesn't support passThroughOnException, so this is a no-op
-                console.warn('passThroughOnException is not supported in EdgeOne Pages Functions');
+                // Not supported on either platform in this context
+                console.warn('passThroughOnException is not universally supported');
               }
             };
 
             // Delegate to the main request handler
             return handleRequest(request, env, ctx);
           }
+
+          // Vercel Edge Runtime configuration (ignored by Netlify)
+          export const config = {
+            runtime: 'edge',
+          };
           EOF
 
-      - name: Export handleRequest from src/index.js
+      - name: Create vercel.json
         run: |
-          cd /tmp/edgeone-conversion
-          # Add export statement before the default export at the end of the file
-          sed -i '/^export default {$/i\
-          export { handleRequest };' src/index.js
-
-      - name: Create edgeone.json configuration
-        run: |
-          cd /tmp/edgeone-conversion
-          cat > edgeone.json << 'EOF'
+          cd /tmp/functions-conversion
+          cat > vercel.json << 'EOF'
           {
-            "buildCommand": "",
-            "installCommand": "npm install",
-            "outputDirectory": ".",
-            "nodeVersion": "22.11.0",
+            "$schema": "https://openapi.vercel.sh/vercel.json",
+            "name": "xget",
+            "version": 2,
+            "rewrites": [
+              {
+                "source": "/(.*)",
+                "destination": "/api/index.js"
+              }
+            ],
             "headers": [
               {
-                "source": "/*",
+                "source": "/(.*)",
                 "headers": [
                   {
-                    "key": "X-Content-Type-Options",
-                    "value": "nosniff"
-                  },
-                  {
-                    "key": "X-Frame-Options",
-                    "value": "DENY"
-                  },
-                  {
-                    "key": "Referrer-Policy",
-                    "value": "no-referrer"
+                    "key": "X-Powered-By",
+                    "value": "Xget/Vercel"
                   }
                 ]
               }
@@ -335,42 +336,88 @@ jobs:
           }
           EOF
 
-      - name: Update package.json for EdgeOne Pages
+      - name: Create netlify.toml
         run: |
-          cd /tmp/edgeone-conversion
-          # Update deployment commands for EdgeOne Pages
-          cat package.json | \
-          sed 's/\"deploy\": \"wrangler deploy\"/\"deploy\": \"echo \\\"Deploy via EdgeOne Pages Console\\\"\"/' | \
-          sed 's/\"start\": \"wrangler dev\"/\"start\": \"echo \\\"Use EdgeOne Pages local development\\\"\"/' \
-          > package.json.tmp && mv package.json.tmp package.json
+          cd /tmp/functions-conversion
+          cat > netlify.toml << 'EOF'
+          [[edge_functions]]
+          function = "edge-handler"
+          path = "/*"
 
-      - name: Initialize pages branch
+          [build]
+          publish = "."
+          EOF
+
+      - name: Create Netlify Edge Function redirect
         run: |
-          cd /tmp/edgeone-conversion
+          cd /tmp/functions-conversion
+          mkdir -p netlify/edge-functions
+          cat > netlify/edge-functions/edge-handler.js << 'EOF'
+          /**
+           * Netlify Edge Function entry point.
+           *
+           * This file serves as a redirect to the edge function handler
+           * located at /api/index.js. Both Netlify and Vercel can use the same
+           * handler code, with platform detection handling the differences.
+           *
+           * Netlify requires edge functions to be in netlify/edge-functions/,
+           * while Vercel uses /api/ directory. This approach maintains a single
+           * source of truth at /api/index.js.
+           */
+          export { default, config } from '../../api/index.js';
+          EOF
+
+      - name: Export handleRequest from src/index.js
+        run: |
+          cd /tmp/functions-conversion
+          # Add export statement before the default export at the end of the file
+          sed -i '/^export default {$/i\
+          export { handleRequest };' src/index.js
+
+      - name: Update package.json for Vercel
+        run: |
+          cd /tmp/functions-conversion
+          cat > package.json << 'EOF'
+          {
+            "name": "xget",
+            "version": "1.0.0",
+            "type": "module",
+            "private": false,
+            "scripts": {
+              "dev": "vercel dev",
+              "deploy": "vercel --prod",
+              "vercel-build": "echo 'No build step required'"
+            },
+            "dependencies": {
+              "express": "^4.19.2"
+            },
+            "devDependencies": {
+              "@vercel/node": "^3.0.0"
+            }
+          }
+          EOF
+
+      - name: Initialize functions branch
+        run: |
+          cd /tmp/functions-conversion
           git init
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b pages
+          git checkout -b functions
           git add .
-          git commit -m "Convert Worker to EdgeOne Pages
+          git commit -m "Convert Workers to Functions
 
           Auto-converted from main branch commit ${{ github.sha }}
 
-          Changes:
-          - Add functions/[[path]].js: Catch-all EdgeOne Pages Function handler
-          - Update src/index.js: Export handleRequest for Pages Function import
-          - Add edgeone.json: Configure for EdgeOne Pages deployment
-          - Update package.json: Note deployment via EdgeOne Console
-
           Runtime files only (documentation, tests, and dev configs excluded)."
 
-      - name: Force push to pages branch
+      - name: Force push to functions branch
         run: |
-          cd /tmp/edgeone-conversion
+          cd /tmp/functions-conversion
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git push -f origin pages
+          git push -f origin functions
 
       - name: Clean up
         if: always()
         run: |
-          rm -rf /tmp/edgeone-conversion
+          rm -rf /tmp/functions-conversion

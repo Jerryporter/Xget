@@ -2,9 +2,13 @@
 
 # Xget 🚀
 
-<a href="https://trendshift.io/repositories/14768" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14768" alt="xixu-me%2FXget | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/14768" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14768" alt="xixu-me%2FXget | Trendshift" width="250" height="55"/></a>
+<a href="https://www.producthunt.com/products/xget" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1039008" alt="Xget | Product Hunt" width="250" height="55" /></a>
 
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare%20Workers-F38020?&logo=cloudflare&logoColor=white)](#部署到-cloudflare-workers)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?&logo=cloudflare&logoColor=white)](#部署到-cloudflare-workers)
+[![EdgeOne](https://img.shields.io/badge/EdgeOne-006EFF?&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACNklEQVR4nJ1W7XHbMAx96ul/lQnCDapOUG3gdIIkG6QjdINOUGeDNhNYmUDuBHIWiNQF/PqDYAxDoMUGdzx+AXgAAQGqSKKAOgAbma8BXMn5DGAv4wlAv6qJ5KVxR3LkOR3NWu9HkcnqzF0EkoMDcsysLd8oOooAb0lOF7wqpYnkzRrgZkVJ8mp0jLFzotscYOC6ZyNjjLbOnTZI7weSjQc4ZoQmkjuSneIdMoADyR9iVKuB0qglWYOT0n9Uys/qPAD4ZHgfAXwzfO/6LLyxcTxbJEdufFi1aEk32l6Z+1Lhep1lQa1aVwI2O3wBsTIFxOoUADzVspgzQp6S1pztATRyvpG5lTNLTUVykssJwF91OQP4bATuAGzVngBexJD0vJW51/u5VpZc4VSUgViMLX1xlIUCoERNLoYE8Ns579S6chTngGYZh1oWjRGoEGOjKSAGP/HovqblDoiJtAfwLPv5xHnqCrbNeK3K8qX9juQDMx3CVpoesXLop7DeATF+2rsKsbo8oizD3zzsjLWk30RHw7N7R5V68/AgMUpeWg9bLLOxL/AniOw1Yp58t/FZi5+mzuFrJJY/Sb6qFzmmV9PMgzBsHUW/eN5gJwdk54Rm4YTXgHPx00p24qEGydFElb3e09nUbpXVuZ+oS/88Z62rJLMelHAJSDqf6LxWSXvS35/+Vr0SlqrPHsBXxOw/o5IGHDLKE4AucS8A7hG7zAIMACryv371WxkfxYhZFD8jFvt+TdE/deK28xBAUlEAAAAASUVORK5CYII=)](#部署到-edgeone-pages)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?&logo=vercel&logoColor=white)](#部署到-vercel)
+[![Netlify](https://img.shields.io/badge/Netlify-00C7B7?&logo=netlify&logoColor=white)](#部署到-netlify)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?&logo=docker&logoColor=white)](#自托管部署)
 [![Podman](https://img.shields.io/badge/Podman-892CA0?&logo=podman&logoColor=white)](#自托管部署)
 [![Chromium](https://img.shields.io/badge/Chromium-4285F4?logo=googlechrome&logoColor=white)](#-生态系统集成)
@@ -22,7 +26,7 @@
 [![Codeberg](https://img.shields.io/badge/Codeberg-2185D0?&logo=codeberg&logoColor=white)](#codeberg)
 [![SourceForge](https://img.shields.io/badge/SourceForge-FF6600?&logo=sourceforge&logoColor=white)](#sourceforge)
 [![AOSP](https://img.shields.io/badge/AOSP-3DDC84?&logo=android&logoColor=white)](#aosp-android-%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE)
-[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?&logo=huggingface&logoColor=white)](#hugging-face-镜像)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?&logo=huggingface&logoColor=black)](#hugging-face-镜像)
 [![Civitai](https://img.shields.io/badge/Civitai-1971C2)](#civitai-ai-模型平台)
 [![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)](#npm-包管理加速)
 [![PyPI](https://img.shields.io/badge/PyPI-3775A9?logo=pypi&logoColor=white)](#python-包管理加速)
@@ -742,7 +746,7 @@ https://api.openai.com/v1/chat/completions
 # 转换后（添加 ip/openai 前缀）
 https://xget.xi-xu.me/ip/openai/v1/chat/completions
 
-# Anthropic API 原始 URL
+# Claude API 原始 URL
 https://api.anthropic.com/v1/messages
 
 # 转换后（添加 ip/anthropic 前缀）
@@ -1984,25 +1988,6 @@ pipeline {
 
 ### 容器镜像加速
 
-#### Docker 配置
-
-```bash
-# 配置 Docker 使用 Xget 镜像加速
-# 编辑 /etc/docker/daemon.json（Linux）或 ~/.docker/daemon.json（macOS/Windows）
-{
-  "registry-mirrors": [
-    "https://xget.xi-xu.me/cr/ghcr"
-  ]
-}
-
-# 重启 Docker 服务
-sudo systemctl restart docker  # Linux
-# 或在 Docker Desktop 中重启服务
-
-# 验证配置
-docker info | grep -A 10 "Registry Mirrors"
-```
-
 #### 直接拉取镜像
 
 ```bash
@@ -2162,175 +2147,146 @@ sudo systemctl restart containerd
 #### OpenAI API
 
 ```python
-import openai
+from openai import OpenAI
 
-# 使用 Xget 的 OpenAI API
-client = openai.OpenAI(
+client = OpenAI(
     api_key="your-api-key",
-    base_url="https://xget.xi-xu.me/ip/openai/v1"  # 使用 Xget
+    base_url="https://xget.xi-xu.me/ip/openai/v1",  # 使用 Xget
 )
 
-# 聊天完成
-response = client.chat.completions.create(
-    model="gpt-4",
-    messages=[
-        {"role": "user", "content": "Hello, how are you?"}
-    ]
+response = client.responses.create(
+    model="gpt-5.1",
+    input="Hello, GPT!",
 )
 
-print(response.choices[0].message.content)
+print(response.output_text)
 ```
 
-#### Anthropic API
+#### Claude API
 
 ```python
-import anthropic
+from anthropic import Anthropic
 
-# 使用 Xget 的 Anthropic API
-client = anthropic.Anthropic(
+client = Anthropic(
     api_key="your-api-key",
-    base_url="https://xget.xi-xu.me/ip/anthropic"  # 使用 Xget
+    base_url="https://xget.xi-xu.me/ip/anthropic",  # 使用 Xget
 )
 
-# 创建消息
 message = client.messages.create(
-    model="claude-3-sonnet-20240229",
-    max_tokens=1000,
+    model="claude-sonnet-4-5",
+    max_tokens=256,
     messages=[
-        {"role": "user", "content": "Hello, Claude!"}
-    ]
+        {
+            "role": "user",
+            "content": "Hello, Claude!",
+        }
+    ],
 )
 
-print(message.content)
+print(message.content[0].text)
 ```
 
 #### Gemini API
 
 ```python
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
-# 配置 API 密钥
-genai.configure(api_key="your-api-key")
+client = genai.Client(
+    api_key="your-api-key",
+    http_options=types.HttpOptions(base_url="https://xget.xi-xu.me/ip/gemini"),  # 使用 Xget
+)
 
-# 使用自定义传输配置 Xget
-import requests
+response = client.models.generate_content(
+    model="gemini-3-pro-preview",
+    contents="Hello, Gemini!",
+)
 
-class XgetTransport:
-    def __init__(self, base_url):
-        self.base_url = base_url
-
-    def request(self, method, url, **kwargs):
-        # 将请求转发到 Xget
-        accelerated_url = url.replace("https://generativelanguage.googleapis.com",
-                                    "https://xget.xi-xu.me/ip/gemini")
-        return requests.request(method, accelerated_url, **kwargs)
-
-# 创建模型实例
-model = genai.GenerativeModel('gemini-pro')
-
-# 生成内容
-response = model.generate_content("写一个关于人工智能的简短介绍")
 print(response.text)
 ```
 
 #### 多提供商统一接口
 
 ```python
-import requests
-import json
+from openai import OpenAI
 
-def call_ai_api(provider, endpoint, data, api_key):
-    """
-    统一的 AI API 调用函数，支持多个提供商
-    """
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
+providers = [
+    ("Cohere",  "your-cohere-api-key",  "/cohere/compatibility/v1", "command-a-03-2025"),
+    ("Mistral", "your-mistral-api-key", "/mistralai/v1",            "mistral-medium-latest"),
+    ("xAI",     "your-xai-api-key",     "/xai/v1",                  "grok-4"),
+]
 
-    # 使用 Xget 的加速 URL
-    url = f"https://xget.xi-xu.me/ip/{provider}/{endpoint}"
-
-    response = requests.post(url, headers=headers, json=data)
-    return response.json()
-
-# 使用示例
-providers = {
-    "openai": {
-        "endpoint": "v1/chat/completions",
-        "data": {
-            "model": "gpt-4",
-            "messages": [{"role": "user", "content": "Hello!"}]
-        }
-    },
-    "anthropic": {
-        "endpoint": "v1/messages",
-        "data": {
-            "model": "claude-3-sonnet-20240229",
-            "max_tokens": 1000,
-            "messages": [{"role": "user", "content": "Hello!"}]
-        }
-    },
-    "cohere": {
-        "endpoint": "v1/generate",
-        "data": {
-            "model": "command",
-            "prompt": "Hello!",
-            "max_tokens": 100
-        }
-    }
-}
-
-# 循环调用不同提供商
-for provider, config in providers.items():
-    try:
-        result = call_ai_api(
-            provider=provider,
-            endpoint=config["endpoint"],
-            data=config["data"],
-            api_key="your-api-key"
-        )
-        print(f"{provider.title()} response: {result}")
-    except Exception as e:
-        print(f"Error calling {provider}: {e}")
+for name, key, path, model in providers:
+    client = OpenAI(api_key=key, base_url="https://xget.xi-xu.me/ip" + path)  # 使用 Xget
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": f"Hello, who are you?"}],
+    )
+    print(name, "=>", response.choices[0].message.content)
 ```
 
 #### JavaScript/Node.js 中使用
 
 ```javascript
 // OpenAI API 加速
-import OpenAI from 'openai';
+import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: 'your-api-key',
-  baseURL: 'https://xget.xi-xu.me/ip/openai',  // 使用 Xget
+const openaiClient = new OpenAI({
+  apiKey: "your-openai-api-key",
+  baseURL: "https://xget.xi-xu.me/ip/openai/v1",  // 使用 Xget
 });
 
 async function chatWithGPT() {
-  const completion = await openai.chat.completions.create({
-    messages: [{ role: 'user', content: 'Hello!' }],
-    model: 'gpt-4',
+  const response = await openaiClient.responses.create({
+    model: "gpt-5.1",
+    input: "Hello, GPT!",
   });
 
-  console.log(completion.choices[0].message.content);
+  console.log(response.output_text);
 }
 
-// Anthropic API 加速
-import Anthropic from '@anthropic-ai/sdk';
+// Claude API 加速
+import Anthropic from "@anthropic-ai/sdk";
 
-const anthropic = new Anthropic({
-  apiKey: 'your-api-key',
-  baseURL: 'https://xget.xi-xu.me/ip/anthropic',  // 使用 Xget
+const anthropicClient = new Anthropic({
+  apiKey: "your-claude-api-key",
+  baseURL: "https://xget.xi-xu.me/ip/anthropic",  // 使用 Xget
 });
 
 async function chatWithClaude() {
-  const message = await anthropic.messages.create({
-    model: 'claude-3-sonnet-20240229',
-    max_tokens: 1000,
-    messages: [{ role: 'user', content: 'Hello!' }],
+  const message = await anthropicClient.messages.create({
+    model: "claude-sonnet-4-5",
+    max_tokens: 256,
+    messages: [
+      {
+        role: "user",
+        content: "Hello, Claude!",
+      },
+    ],
   });
 
-  console.log(message.content);
+  console.log(message.content[0].text);
+}
+
+// Gemini API 加速
+import { GoogleGenAI } from "@google/genai";
+
+const geminiClient = new GoogleGenAI({
+  apiKey: "your-gemini-api-key",
+});
+
+async function chatWithGemini() {
+  const response = await geminiClient.models.generateContent({
+    model: "gemini-3-pro-preview",
+    contents: "Hello, Gemini!",
+    config: {
+      httpOptions: {
+        baseUrl: "https://xget.xi-xu.me/ip/gemini",  // 使用 Xget
+      },
+    },
+  });
+
+  console.log(response.text);
 }
 ```
 
@@ -2363,17 +2319,15 @@ client = OpenAI(
 
 ### 部署到 Cloudflare Workers
 
-#### 部署步骤
-
 1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
 2. **获取 Cloudflare 凭证**：
-   - 访问[帐户 API 令牌](https://dash.cloudflare.com/?to=/:account/api-tokens)创建并记录 API 令牌，使用“编辑 Cloudflare Workers”模板
+   - 访问[账户 API 令牌](https://dash.cloudflare.com/?to=/:account/api-tokens)创建并记录 API 令牌，使用“编辑 Cloudflare Workers”模板
    - 访问 [Workers 和 Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages) 记录 Account ID
 
 3. **配置 GitHub Secrets**：
    - 进入你的 GitHub 存储库 → Settings → Secrets and variables → Actions
-   - 添加以下 Secrets：
+   - 添加以下 secrets：
      - `CLOUDFLARE_API_TOKEN`：你的 API 令牌
      - `CLOUDFLARE_ACCOUNT_ID`：你的 Account ID
 
@@ -2384,22 +2338,101 @@ client = OpenAI(
 
 5. **绑定自定义域名**（可选）：在 Cloudflare Workers 控制台中绑定你的自定义域名
 
-部署完成后，你的 Xget 服务将在以下地址可用：
+### 部署到 Cloudflare Pages
 
-- Worker 域名：`your-worker-name.your-subdomain.workers.dev`
-- 自定义域名：`your-domain.com`（如果已绑定）
+1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
-#### 环境变量配置
+2. **获取 Cloudflare 凭证**：
+   - 访问[账户 API 令牌](https://dash.cloudflare.com/?to=/:account/api-tokens)创建并记录 API 令牌，使用“编辑 Cloudflare Workers”模板
+   - 访问 [Workers 和 Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages) 记录 Account ID
 
-你可以在 Cloudflare Workers 控制台中设置以下环境变量来自定义配置：
+3. **配置 GitHub Secrets**：
+   - 进入你的 GitHub 存储库 → Settings → Secrets and variables → Actions
+   - 添加以下 secrets：
+     - `CLOUDFLARE_API_TOKEN`：你的 API 令牌
+     - `CLOUDFLARE_ACCOUNT_ID`：你的 Account ID
 
-- `TIMEOUT_SECONDS`：请求超时时间（默认：30）
-- `MAX_RETRIES`：最大重试次数（默认：3）
-- `RETRY_DELAY_MS`：重试延迟时间（默认：1000）
-- `CACHE_DURATION`：缓存持续时间（默认：1800）
-- `ALLOWED_METHODS`：允许的 HTTP 方法（默认：GET,HEAD）
-- `ALLOWED_ORIGINS`：允许的 CORS 源（默认：*）
-- `MAX_PATH_LENGTH`：最大路径长度（默认：2048）
+4. **触发部署**：
+   - 存储库会自动将 Workers 代码转换为 Pages 兼容格式并同步到 `pages` 分支
+   - 推送代码到 `main` 分支会自动触发同步和部署工作流
+   - 仅修改文档文件（`.md`）、`LICENSE`、`.gitignore` 等不会触发部署
+   - 也可以在 GitHub Actions 页面手动触发部署
+
+5. **绑定自定义域名**（可选）：在 Cloudflare Pages 控制台中绑定你的自定义域名
+
+**注意**：`pages` 分支是从 `main` 分支自动生成的。请勿手动编辑 `pages` 分支，因为它会被同步工作流覆盖。
+
+### 部署到 EdgeOne Pages
+
+1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
+
+2. **获取 EdgeOne Pages API Token**：
+   - 访问[中国站 EdgeOne 控制台](https://console.cloud.tencent.com/edgeone/pages?tab=api)或[国际站 EdgeOne 控制台](https://console.tencentcloud.com/edgeone/pages?tab=api)创建并记录 API Token
+
+3. **配置 GitHub Secrets**：
+   - 进入你的 GitHub 存储库 → Settings → Secrets and variables → Actions
+   - 添加以下 secret：
+     - `EDGEONE_API_TOKEN`：你的 API Token
+
+4. **触发部署**：
+   - 存储库会自动将 Workers 代码转换为 Pages 兼容格式并同步到 `pages` 分支
+   - 推送代码到 `main` 分支会自动触发同步和部署工作流
+   - 仅修改文档文件（`.md`）、`LICENSE`、`.gitignore` 等不会触发部署
+   - 也可以在 GitHub Actions 页面手动触发部署
+
+5. **绑定自定义域名**（可选）：在 EdgeOne Pages 控制台中绑定你的自定义域名
+
+**注意**：`pages` 分支是从 `main` 分支自动生成的。请勿手动编辑 `pages` 分支，因为它会被同步工作流覆盖。
+
+### 部署到 Vercel
+
+1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
+
+2. **获取 Vercel 凭证**：
+   - 访问 [Vercel Account Settings](https://vercel.com/account/settings/tokens) 创建并记录 Access Token
+   - 访问 Team Settings 记录 Team ID
+   - 新建项目后访问项目的 Settings 记录 Project ID
+
+3. **配置 GitHub Secrets**：
+   - 进入你的 GitHub 存储库 → Settings → Secrets and variables → Actions
+   - 添加以下 secrets：
+     - `VERCEL_TOKEN`：你的 Access Token
+     - `VERCEL_ORG_ID`：你的 Team ID
+     - `VERCEL_PROJECT_ID`：你的 Project ID
+
+4. **触发部署**：
+   - 存储库会自动将 Workers 代码转换为 Functions 兼容格式并同步到 `functions` 分支
+   - 推送代码到 `main` 分支会自动触发同步和部署工作流
+   - 仅修改文档文件（`.md`）、`LICENSE`、`.gitignore` 等不会触发部署
+   - 也可以在 GitHub Actions 页面手动触发部署
+
+5. **绑定自定义域名**（可选）：在 Vercel 控制台中绑定你的自定义域名
+
+**注意**：`functions` 分支是从 `main` 分支自动生成的。请勿手动编辑 `functions` 分支，因为它会被同步工作流覆盖。
+
+### 部署到 Netlify
+
+1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
+
+2. **获取 Netlify 凭证**：
+   - 访问 [Netlify User Settings](https://app.netlify.com/user/applications) 创建并记录 personal access token
+   - 新建项目后访问 Project configuration 记录 Project ID
+
+3. **配置 GitHub Secrets**：
+   - 进入你的 GitHub 存储库 → Settings → Secrets and variables → Actions
+   - 添加以下 secrets：
+     - `NETLIFY_AUTH_TOKEN`：你的 personal access token
+     - `NETLIFY_SITE_ID`：你的 Project ID
+
+4. **触发部署**：
+   - 存储库会自动将 Workers 代码转换为 Functions 兼容格式并同步到 `functions` 分支
+   - 推送代码到 `main` 分支会自动触发同步和部署工作流
+   - 仅修改文档文件（`.md`）、`LICENSE`、`.gitignore` 等不会触发部署
+   - 也可以在 GitHub Actions 页面手动触发部署
+
+5. **绑定自定义域名**（可选）：在 Netlify 控制台中绑定你的自定义域名
+
+**注意**：`functions` 分支是从 `main` 分支自动生成的。请勿手动编辑 `functions` 分支，因为它会被同步工作流覆盖。
 
 ### 自托管部署
 
@@ -2503,9 +2536,17 @@ podman-compose up -d
 podman compose up -d
 ```
 
-部署完成后，Xget 将在 `http://<server-ip>:8080` 可用。
+部署完成后，Xget 将在 8080 端口运行。
 
-**注意**：自托管部署不包括 Cloudflare Workers 的全球边缘网络加速，性能取决于你的服务器配置和网络环境。
+如果你希望在 DigitalOcean 上部署和运行 Xget，可以参考文档[《Deploying and Optimizing Xget on DigitalOcean》](docs/deploy-on-digitalocean.md)。通过下方推荐链接注册账户，可获得 200 美元代金券积分，可用于创建 Droplet、Kubernetes、App Platform 等资源：
+
+<p>
+  <a href="https://m.do.co/c/7efe110ca23f">
+    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_blue.svg" width="201px">
+  </a>
+</p>
+
+**注意**：自托管部署不包括全球边缘网络加速，性能取决于你的服务器配置和网络环境。
 
 ## 🔧 配置
 

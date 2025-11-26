@@ -2,9 +2,13 @@
 
 # Xget 🚀
 
-<a href="https://trendshift.io/repositories/14768" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14768" alt="xixu-me%2FXget | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/14768" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14768" alt="xixu-me%2FXget | Trendshift" width="250" height="55"/></a>
+<a href="https://www.producthunt.com/products/xget" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1039008" alt="Xget | Product Hunt" width="250" height="55" /></a>
 
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare%20Workers-F38020?&logo=cloudflare&logoColor=white)](#deploy-to-cloudflare-workers)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?&logo=cloudflare&logoColor=white)](#deploy-to-cloudflare-workers)
+[![EdgeOne](https://img.shields.io/badge/EdgeOne-006EFF?&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACNklEQVR4nJ1W7XHbMAx96ul/lQnCDapOUG3gdIIkG6QjdINOUGeDNhNYmUDuBHIWiNQF/PqDYAxDoMUGdzx+AXgAAQGqSKKAOgAbma8BXMn5DGAv4wlAv6qJ5KVxR3LkOR3NWu9HkcnqzF0EkoMDcsysLd8oOooAb0lOF7wqpYnkzRrgZkVJ8mp0jLFzotscYOC6ZyNjjLbOnTZI7weSjQc4ZoQmkjuSneIdMoADyR9iVKuB0qglWYOT0n9Uys/qPAD4ZHgfAXwzfO/6LLyxcTxbJEdufFi1aEk32l6Z+1Lhep1lQa1aVwI2O3wBsTIFxOoUADzVspgzQp6S1pztATRyvpG5lTNLTUVykssJwF91OQP4bATuAGzVngBexJD0vJW51/u5VpZc4VSUgViMLX1xlIUCoERNLoYE8Ns579S6chTngGYZh1oWjRGoEGOjKSAGP/HovqblDoiJtAfwLPv5xHnqCrbNeK3K8qX9juQDMx3CVpoesXLop7DeATF+2rsKsbo8oizD3zzsjLWk30RHw7N7R5V68/AgMUpeWg9bLLOxL/AniOw1Yp58t/FZi5+mzuFrJJY/Sb6qFzmmV9PMgzBsHUW/eN5gJwdk54Rm4YTXgHPx00p24qEGydFElb3e09nUbpXVuZ+oS/88Z62rJLMelHAJSDqf6LxWSXvS35/+Vr0SlqrPHsBXxOw/o5IGHDLKE4AucS8A7hG7zAIMACryv371WxkfxYhZFD8jFvt+TdE/deK28xBAUlEAAAAASUVORK5CYII=)](#deploy-to-edgeone-pages)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?&logo=vercel&logoColor=white)](#deploy-to-vercel)
+[![Netlify](https://img.shields.io/badge/Netlify-00C7B7?&logo=netlify&logoColor=white)](#deploy-to-netlify)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?&logo=docker&logoColor=white)](#self-hosted-deployment)
 [![Podman](https://img.shields.io/badge/Podman-892CA0?&logo=podman&logoColor=white)](#self-hosted-deployment)
 [![Chromium](https://img.shields.io/badge/Chromium-4285F4?logo=googlechrome&logoColor=white)](#-ecosystem-integration)
@@ -22,7 +26,7 @@
 [![Codeberg](https://img.shields.io/badge/Codeberg-2185D0?&logo=codeberg&logoColor=white)](#codeberg)
 [![SourceForge](https://img.shields.io/badge/SourceForge-FF6600?&logo=sourceforge&logoColor=white)](#sourceforge)
 [![AOSP](https://img.shields.io/badge/AOSP-3DDC84?&logo=android&logoColor=white)](#aosp-android-open-source-project)
-[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?&logo=huggingface&logoColor=white)](#hugging-face-mirror)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?&logo=huggingface&logoColor=black)](#hugging-face-mirror)
 [![Civitai](https://img.shields.io/badge/Civitai-1971C2)](#civitai-ai-model-platform)
 [![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)](#npm-package-acceleration)
 [![PyPI](https://img.shields.io/badge/PyPI-3775A9?logo=pypi&logoColor=white)](#python-package-acceleration)
@@ -733,7 +737,7 @@ https://api.openai.com/v1/chat/completions
 # Converted (add ip/openai prefix)
 https://xget.xi-xu.me/ip/openai/v1/chat/completions
 
-# Anthropic API original URL
+# Claude API original URL
 https://api.anthropic.com/v1/messages
 
 # Converted (add ip/anthropic prefix)
@@ -1974,25 +1978,6 @@ pipeline {
 
 ### Container Image Acceleration
 
-#### Docker Configuration
-
-```bash
-# Configure Docker to use Xget image acceleration
-# Edit /etc/docker/daemon.json (Linux) or ~/.docker/daemon.json (macOS/Windows)
-{
-  "registry-mirrors": [
-    "https://xget.xi-xu.me/cr/ghcr"
-  ]
-}
-
-# Restart Docker service
-sudo systemctl restart docker  # Linux
-# Or restart service in Docker Desktop
-
-# Verify configuration
-docker info | grep -A 10 "Registry Mirrors"
-```
-
 #### Pull Images Directly
 
 ```bash
@@ -2152,175 +2137,146 @@ sudo systemctl restart containerd
 #### OpenAI API
 
 ```python
-import openai
+from openai import OpenAI
 
-# Use Xget's OpenAI API
-client = openai.OpenAI(
+client = OpenAI(
     api_key="your-api-key",
-    base_url="https://xget.xi-xu.me/ip/openai/v1"  # Use Xget
+    base_url="https://xget.xi-xu.me/ip/openai/v1",  # Use Xget
 )
 
-# Chat completion
-response = client.chat.completions.create(
-    model="gpt-4",
-    messages=[
-        {"role": "user", "content": "Hello, how are you?"}
-    ]
+response = client.responses.create(
+    model="gpt-5.1",
+    input="Hello, GPT!",
 )
 
-print(response.choices[0].message.content)
+print(response.output_text)
 ```
 
-#### Anthropic API
+#### Claude API
 
 ```python
-import anthropic
+from anthropic import Anthropic
 
-# Use Xget's Anthropic API
-client = anthropic.Anthropic(
+client = Anthropic(
     api_key="your-api-key",
-    base_url="https://xget.xi-xu.me/ip/anthropic"  # Use Xget
+    base_url="https://xget.xi-xu.me/ip/anthropic",  # Use Xget
 )
 
-# Create message
 message = client.messages.create(
-    model="claude-3-sonnet-20240229",
-    max_tokens=1000,
+    model="claude-sonnet-4-5",
+    max_tokens=256,
     messages=[
-        {"role": "user", "content": "Hello, Claude!"}
-    ]
+        {
+            "role": "user",
+            "content": "Hello, Claude!",
+        }
+    ],
 )
 
-print(message.content)
+print(message.content[0].text)
 ```
 
 #### Gemini API
 
 ```python
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
-# Configure API key
-genai.configure(api_key="your-api-key")
+client = genai.Client(
+    api_key="your-api-key",
+    http_options=types.HttpOptions(base_url="https://xget.xi-xu.me/ip/gemini"),  # Use Xget
+)
 
-# Use custom transport to configure Xget
-import requests
+response = client.models.generate_content(
+    model="gemini-3-pro-preview",
+    contents="Hello, Gemini!",
+)
 
-class XgetTransport:
-    def __init__(self, base_url):
-        self.base_url = base_url
-
-    def request(self, method, url, **kwargs):
-        # Forward request to Xget
-        accelerated_url = url.replace("https://generativelanguage.googleapis.com",
-                                    "https://xget.xi-xu.me/ip/gemini")
-        return requests.request(method, accelerated_url, **kwargs)
-
-# Create model instance
-model = genai.GenerativeModel('gemini-pro')
-
-# Generate content
-response = model.generate_content("Write a brief introduction about artificial intelligence")
 print(response.text)
 ```
 
 #### Multi-Provider Unified Interface
 
 ```python
-import requests
-import json
+from openai import OpenAI
 
-def call_ai_api(provider, endpoint, data, api_key):
-    """
-    Unified AI API calling function, supports multiple providers
-    """
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
+providers = [
+    ("Cohere",  "your-cohere-api-key",  "/cohere/compatibility/v1", "command-a-03-2025"),
+    ("Mistral", "your-mistral-api-key", "/mistralai/v1",            "mistral-medium-latest"),
+    ("xAI",     "your-xai-api-key",     "/xai/v1",                  "grok-4"),
+]
 
-    # Use Xget's accelerated URL
-    url = f"https://xget.xi-xu.me/ip/{provider}/{endpoint}"
-
-    response = requests.post(url, headers=headers, json=data)
-    return response.json()
-
-# Usage example
-providers = {
-    "openai": {
-        "endpoint": "v1/chat/completions",
-        "data": {
-            "model": "gpt-4",
-            "messages": [{"role": "user", "content": "Hello!"}]
-        }
-    },
-    "anthropic": {
-        "endpoint": "v1/messages",
-        "data": {
-            "model": "claude-3-sonnet-20240229",
-            "max_tokens": 1000,
-            "messages": [{"role": "user", "content": "Hello!"}]
-        }
-    },
-    "cohere": {
-        "endpoint": "v1/generate",
-        "data": {
-            "model": "command",
-            "prompt": "Hello!",
-            "max_tokens": 100
-        }
-    }
-}
-
-# Loop through different providers
-for provider, config in providers.items():
-    try:
-        result = call_ai_api(
-            provider=provider,
-            endpoint=config["endpoint"],
-            data=config["data"],
-            api_key="your-api-key"
-        )
-        print(f"{provider.title()} response: {result}")
-    except Exception as e:
-        print(f"Error calling {provider}: {e}")
+for name, key, path, model in providers:
+    client = OpenAI(api_key=key, base_url="https://xget.xi-xu.me/ip" + path)  # Use Xget
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": f"Hello, who are you?"}],
+    )
+    print(name, "=>", response.choices[0].message.content)
 ```
 
 #### Use in JavaScript/Node.js
 
 ```javascript
 // OpenAI API acceleration
-import OpenAI from 'openai';
+import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: 'your-api-key',
-  baseURL: 'https://xget.xi-xu.me/ip/openai',  // Use Xget
+const openaiClient = new OpenAI({
+  apiKey: "your-openai-api-key",
+  baseURL: "https://xget.xi-xu.me/ip/openai/v1",  // Use Xget
 });
 
 async function chatWithGPT() {
-  const completion = await openai.chat.completions.create({
-    messages: [{ role: 'user', content: 'Hello!' }],
-    model: 'gpt-4',
+  const response = await openaiClient.responses.create({
+    model: "gpt-5.1",
+    input: "Hello, GPT!",
   });
 
-  console.log(completion.choices[0].message.content);
+  console.log(response.output_text);
 }
 
-// Anthropic API acceleration
-import Anthropic from '@anthropic-ai/sdk';
+// Claude API acceleration
+import Anthropic from "@anthropic-ai/sdk";
 
-const anthropic = new Anthropic({
-  apiKey: 'your-api-key',
-  baseURL: 'https://xget.xi-xu.me/ip/anthropic',  // Use Xget
+const anthropicClient = new Anthropic({
+  apiKey: "your-claude-api-key",
+  baseURL: "https://xget.xi-xu.me/ip/anthropic",  // Use Xget
 });
 
 async function chatWithClaude() {
-  const message = await anthropic.messages.create({
-    model: 'claude-3-sonnet-20240229',
-    max_tokens: 1000,
-    messages: [{ role: 'user', content: 'Hello!' }],
+  const message = await anthropicClient.messages.create({
+    model: "claude-sonnet-4-5",
+    max_tokens: 256,
+    messages: [
+      {
+        role: "user",
+        content: "Hello, Claude!",
+      },
+    ],
   });
 
-  console.log(message.content);
+  console.log(message.content[0].text);
+}
+
+// Gemini API acceleration
+import { GoogleGenAI } from "@google/genai";
+
+const geminiClient = new GoogleGenAI({
+  apiKey: "your-gemini-api-key",
+});
+
+async function chatWithGemini() {
+  const response = await geminiClient.models.generateContent({
+    model: "gemini-3-pro-preview",
+    contents: "Hello, Gemini!",
+    config: {
+      httpOptions: {
+        baseUrl: "https://xget.xi-xu.me/ip/gemini",  // Use Xget
+      },
+    },
+  });
+
+  console.log(response.text);
 }
 ```
 
@@ -2353,8 +2309,6 @@ client = OpenAI(
 
 ### Deploy to Cloudflare Workers
 
-#### Deployment Steps
-
 1. **Fork this repository**: [Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
 2. **Get Cloudflare credentials**:
@@ -2363,7 +2317,7 @@ client = OpenAI(
 
 3. **Configure GitHub Secrets**:
    - Go to your GitHub repository → Settings → Secrets and variables → Actions
-   - Add the following Secrets:
+   - Add the following secrets:
      - `CLOUDFLARE_API_TOKEN`: Your API token
      - `CLOUDFLARE_ACCOUNT_ID`: Your Account ID
 
@@ -2374,22 +2328,101 @@ client = OpenAI(
 
 5. **Bind custom domain** (optional): Bind your custom domain in the Cloudflare Workers console
 
-After deployment completes, your Xget service will be available at:
+### Deploy to Cloudflare Pages
 
-- Worker domain: `your-worker-name.your-subdomain.workers.dev`
-- Custom domain: `your-domain.com` (if bound)
+1. **Fork this repository**: [Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
-#### Environment Variable Configuration
+2. **Get Cloudflare credentials**:
+   - Visit [Account API tokens](https://dash.cloudflare.com/?to=/:account/api-tokens) to create and note an API token, using the "Edit Cloudflare Workers" template.
+   - Visit [Workers and Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages) to note the Account ID.
 
-You can set the following environment variables in the Cloudflare Workers console to customize configuration:
+3. **Configure GitHub Secrets**:
+   - Go to your GitHub repository → Settings → Secrets and variables → Actions
+   - Add the following secrets:
+     - `CLOUDFLARE_API_TOKEN`: Your API token
+     - `CLOUDFLARE_ACCOUNT_ID`: Your Account ID
 
-- `TIMEOUT_SECONDS`: Request timeout (default: 30)
-- `MAX_RETRIES`: Maximum retry count (default: 3)
-- `RETRY_DELAY_MS`: Retry delay time (default: 1000)
-- `CACHE_DURATION`: Cache duration (default: 1800)
-- `ALLOWED_METHODS`: Allowed HTTP methods (default: GET,HEAD)
-- `ALLOWED_ORIGINS`: Allowed CORS origins (default: *)
-- `MAX_PATH_LENGTH`: Maximum path length (default: 2048)
+4. **Trigger deployment**:
+   - The repository will automatically convert Workers code to Pages-compatible format and sync to the `pages` branch
+   - Pushing code to the `main` branch will automatically trigger sync and deployment workflows
+   - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc. will not trigger deployment
+   - You can also manually trigger deployment in the GitHub Actions page
+
+5. **Bind custom domain** (optional): Bind your custom domain in the Cloudflare Pages console
+
+**Note**: The `pages` branch is automatically generated from the `main` branch. Do not manually edit the `pages` branch as it will be overwritten by the sync workflow.
+
+### Deploy to EdgeOne Pages
+
+1. **Fork this repository**: [Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
+
+2. **Get EdgeOne Pages API Token**:
+   - Visit [China EdgeOne Console](https://console.cloud.tencent.com/edgeone/pages?tab=api) or [International EdgeOne Console](https://console.tencentcloud.com/edgeone/pages?tab=api) to create and note an API Token
+
+3. **Configure GitHub Secrets**:
+   - Go to your GitHub repository → Settings → Secrets and variables → Actions
+   - Add the following secret:
+     - `EDGEONE_PAGES_API_TOKEN`: Your API Token
+
+4. **Trigger deployment**:
+   - The repository will automatically convert Workers code to Pages-compatible format and sync to the `pages` branch
+   - Pushing code to the `main` branch will automatically trigger sync and deployment workflows
+   - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc. will not trigger deployment
+   - You can also manually trigger deployment in the GitHub Actions page
+
+5. **Bind custom domain** (optional): Bind your custom domain in the EdgeOne Pages console
+
+**Note**: The `pages` branch is automatically generated from the `main` branch. Do not manually edit the `pages` branch as it will be overwritten by the sync workflow.
+
+### Deploy to Vercel
+
+1. **Fork this repository**: [Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
+
+2. **Get Vercel credentials**:
+   - Visit [Vercel Account Settings](https://vercel.com/account/settings/tokens) to create and note an Access Token
+   - Visit Team Settings to note the Team ID
+   - Visit project's Settings after creating a new project to note the Project ID
+
+3. **Configure GitHub Secrets**:
+   - Go to your GitHub repository → Settings → Secrets and variables → Actions
+   - Add the following secrets:
+     - `VERCEL_TOKEN`: Your Access Token
+     - `VERCEL_ORG_ID`: Your Team ID
+     - `VERCEL_PROJECT_ID`: Your Project ID
+
+4. **Trigger deployment**:
+   - The repository will automatically convert Workers code to Functions-compatible format and sync to the `functions` branch
+   - Pushing code to the `main` branch will automatically trigger sync and deployment workflows
+   - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc. will not trigger deployment
+   - You can also manually trigger deployment in the GitHub Actions page
+
+5. **Bind custom domain** (optional): Bind your custom domain in the Vercel console
+
+**Note**: The `functions` branch is automatically generated from the `main` branch. Do not manually edit the `functions` branch as it will be overwritten by the sync workflow.
+
+### Deploy to Netlify
+
+1. **Fork this repository**: [Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
+
+2. **Get Netlify credentials**:
+   - Visit [Netlify User Settings](https://app.netlify.com/user/applications) to create and note a personal access token
+   - Visit Project configuration after creating a new project to note the Project ID
+
+3. **Configure GitHub Secrets**:
+   - Go to your GitHub repository → Settings → Secrets and variables → Actions
+   - Add the following secrets:
+     - `NETLIFY_AUTH_TOKEN`: Your personal access token
+     - `NETLIFY_SITE_ID`: Your Project ID
+
+4. **Trigger deployment**:
+   - The repository will automatically convert Workers code to Functions-compatible format and sync to the `functions` branch
+   - Pushing code to the `main` branch will automatically trigger sync and deployment workflows
+   - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc. will not trigger deployment
+   - You can also manually trigger deployment in the GitHub Actions page
+
+5. **Bind custom domain** (optional): Bind your custom domain in the Netlify console
+
+**Note**: The `functions` branch is automatically generated from the `main` branch. Do not manually edit the `functions` branch as it will be overwritten by the sync workflow.
 
 ### Self-Hosted Deployment
 
@@ -2493,9 +2526,17 @@ podman-compose up -d
 podman compose up -d
 ```
 
-After deployment, Xget will be available at `http://<server-ip>:8080`.
+After deployment, Xget will run on port 8080.
 
-**Note**: Self-hosted deployment does not include Cloudflare Workers' global edge network acceleration. Performance depends on your server configuration and network environment.
+If you want to deploy and run Xget on DigitalOcean, please refer to *[Deploying and Optimizing Xget on DigitalOcean](docs/deploy-on-digitalocean.md)*. By signing up via the referral link below, you can receive USD 200 in credits to try Droplets, Kubernetes, App Platform, and more:
+
+<p>
+  <a href="https://m.do.co/c/7efe110ca23f">
+    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_blue.svg" width="201px">
+  </a>
+</p>
+
+**Note**: Self-hosted deployment does not include global edge network acceleration. Performance depends on your server configuration and network environment.
 
 ## 🔧 Configuration
 
