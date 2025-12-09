@@ -18,6 +18,7 @@ beforeAll(async () => {
   const requiredGlobals = ['Request', 'Response', 'Headers', 'URL', 'URLSearchParams'];
 
   for (const global of requiredGlobals) {
+    // @ts-ignore - Dynamic global access for testing
     if (typeof globalThis[global] === 'undefined') {
       throw new Error(`Required global ${global} is not available`);
     }
@@ -29,12 +30,13 @@ beforeAll(async () => {
     if (!SELF) {
       throw new Error('SELF is not available');
     }
-  } catch (error) {
+  } catch {
     console.warn('Warning: Cloudflare Workers test environment not available');
   }
 
   // Setup performance API if not available
   if (typeof performance === 'undefined') {
+    // @ts-ignore - Partial performance implementation for testing
     globalThis.performance = {
       now: () => Date.now()
     };

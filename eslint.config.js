@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
   js.configs.recommended,
@@ -19,6 +20,19 @@ export default [
         URL: 'readonly',
         URLSearchParams: 'readonly',
         console: 'readonly',
+        AbortController: 'readonly',
+        AbortSignal: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        ReadableStream: 'readonly',
+        WritableStream: 'readonly',
+        TransformStream: 'readonly',
+        TextEncoder: 'readonly',
+        TextDecoder: 'readonly',
+        performance: 'readonly',
+        globalThis: 'readonly',
 
         // Vitest globals
         describe: 'readonly',
@@ -217,6 +231,7 @@ export default [
       'template-curly-spacing': ['error', 'never']
     }
   },
+  prettierConfig, // Disable formatting rules that conflict with Prettier
   {
     files: ['test/**/*.js'],
     rules: {
