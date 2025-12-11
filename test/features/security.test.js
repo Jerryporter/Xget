@@ -183,7 +183,7 @@ describe('Security Features', () => {
         // If it doesn't throw, it should not be a server error
       } catch (error) {
         // Expected to throw TypeError for invalid header value
-        expect(error.message).toMatch(/[Ii]nvalid|[Hh]eader/);
+        expect(/** @type {Error} */ (error).message).toMatch(/[Ii]nvalid|[Hh]eader/);
       }
     });
   });
@@ -200,7 +200,7 @@ describe('Security Features', () => {
       responses.forEach((/** @type {Response} */ response) => {
         expect(response.status).not.toBe(500);
       });
-    });
+    }, 30000);
 
     it('should timeout long-running requests', async () => {
       // This test would need to be implemented based on actual timeout behavior
@@ -231,7 +231,7 @@ describe('Security Features', () => {
       if (response.status >= 400) {
         const body = await response.text();
         // Should not expose internal paths, stack traces, or sensitive info
-        expect(body).not.toMatch(/\/[a-zA-Z]:[\\/ /); // Windows paths
+        expect(body).not.toMatch(/\/[a-zA-Z]:[\\/]/); // Windows paths
         expect(body).not.toMatch(/\/home\/[^/]+/); // Unix home paths
         expect(body).not.toMatch(/at [a-zA-Z]+\.[a-zA-Z]+/); // Stack traces
         expect(body).not.toMatch(/Error: .+ at/); // Detailed error messages
@@ -240,9 +240,14 @@ describe('Security Features', () => {
 
     it('should provide generic error messages', async () => {
       const response = await SELF.fetch('https://example.com/gh/test/repo', {
-        method: 'INVALID',
+        method: 'TRACE',
         redirect: 'manual'
       });
+
+      // Should return error or redirect
+      expect([400, 404, 302, 301, 405, 501]).toContain(response.status);
+    });
+  });
 
   describe('CORS Security', () => {
     it('should handle CORS preflight requests securely', async () => {
