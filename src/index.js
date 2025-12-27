@@ -12,10 +12,11 @@ import { CONFIG, createConfig } from './config/index.js';
 import { SORTED_PLATFORMS, transformPath } from './config/platforms.js';
 import { configureAIHeaders, isAIInferenceRequest } from './protocols/ai.js';
 import {
-  fetchToken,
-  handleDockerAuth,
-  parseAuthenticate,
-  responseUnauthorized
+    fetchToken,
+    getScopeFromUrl,
+    handleDockerAuth,
+    parseAuthenticate,
+    responseUnauthorized
 } from './protocols/docker.js';
 import { configureGitHeaders, isGitLFSRequest, isGitRequest } from './protocols/git.js';
 import { PerformanceMonitor, addPerformanceHeaders } from './utils/performance.js';
@@ -24,9 +25,8 @@ import { isDockerRequest, validateRequest } from './utils/validation.js';
 
 /**
  * Main request handler with comprehensive caching, retry logic, and security measures.
- *
  * @param {Request} request - The incoming HTTP request
- * @param {Object} env - Cloudflare Workers environment variables for runtime config overrides
+ * @param {object} env - Cloudflare Workers environment variables for runtime config overrides
  * @param {ExecutionContext} ctx - Cloudflare Workers execution context for background tasks
  * @returns {Promise<Response>} The HTTP response with appropriate headers and body
  */
@@ -128,11 +128,10 @@ async function handleRequest(request, env, ctx) {
 
                 // Check cache first (skip cache for Git, Git LFS, Docker, and AI inference operations)
                 /** @type {Cache | null} */
-                /** @type {Cache | null} */
                 // @ts-ignore - Cloudflare Workers cache API
                 const cache =
-                  typeof caches !== 'undefined' && /** @type {any} */ (caches).default
-                    ? /** @type {any} */ (caches).default
+                  typeof caches !== 'undefined' && /** @type {any} */ (caches).default // eslint-disable-line jsdoc/reject-any-type
+                    ? /** @type {any} */ (caches).default // eslint-disable-line jsdoc/reject-any-type
                     : null;
 
                 if (cache && !isGit && !isGitLFS && !isDocker && !isAI) {
@@ -266,6 +265,11 @@ async function handleRequest(request, env, ctx) {
                         signal: controller.signal
                       };
 
+                      // Special handling for Docker redirects to avoid leaking Auth headers to S3 (blobs)
+                      if (isDocker) {
+                        finalFetchOptions.redirect = 'manual';
+                      }
+
                       // Special handling for HEAD requests to ensure Content-Length header
                       if (request.method === 'HEAD') {
                         response = await fetch(targetUrl, finalFetchOptions);
@@ -328,6 +332,24 @@ async function handleRequest(request, env, ctx) {
 
                       clearTimeout(timeoutId);
 
+                      // Handle manual redirect for Docker
+                      if (isDocker && (response.status === 301 || response.status === 302 || response.status === 307)) {
+                         const location = response.headers.get('Location');
+                         if (location) {
+                            // Fetch the new location without Authorization header
+                            // Cloudflare Workers fetch should follow this automatically if we used 'follow',
+                            // but we used 'manual' to strip headers.
+                            const redirectHeaders = new Headers(finalFetchOptions.headers);
+                            redirectHeaders.delete('Authorization');
+                            
+                            response = await fetch(location, {
+                              ...finalFetchOptions,
+                              headers: redirectHeaders,
+                              redirect: 'follow' // Follow subsequent redirects normally
+                            });
+                         }
+                      }
+
                       if (response.ok || response.status === 206) {
                         monitor.mark('success');
                         break;
@@ -338,35 +360,13 @@ async function handleRequest(request, env, ctx) {
                         monitor.mark('docker_auth_challenge');
 
                         const authenticateStr = response.headers.get('WWW-Authenticate');
+                        
+                        // Calculate scope for upstream token fetch
+                        let scope = getScopeFromUrl(url, effectivePath, platform);
+
                         if (authenticateStr) {
                           try {
                             const wwwAuthenticate = parseAuthenticate(authenticateStr);
-
-                            // Infer scope from the request path for container registry requests
-                            let scope = '';
-                            const pathParts = url.pathname.split('/');
-                            if (pathParts.length >= 4 && pathParts[1] === 'v2') {
-                              const platformPrefix = `/${platform.replace(/-/g, '/')}/`;
-                              if (effectivePath.startsWith(platformPrefix)) {
-                                const repoPathFull = effectivePath.slice(platformPrefix.length);
-                                const repoParts = repoPathFull.split('/');
-                                if (repoParts.length >= 1) {
-                                  let repoName = repoParts.slice(0, -2).join('/'); // Remove /manifests/tag or /blobs/sha
-
-                                  if (
-                                    platform === 'cr-docker' &&
-                                    repoName &&
-                                    !repoName.includes('/')
-                                  ) {
-                                    repoName = `library/${repoName}`;
-                                  }
-
-                                  if (repoName) {
-                                    scope = `repository:${repoName}:pull`;
-                                  }
-                                }
-                              }
-                            }
 
                             // Try to get a token for public access (without authorization)
                             const tokenResponse = await fetchToken(
@@ -380,11 +380,33 @@ async function handleRequest(request, env, ctx) {
                               if (tokenData.token) {
                                 const retryHeaders = new Headers(requestHeaders);
                                 retryHeaders.set('Authorization', `Bearer ${tokenData.token}`);
-
-                                const retryResponse = await fetch(targetUrl, {
+                                
+                                const retryOptions = {
                                   ...finalFetchOptions,
                                   headers: retryHeaders
-                                });
+                                };
+                                
+                                // Also use manual redirect for retry
+                                if (isDocker) {
+                                  retryOptions.redirect = 'manual';
+                                }
+
+                                let retryResponse = await fetch(targetUrl, retryOptions);
+
+                                // Handle manual redirect for retry
+                                if (isDocker && (retryResponse.status === 301 || retryResponse.status === 302 || retryResponse.status === 307)) {
+                                  const location = retryResponse.headers.get('Location');
+                                  if (location) {
+                                     const redirectHeaders = new Headers(retryOptions.headers);
+                                     redirectHeaders.delete('Authorization');
+                                     
+                                     retryResponse = await fetch(location, {
+                                       ...retryOptions,
+                                       headers: redirectHeaders,
+                                       redirect: 'follow'
+                                     });
+                                  }
+                                }
 
                                 if (retryResponse.ok) {
                                   response = retryResponse;
@@ -442,54 +464,7 @@ async function handleRequest(request, env, ctx) {
                     );
                   } else if (!response.ok && response.status !== 206) {
                     if (isDocker && response.status === 401) {
-                      // If response is already an error response (e.g. from responseUnauthorized), use it.
-                      // otherwise construct one.
-                      // responseUnauthorized returns a Response, so we should check if it's already properly formatted?
-                      // Actually responseUnauthorized returns a JSON response. The original code returned it directly.
-                      // Here we might have broken out of loop with it.
-                      // We need to check if the body is already consumed or if it is our custom response.
-                      // responseUnauthorized creates a new Response, so it's fine.
-
-                      // BUT, if we just broke out of the loop because of 401 and didn't construct a new response (e.g. token fetch failed), `response` is still the upstream 401.
-                      // In original code: `return responseUnauthorized(url);`
-                      // Here if we successfully retried, response is 200.
-                      // If we failed to get token, we set response = responseUnauthorized(url) and break.
-                      // So check if response is our custom one?
-                      // Actually, if we hit the `isDocker && response.status === 401` block:
-                      // If we succeed retry: response = retryResponse (200), break. -> fall through to next checks (ok)
-                      // If we fail retry/token: response = responseUnauthorized(url), break. -> fall through.
-
-                      // Only if we didn't handle 401 (e.g. no WWW-Auth header?) would we reach here with upstream 401?
-                      // Wait, if upstream 401 has proper headers, we enter the block. If we fail, we replace `response`.
-                      // So `response` acts as the final result.
-
-                      // However, we still have this block:
-                      // if (!response.ok && response.status !== 206) {
-                      //   if (isDocker && response.status === 401) { ... }
-                      // }
-                      // This block seems to be for cases where it failed and we didn't already handle it?
-                      // In the original code, this block was AFTER the loop.
-                      // The loop `return`s on success, or `return`s `responseUnauthorized` on docker 401 failure.
-                      // So this block was only reachable if:
-                      // 1. Loop finished max retries (but that returns 500 earlier)
-                      // 2. Client error (4xx) break -> response is upstream 4xx
-                      // 3. Upstream 500 error ? -> loop retries, then 500 error response.
-
-                      // Wait, the client error (400-499) break in the loop:
-                      // `if (response.status >= 400 && response.status < 500) { ... break; }`
-                      // Then it hits `if (!response.ok ...)`
-                      // If Docker 401 was NOT handled (e.g. no WWW-Auth), it hits here.
-                      // We should preserve this logic.
-
-                      // If response is the one created by responseUnauthorized, it has body '{"message": "UNAUTHORIZED"}'.
-                      // We should probably just let it pass through if it's already formatted?
-                      // But `responseUnauthorized` sets status 401. So `response.ok` is false.
-                      // The original code returned `responseUnauthorized` IMMEDIATELY.
-                      // My new code assigns it to `response` and breaks.
-                      // So it reaches here.
-                      // We should allow it to pass if it looks like our custom response (e.g. has specific headers?).
-                      // OR we just ensuring we don't double-wrap it?
-
+                      // Handle Docker 401 responses that might not have been caught by the retry loop
                       const isCustomError =
                         response.headers.get('content-type') === 'application/json' &&
                         (await response.clone().text()).includes('UNAUTHORIZED');
@@ -650,8 +625,9 @@ async function handleRequest(request, env, ctx) {
 
 export default {
   /**
+   * Main Worker entry point.
    * @param {Request} request
-   * @param {Object} env
+   * @param {object} env
    * @param {ExecutionContext} ctx
    */
   fetch(request, env, ctx) {

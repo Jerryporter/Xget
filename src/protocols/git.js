@@ -1,4 +1,22 @@
 /**
+ * Xget - High-performance acceleration engine for developer resources
+ * Copyright (C) 2025 Xi Xu
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/**
  * Git protocol handler for Xget
  */
 
@@ -10,7 +28,6 @@
  * - Git User-Agent headers
  * - Git service query parameters
  * - Git-specific Content-Type headers
- *
  * @param {Request} request - The incoming request object
  * @param {URL} url - Parsed URL object
  * @returns {boolean} True if this is a Git operation
@@ -54,7 +71,6 @@ export function isGitRequest(request, url) {
  * - LFS object storage paths (SHA-256 hash patterns)
  * - Git LFS Accept/Content-Type headers
  * - Git LFS User-Agent
- *
  * @param {Request} request - The incoming request object
  * @param {URL} url - Parsed URL object
  * @returns {boolean} True if this is a Git LFS operation
@@ -98,7 +114,6 @@ export function isGitLFSRequest(request, url) {
  * Configures headers for Git protocol requests.
  *
  * Sets User-Agent and Content-Type headers required by Git and Git LFS protocols.
- *
  * @param {Headers} headers - The headers object to modify
  * @param {Request} request - The original request
  * @param {URL} url - The parsed URL

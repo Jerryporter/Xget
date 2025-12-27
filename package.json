@@ -4,14 +4,15 @@
     "xget": "file:"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.10.14",
-    "@cloudflare/workers-types": "^4.20251205.0",
-    "eslint": "^9.39.1",
+    "@cloudflare/vitest-pool-workers": "^0.11.1",
+    "@cloudflare/workers-types": "^4.20251213.0",
+    "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsdoc": "^61.5.0",
     "prettier": "^3.7.4",
     "typescript": "^5.9.3",
     "vitest": "^3.1.4",
-    "wrangler": "^4.47.0"
+    "wrangler": "^4.54.0"
   },
   "name": "xget",
   "private": false,

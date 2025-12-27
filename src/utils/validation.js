@@ -1,4 +1,22 @@
 /**
+ * Xget - High-performance acceleration engine for developer resources
+ * Copyright (C) 2025 Xi Xu
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/**
  * Request validation utilities for Xget
  */
 
@@ -15,7 +33,6 @@ import { isGitLFSRequest, isGitRequest } from '../protocols/git.js';
  * - Registry API endpoints (/v2/...)
  * - Docker-specific User-Agent headers
  * - Docker/OCI manifest Accept headers
- *
  * @param {Request} request - The incoming request object
  * @param {URL} url - Parsed URL object
  * @returns {boolean} True if this is a container registry operation
@@ -67,7 +84,6 @@ export { isAIInferenceRequest, isGitLFSRequest, isGitRequest };
  * Different protocols have different allowed methods:
  * - Regular requests: GET, HEAD (configurable via SECURITY.ALLOWED_METHODS)
  * - Git/LFS/Docker/AI: GET, HEAD, POST, PUT, PATCH
- *
  * @param {Request} request - The incoming request object
  * @param {URL} url - Parsed URL object
  * @param {import('../config/index.js').ApplicationConfig} config - Configuration object

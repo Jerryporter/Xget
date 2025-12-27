@@ -1,4 +1,22 @@
 /**
+ * Xget - High-performance acceleration engine for developer resources
+ * Copyright (C) 2025 Xi Xu
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/**
  * Performance monitoring utilities for Xget
  */
 
@@ -27,7 +45,6 @@ export class PerformanceMonitor {
    *
    * Records the elapsed time (in milliseconds) since the monitor was created.
    * If a mark with the same name already exists, logs a warning and overwrites it.
-   *
    * @param {string} name - The name of the timing mark (e.g., 'cache_hit', 'attempt_0', 'success')
    */
   mark(name) {
@@ -42,8 +59,7 @@ export class PerformanceMonitor {
    *
    * Converts the internal Map of timing marks to a JavaScript object suitable for
    * JSON serialization and inclusion in response headers.
-   *
-   * @returns {Object.<string, number>} Object containing name-timestamp pairs in milliseconds
+   * @returns {{ [key: string]: number }} Object containing name-timestamp pairs in milliseconds
    */
   getMetrics() {
     return Object.fromEntries(this.marks.entries());
@@ -58,7 +74,6 @@ export class PerformanceMonitor {
  * headers are included.
  *
  * **Note:** This header is only added to non-protocol responses (not Git/Docker/AI).
- *
  * @param {Response} response - The original response object
  * @param {PerformanceMonitor} monitor - Performance monitor instance with collected metrics
  * @returns {Response} New response with added performance and security headers
