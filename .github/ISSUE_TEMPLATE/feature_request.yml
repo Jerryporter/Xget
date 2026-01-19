@@ -1,6 +1,6 @@
 name: ✨ 功能请求
-description: 为这个存储库建议一个想法
-title: "[FEATURE] "
+description: 建议一个新功能或改进
+title: "[Feature]: "
 labels: ["enhancement", "需要分类"]
 assignees: []
 
@@ -8,41 +8,75 @@ body:
   - type: markdown
     attributes:
       value: |
-        感谢您提出功能建议！我们重视每一个改进建议，请详细描述您的想法。
+        感谢你提出新功能建议！请详细描述你的想法，这将帮助我们更好地评估和实现。
 
-  - type: textarea
-    id: problem-description
+  - type: checkboxes
+    id: prerequisites
     attributes:
-      label: 问题描述
-      description: 您的功能请求是否与某个问题相关？请清楚简洁地描述问题是什么
-      placeholder: 我在使用时遇到了困扰，因为...
-    validations:
-      required: true
-
-  - type: textarea
-    id: solution-description
-    attributes:
-      label: 解决方案描述
-      description: 清楚简洁地描述您希望实现的功能
-      placeholder: 我希望能够...
-    validations:
-      required: true
+      label: 前置检查
+      description: 在提交功能请求之前，请确认以下事项
+      options:
+        - label: 我已经搜索过现有的 Issues 和 PR，确认这不是重复请求
+          required: true
+        - label: 我已经查看过存储库文档
+          required: true
 
   - type: dropdown
-    id: feature-category
+    id: feature_type
     attributes:
-      label: 功能类别
-      description: 这个功能属于哪个类别？
+      label: 功能类型
+      description: 这个请求属于什么类型？
       options:
+        - 新协议支持
         - 性能优化
-        - 新平台支持
+        - 缓存改进
         - 安全增强
-        - 用户体验改进
-        - API 功能
+        - 监控/日志功能
         - 配置选项
-        - 监控和日志
+        - API 改进
         - 文档改进
+        - 开发体验改进
         - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题背景
+      description: 描述你想解决的问题或痛点
+      placeholder: |
+        我在使用 Xget 时遇到了...
+        当前的方式是...，但是...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 建议的解决方案
+      description: 清晰地描述你希望实现的功能
+      placeholder: 我希望 Xget 能够...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 备选方案
+      description: 描述你考虑过的其他替代解决方案
+      placeholder: |
+        我也考虑过...
+        但这个方案的问题是...
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: 使用场景
+      description: 描述具体的使用场景和预期效果
+      placeholder: |
+        场景 1: 当用户...时，这个功能可以...
+        场景 2: 在...情况下，能够...
     validations:
       required: true
 
@@ -50,82 +84,84 @@ body:
     id: priority
     attributes:
       label: 优先级
-      description: 您认为这个功能的优先级如何？
+      description: 这个功能对你有多重要？
       options:
-        - 低 - 有了更好
-        - 中 - 会很有用
-        - 高 - 非常需要
-        - 紧急 - 阻碍使用
+        - 高 - 对我的工作流程至关重要
+        - 中 - 会显著改善使用体验
+        - 低 - 有更好，但不是必需的
     validations:
       required: true
 
   - type: textarea
-    id: alternatives
+    id: platform_specific
     attributes:
-      label: 替代方案
-      description: 清楚简洁地描述您考虑过的任何替代解决方案或功能
-      placeholder: 我也考虑过...
-    validations:
-      required: false
-
-  - type: textarea
-    id: use-cases
-    attributes:
-      label: 使用场景
-      description: 描述这个功能的具体使用场景和受益用户群体
+      label: 特定平台需求
+      description: 如果这是平台相关的功能请求，请提供详细信息
       placeholder: |
-        这个功能将帮助：
-        - 开发者在...场景下
-        - 企业用户需要...
-        - 个人用户想要...
-    validations:
-      required: true
+        - 平台名称:
+        - 平台 URL:
+        - API 文档:
+        - 认证方式:
+        - 特殊要求:
 
   - type: textarea
-    id: implementation-ideas
+    id: technical_details
     attributes:
-      label: 实现想法
-      description: 如果您有关于如何实现这个功能的想法，请分享
-      placeholder: 可能的实现方式...
-    validations:
-      required: false
-
-  - type: dropdown
-    id: affected-platforms
-    attributes:
-      label: 涉及平台
-      description: 这个功能涉及哪些平台？
-      options:
-        - 所有平台
-        - GitHub
-        - GitLab
-        - Hugging Face
-        - npm
-        - PyPI
-        - conda
-        - 新平台
-      multiple: true
-    validations:
-      required: false
+      label: 技术细节
+      description: 如果你有技术实现建议，请在此描述
+      placeholder: |
+        实现方式可能包括:
+        1. 在 platforms.js 中添加...
+        2. 需要处理...协议
+        3. 可能的挑战是...
 
   - type: textarea
-    id: additional-context
+    id: examples
     attributes:
-      label: 附加信息
-      description: 添加关于功能请求的任何其他信息、截图或示例
-      placeholder: 任何有助于理解功能需求的额外信息...
-    validations:
-      required: false
+      label: 示例和参考
+      description: 提供相关的示例、链接或参考实现
+      placeholder: |
+        - 类似实现:
+        - 官方文档:
+        - 示例请求:
 
   - type: checkboxes
-    id: terms
+    id: impact
     attributes:
-      label: 确认
-      description: 在提交之前，请确认以下内容
+      label: 影响范围
+      description: 这个功能可能影响哪些方面？（可多选）
       options:
-        - label: 我已经搜索了现有的 issues，确认这不是重复请求
-          required: true
-        - label: 我已经阅读了存储库文档，确认此功能尚未存在
-          required: true
-        - label: 这个功能符合存储库的目标和范围
-          required: true
+        - label: 核心请求处理逻辑
+        - label: 平台配置
+        - label: 协议处理
+        - label: 缓存策略
+        - label: 安全性
+        - label: 性能
+        - label: 配置选项
+        - label: 文档
+        - label: 部署流程
+
+  - type: checkboxes
+    id: breaking
+    attributes:
+      label: 破坏性变更
+      description: 这个功能是否可能引入破坏性变更？
+      options:
+        - label: 可能需要破坏性变更
+        - label: 向后兼容
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 贡献意愿
+      description: 你是否愿意参与实现这个功能？
+      options:
+        - label: 我愿意提交 PR 来实现这个功能
+        - label: 我可以提供测试和反馈
+        - label: 我可以帮助编写文档
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 附加信息
+      description: 提供任何其他有助于理解这个功能请求的信息

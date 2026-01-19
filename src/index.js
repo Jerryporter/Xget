@@ -11,6 +11,7 @@
 import { CONFIG, createConfig } from './config/index.js';
 import { SORTED_PLATFORMS, transformPath } from './config/platforms.js';
 import { configureAIHeaders, isAIInferenceRequest } from './protocols/ai.js';
+import { configureHuggingFaceHeaders, isHuggingFaceAPIRequest } from './protocols/huggingface.js';
 import {
     fetchToken,
     getScopeFromUrl,
@@ -126,7 +127,10 @@ async function handleRequest(request, env, ctx) {
                 // Check if this is an AI inference request
                 const isAI = isAIInferenceRequest(request, url);
 
-                // Check cache first (skip cache for Git, Git LFS, Docker, and AI inference operations)
+                // Check if this is a Hugging Face API request
+                const isHF = isHuggingFaceAPIRequest(request, url);
+
+                // Check cache first (skip cache for Git, Git LFS, Docker, AI inference, and HF API operations)
                 /** @type {Cache | null} */
                 // @ts-ignore - Cloudflare Workers cache API
                 const cache =
@@ -134,7 +138,7 @@ async function handleRequest(request, env, ctx) {
                     ? /** @type {any} */ (caches).default // eslint-disable-line jsdoc/reject-any-type
                     : null;
 
-                if (cache && !isGit && !isGitLFS && !isDocker && !isAI) {
+                if (cache && !isGit && !isGitLFS && !isDocker && !isAI && !isHF) {
                   try {
                     // For Range requests, try cache match first
                     const cacheKey = new Request(targetUrl, {
@@ -177,10 +181,10 @@ async function handleRequest(request, env, ctx) {
                     redirect: 'follow'
                   };
 
-                  // Add body for POST/PUT/PATCH requests (Git/Docker/AI inference operations)
+                  // Add body for POST/PUT/PATCH/DELETE requests (Git/Docker/AI/HF operations)
                   if (
-                    ['POST', 'PUT', 'PATCH'].includes(request.method) &&
-                    (isGit || isGitLFS || isDocker || isAI)
+                    ['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method) &&
+                    (isGit || isGitLFS || isDocker || isAI || isHF)
                   ) {
                     fetchOptions.body = request.body;
                   }
@@ -188,9 +192,9 @@ async function handleRequest(request, env, ctx) {
                   // Cast headers to Headers for proper typing
                   const requestHeaders = /** @type {Headers} */ (fetchOptions.headers);
 
-                  // Set appropriate headers for Git/Docker/AI vs regular requests
-                  if (isGit || isGitLFS || isDocker || isAI) {
-                    // For Git/Docker/AI operations, copy all headers from the original request
+                  // Set appropriate headers for Git/Docker/AI/HF vs regular requests
+                  if (isGit || isGitLFS || isDocker || isAI || isHF) {
+                    // For Git/Docker/AI/HF operations, copy all headers from the original request
                     // This ensures protocol compliance
                     for (const [key, value] of request.headers.entries()) {
                       // Skip headers that might cause issues with proxying
@@ -208,6 +212,10 @@ async function handleRequest(request, env, ctx) {
 
                     if (isAI) {
                       configureAIHeaders(requestHeaders, request);
+                    }
+
+                    if (isHF) {
+                      configureHuggingFaceHeaders(requestHeaders, request);
                     }
                   } else {
                     // Regular file download headers
@@ -617,8 +625,9 @@ async function handleRequest(request, env, ctx) {
   const isDocker = isDockerRequest(request, new URL(request.url));
   const isAI = isAIInferenceRequest(request, new URL(request.url));
   const isGitLFS = isGitLFSRequest(request, new URL(request.url));
+  const isHF = isHuggingFaceAPIRequest(request, new URL(request.url));
 
-  return isGit || isGitLFS || isDocker || isAI
+  return isGit || isGitLFS || isDocker || isAI || isHF
     ? response
     : addPerformanceHeaders(response, monitor);
 }

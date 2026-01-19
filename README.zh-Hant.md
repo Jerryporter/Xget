@@ -147,28 +147,28 @@ graph TD
     Request[使用者請求 / User-Agent] --> Identify{識別平台}
     Identify -->|無效| Error[返回錯誤]
     Identify -->|有效| Transform[轉換路徑]
-    
+
     Transform --> CheckProtocol{檢查協定}
-    
+
     CheckProtocol -->|Git| GitHandler[Git 協定適配器]
     CheckProtocol -->|Docker| DockerHandler[Docker 協定適配器]
     CheckProtocol -->|AI| AIHandler[AI 推理適配器]
     CheckProtocol -->|標準| StdHandler[標準適配器]
-    
+
     GitHandler --> Upstream[獲取上游]
     DockerHandler --> Upstream
     AIHandler --> Upstream
-    
+
     StdHandler --> CacheCheck{檢查快取}
     CacheCheck -->|命中| ReturnCache[返回快取回應]
     CacheCheck -->|未命中| Upstream
-    
+
     Upstream -->|成功| ProcessResponse[處理回應]
     Upstream -->|失敗| Retry{重試?}
-    
+
     Retry -->|是| Wait["等待 (退避)"] --> Upstream
     Retry -->|否| Error
-    
+
     ProcessResponse --> Finalize[添加標頭並返回]
     Finalize --> Response[回應]
 ```
@@ -2609,14 +2609,12 @@ services:
 **使用 Docker Compose:**
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 **使用 Podman Compose:**
 
 ```bash
-podman-compose up -d
-# 或者使用 podman compose (Podman 4.0+)
 podman compose up -d
 ```
 

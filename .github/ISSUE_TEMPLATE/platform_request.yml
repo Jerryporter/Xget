@@ -1,0 +1,233 @@
+name: 🌐 新平台支持请求
+description: 请求添加对新平台的支持
+title: "[Platform]: "
+labels: ["platform", "enhancement", "需要分类"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你提出新平台支持请求！请提供尽可能详细的平台信息，以便我们评估和实现。
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: 前置检查
+      options:
+        - label: 我已经搜索过现有的 Issues，确认这个平台还未被请求或支持
+          required: true
+        - label: 这个平台是公开可访问的服务
+          required: true
+
+  - type: input
+    id: platform_name
+    attributes:
+      label: 平台名称
+      description: 请提供平台的官方名称
+      placeholder: "例如: GitLab, Bitbucket, Quay.io"
+    validations:
+      required: true
+
+  - type: input
+    id: platform_url
+    attributes:
+      label: 平台 URL
+      description: 平台的主要域名或网址
+      placeholder: "例如: https://registry.example.com"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform_category
+    attributes:
+      label: 平台类别
+      description: 这个平台属于什么类别？
+      options:
+        - 代码存储库 (Git)
+        - 容器注册表 (Docker/OCI)
+        - 软件包注册表 (npm/PyPI/Maven 等)
+        - AI 推理提供商
+        - CDN/文件存储
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: platform_description
+    attributes:
+      label: 平台描述
+      description: 简要描述这个平台的用途和特点
+      placeholder: 这个平台是一个...，主要用于...
+    validations:
+      required: true
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: 使用场景
+      description: 为什么需要加速这个平台？具体的使用场景是什么？
+      placeholder: |
+        在中国大陆访问该平台时...
+        我的团队经常需要从该平台下载...
+        加速该平台可以帮助...
+    validations:
+      required: true
+
+  - type: textarea
+    id: api_documentation
+    attributes:
+      label: API 文档
+      description: 提供平台的 API 文档链接（如果有）
+      placeholder: |
+        - 官方 API 文档:
+        - 认证文档:
+        - 其他相关文档:
+
+  - type: dropdown
+    id: authentication
+    attributes:
+      label: 认证方式
+      description: 该平台使用什么认证方式？
+      options:
+        - 无需认证（公开访问）
+        - API Token
+        - OAuth 2.0
+        - Basic Auth
+        - Bearer Token
+        - 自定义认证
+        - 不确定
+    validations:
+      required: true
+
+  - type: textarea
+    id: auth_details
+    attributes:
+      label: 认证详情
+      description: 如果需要认证，请提供详细的认证流程说明
+      placeholder: |
+        该平台的认证流程:
+        1.
+        2.
+        3.
+
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: 主要协议
+      description: 访问该平台主要使用什么协议？
+      options:
+        - HTTP/HTTPS (RESTful API)
+        - Git Protocol
+        - Docker Registry V2
+        - OCI Distribution Spec
+        - 其他/混合
+    validations:
+      required: true
+
+  - type: textarea
+    id: url_structure
+    attributes:
+      label: URL 结构示例
+      description: 提供该平台的典型 URL 结构和示例
+      placeholder: |
+        示例 URL:
+        - 下载包: https://example.com/packages/{name}/{version}
+        - 存储库克隆: https://example.com/repos/{owner}/{repo}.git
+        - API 端点: https://api.example.com/v1/...
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: special_requirements
+    attributes:
+      label: 特殊要求
+      description: 该平台是否有特殊的 Header、参数或处理要求？
+      placeholder: |
+        - 必需的 Headers:
+        - 特殊的查询参数:
+        - 响应格式:
+        - URL 重写需求:
+        - 其他特殊处理:
+
+  - type: textarea
+    id: request_examples
+    attributes:
+      label: 请求示例
+      description: 提供一些典型的请求示例（请移除敏感信息）
+      render: shell
+      placeholder: |
+        # 示例 1: 获取包信息
+        curl -X GET "https://example.com/api/packages/foo"
+
+        # 示例 2: 下载文件
+        curl -X GET "https://example.com/files/bar.tar.gz"
+
+  - type: textarea
+    id: response_examples
+    attributes:
+      label: 响应示例
+      description: 提供典型响应的示例（可以是简化版本）
+      render: json
+      placeholder: |
+        {
+          "name": "example-package",
+          "version": "1.0.0",
+          "download_url": "https://example.com/files/..."
+        }
+
+  - type: textarea
+    id: challenges
+    attributes:
+      label: 潜在挑战
+      description: 你认为支持这个平台可能遇到哪些挑战？
+      placeholder: |
+        - 该平台使用自定义的认证方式...
+        - URL 结构比较复杂...
+        - 需要处理特殊的重定向...
+
+  - type: textarea
+    id: similar_platforms
+    attributes:
+      label: 类似平台
+      description: 列出 Xget 已支持的类似平台（如果有）
+      placeholder: |
+        这个平台类似于已支持的:
+        - npm (软件包注册表)
+        - Docker Hub (容器注册表)
+
+  - type: input
+    id: estimated_users
+    attributes:
+      label: 用户基数
+      description: 该平台的大致用户规模或你所在团队/社区的使用情况
+      placeholder: "例如: 国内有约 XX 万开发者使用，我的团队有 20 人使用"
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 优先级
+      description: 这个平台支持对你有多重要？
+      options:
+        - 高 - 我们团队急需
+        - 中 - 会显著改善工作流程
+        - 低 - 有更好，但不紧急
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 贡献意愿
+      options:
+        - label: 我愿意提供该平台的测试账号（如果需要）
+        - label: 我愿意协助测试平台支持
+        - label: 我愿意提交 PR 来实现平台支持
+        - label: 我可以提供更多技术文档和细节
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 附加信息
+      description: 提供任何其他有助于实现这个平台支持的信息

@@ -1,0 +1,172 @@
+name: 📝 文档改进
+description: 报告文档问题或建议文档改进
+title: "[Docs]: "
+labels: ["documentation", "需要分类"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你帮助改进文档！清晰准确的文档对存储库至关重要。
+
+  - type: dropdown
+    id: doc_type
+    attributes:
+      label: 文档类型
+      description: 这涉及哪种类型的文档？
+      options:
+        - README
+        - CLAUDE.md
+        - API 文档
+        - 部署指南
+        - 配置说明
+        - 使用教程
+        - 开发文档
+        - 代码注释
+        - 其他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue_category
+    attributes:
+      label: 问题类别
+      description: 选择文档问题的类别
+      options:
+        - 内容缺失
+        - 内容过时
+        - 内容错误
+        - 不够清晰
+        - 示例缺失
+        - 示例错误
+        - 格式问题
+        - 翻译问题
+        - 组织结构问题
+        - 新内容建议
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: 文档位置
+      description: 指出具体的文档位置
+      placeholder: |
+        - 文件: README.md
+        - 章节: "部署到 Cloudflare Workers"
+        - 行号: 约 L123-L145
+        - URL: https://github.com/.../blob/main/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_content
+    attributes:
+      label: 当前内容
+      description: 引用当前的文档内容（如果适用）
+      placeholder: |
+        当前文档中写的是:
+        > "..."
+      render: markdown
+
+  - type: textarea
+    id: issue_description
+    attributes:
+      label: 问题描述
+      description: 详细描述文档存在的问题
+      placeholder: |
+        这个文档有以下问题:
+        1.
+        2.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_content
+    attributes:
+      label: 建议的改进
+      description: 提供具体的改进建议或修正后的内容
+      placeholder: |
+        建议改为:
+        "..."
+
+        或者添加以下内容:
+        "..."
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: why_important
+    attributes:
+      label: 重要性说明
+      description: 解释为什么这个改进很重要
+      placeholder: |
+        这个改进很重要因为:
+        - 现在的文档导致用户...
+        - 这是新用户常见的困惑点...
+        - 可以帮助用户更快地...
+
+  - type: textarea
+    id: user_perspective
+    attributes:
+      label: 用户视角
+      description: 从哪种用户的角度看这个文档问题？
+      placeholder: |
+        - 新用户首次部署
+        - 开发者集成 Xget
+        - 贡献者了解代码结构
+        - 运维人员配置环境
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: 示例需求
+      description: 如果需要添加示例，请描述所需的示例类型
+      placeholder: |
+        希望添加以下示例:
+        - Git 克隆的完整命令示例
+        - Docker 拉取镜像的配置示例
+        - 环境变量配置的实际案例
+
+  - type: checkboxes
+    id: language
+    attributes:
+      label: 语言版本
+      description: 这个问题涉及哪些语言版本？（可多选）
+      options:
+        - label: 中文文档
+        - label: 英文文档
+        - label: 其他语言
+
+  - type: checkboxes
+    id: related_areas
+    attributes:
+      label: 相关领域
+      description: 这个文档改进可能涉及哪些领域？（可多选）
+      options:
+        - label: 快速开始指南
+        - label: 安装部署
+        - label: 配置说明
+        - label: 平台使用
+        - label: API 参考
+        - label: 故障排查
+        - label: 性能优化
+        - label: 安全配置
+        - label: 开发贡献
+        - label: 架构设计
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 贡献意愿
+      options:
+        - label: 我愿意提交 PR 来改进这个文档
+        - label: 我可以帮助审阅文档改进
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 附加信息
+      description: 提供任何其他有助于改进文档的信息或建议

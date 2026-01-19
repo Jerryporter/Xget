@@ -147,28 +147,28 @@ graph TD
     Request[User Request / User-Agent] --> Identify{Identify Platform}
     Identify -->|Invalid| Error[Return Error]
     Identify -->|Valid| Transform[Transform Path]
-    
+
     Transform --> CheckProtocol{Check Protocol}
-    
+
     CheckProtocol -->|Git| GitHandler[Git Protocol Adapter]
     CheckProtocol -->|Docker| DockerHandler[Docker Protocol Adapter]
     CheckProtocol -->|AI| AIHandler[AI Inference Adapter]
     CheckProtocol -->|Standard| StdHandler[Standard Adapter]
-    
+
     GitHandler --> Upstream[Fetch Upstream]
     DockerHandler --> Upstream
     AIHandler --> Upstream
-    
+
     StdHandler --> CacheCheck{Check Cache}
     CacheCheck -->|Hit| ReturnCache[Return Cached Response]
     CacheCheck -->|Miss| Upstream
-    
+
     Upstream -->|Success| ProcessResponse[Process Response]
     Upstream -->|Failure| Retry{Retry?}
-    
+
     Retry -->|Yes| Wait["Wait (Backoff)"] --> Upstream
     Retry -->|No| Error
-    
+
     ProcessResponse --> Finalize[Add Headers & Return]
     Finalize --> Response[Response]
 ```
@@ -2609,14 +2609,12 @@ services:
 **Using Docker Compose:**
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 **Using Podman Compose:**
 
 ```bash
-podman-compose up -d
-# Or use podman compose (Podman 4.0+)
 podman compose up -d
 ```
 

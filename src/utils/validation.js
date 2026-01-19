@@ -25,6 +25,7 @@ import { CONFIG } from '../config/index.js';
 // Imported protocol checks
 import { isAIInferenceRequest } from '../protocols/ai.js';
 import { isGitLFSRequest, isGitRequest } from '../protocols/git.js';
+import { isHuggingFaceAPIRequest } from '../protocols/huggingface.js';
 
 /**
  * Detects if a request is a container registry operation (Docker/OCI).
@@ -72,7 +73,7 @@ export function isDockerRequest(request, url) {
 }
 
 // Re-export for standard usage
-export { isAIInferenceRequest, isGitLFSRequest, isGitRequest };
+export { isAIInferenceRequest, isGitLFSRequest, isGitRequest, isHuggingFaceAPIRequest };
 
 /**
  * Validates incoming requests against security rules.
@@ -90,15 +91,16 @@ export { isAIInferenceRequest, isGitLFSRequest, isGitRequest };
  * @returns {{valid: boolean, error?: string, status?: number}} Validation result object
  */
 export function validateRequest(request, url, config = CONFIG) {
-  // Allow POST method for Git, Git LFS, Docker, and AI inference operations
+  // Allow POST method for Git, Git LFS, Docker, AI inference, and HF API operations
   const isGit = isGitRequest(request, url);
   const isGitLFS = isGitLFSRequest(request, url);
   const isDocker = isDockerRequest(request, url);
   const isAI = isAIInferenceRequest(request, url);
+  const isHF = isHuggingFaceAPIRequest(request, url);
 
   const allowedMethods =
-    isGit || isGitLFS || isDocker || isAI
-      ? ['GET', 'HEAD', 'POST', 'PUT', 'PATCH']
+    isGit || isGitLFS || isDocker || isAI || isHF
+      ? ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE']
       : config.SECURITY.ALLOWED_METHODS;
 
   if (!allowedMethods.includes(request.method)) {

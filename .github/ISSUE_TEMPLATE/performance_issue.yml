@@ -1,6 +1,6 @@
 name: ⚡ 性能问题
-description: 报告性能相关的问题
-title: "[PERFORMANCE] "
+description: 报告性能相关的问题或建议性能优化
+title: "[Performance]: "
 labels: ["performance", "需要分类"]
 assignees: []
 
@@ -8,198 +8,229 @@ body:
   - type: markdown
     attributes:
       value: |
-        感谢您报告性能问题！性能数据对我们优化服务非常重要。
+        感谢你报告性能问题！请提供详细的性能指标和场景，这将帮助我们诊断和优化。
 
-  - type: textarea
-    id: performance-issue
+  - type: checkboxes
+    id: prerequisites
     attributes:
-      label: 性能问题描述
-      description: 详细描述您遇到的性能问题
-      placeholder: 描述具体的性能问题，如下载速度慢、响应时间长等...
-    validations:
-      required: true
+      label: 前置检查
+      options:
+        - label: 我已经搜索过现有的性能相关 Issues
+          required: true
+        - label: 我已经确认这不是上游平台本身的性能问题
+          required: true
 
   - type: dropdown
-    id: issue-type
+    id: issue_type
     attributes:
       label: 问题类型
       description: 选择性能问题的类型
       options:
-        - 下载速度慢
-        - 响应时间长
-        - 连接超时
-        - 频繁重试
+        - 响应时间过长
+        - 超时错误
+        - 高延迟
+        - 带宽限制
         - 缓存未命中
-        - Git 操作缓慢
+        - 内存使用过高
+        - 并发性能问题
         - 其他
     validations:
       required: true
 
   - type: dropdown
-    id: affected-platform
+    id: affected_platform
     attributes:
       label: 受影响的平台
-      description: 选择出现性能问题的平台
+      description: 哪个平台的性能出现问题？
       options:
         - GitHub
         - GitLab
-        - Hugging Face
         - npm
         - PyPI
-        - conda
+        - Docker Hub
+        - crates.io
+        - Maven Central
+        - Homebrew
+        - Jenkins
+        - OpenAI API
+        - Anthropic API
+        - 多个平台
         - 所有平台
-      multiple: true
     validations:
       required: true
 
-  - type: input
-    id: file-size
+  - type: dropdown
+    id: operation_type
     attributes:
-      label: 文件大小
-      description: 如果涉及文件下载，请提供文件大小
-      placeholder: 例如：100MB, 1.5GB
+      label: 操作类型
+      description: 什么类型的操作性能有问题？
+      options:
+        - Git 克隆
+        - Git 拉取
+        - Git LFS 下载
+        - Docker 镜像拉取
+        - 包下载
+        - AI API 请求
+        - 元数据获取
+        - 其他
     validations:
-      required: false
-
-  - type: input
-    id: download-speed
-    attributes:
-      label: 实际下载速度
-      description: 您观察到的下载速度
-      placeholder: 例如：500KB/s, 2MB/s
-    validations:
-      required: false
-
-  - type: input
-    id: expected-speed
-    attributes:
-      label: 期望下载速度
-      description: 您期望的下载速度或直接访问源站的速度
-      placeholder: 例如：10MB/s, 50MB/s
-    validations:
-      required: false
+      required: true
 
   - type: textarea
-    id: performance-metrics
+    id: description
+    attributes:
+      label: 问题描述
+      description: 详细描述性能问题
+      placeholder: |
+        在执行...操作时，性能明显低于预期...
+        相比直接访问上游，速度慢了...
+    validations:
+      required: true
+
+  - type: textarea
+    id: metrics
     attributes:
       label: 性能指标
-      description: 如果您有具体的性能数据，请提供（如响应头中的 X-Performance-Metrics）
-      render: json
-      placeholder: 粘贴性能指标数据...
-    validations:
-      required: false
-
-  - type: input
-    id: test-url
-    attributes:
-      label: 测试 URL
-      description: 提供出现性能问题的具体 URL
-      placeholder: https://xget.xi-xu.me/gh/...
-    validations:
-      required: false
-
-  - type: dropdown
-    id: geographic-location
-    attributes:
-      label: 地理位置
-      description: 您的大致地理位置（有助于分析 CDN 性能）
-      options:
-        - 中国大陆
-        - 中国香港
-        - 中国台湾
-        - 日本
-        - 韩国
-        - 新加坡
-        - 美国西海岸
-        - 美国东海岸
-        - 欧洲
-        - 其他亚洲地区
-        - 其他地区
-    validations:
-      required: false
-
-  - type: dropdown
-    id: network-type
-    attributes:
-      label: 网络类型
-      description: 您使用的网络类型
-      options:
-        - 家庭宽带
-        - 企业网络
-        - 移动网络 (4G)
-        - 移动网络 (5G)
-        - 公共 WiFi
-        - VPN
-        - 其他
-    validations:
-      required: false
-
-  - type: input
-    id: bandwidth
-    attributes:
-      label: 网络带宽
-      description: 您的网络带宽
-      placeholder: 例如：100Mbps, 1Gbps
-    validations:
-      required: false
-
-  - type: dropdown
-    id: tool-used
-    attributes:
-      label: 使用的工具
-      description: 您使用什么工具进行下载或操作？
-      options:
-        - 浏览器下载
-        - wget
-        - curl
-        - aria2
-        - git
-        - npm
-        - pip
-        - conda
-        - 其他
-    validations:
-      required: false
-
-  - type: input
-    id: instance-url
-    attributes:
-      label: 实例 URL
-      description: 您使用的 Xget 实例
-      placeholder: https://xget.xi-xu.me 或您自己的实例
-    validations:
-      required: false
-
-  - type: textarea
-    id: comparison-test
-    attributes:
-      label: 对比测试
-      description: 如果您进行了对比测试（如直接访问源站），请提供结果
+      description: 提供具体的性能数据
       placeholder: |
-        直接访问源站速度：...
-        通过 Xget 访问速度：...
-        测试时间：...
+        - 响应时间: XX ms (预期 < YY ms)
+        - 下载速度: XX KB/s (上游直连: YY KB/s)
+        - 首字节时间 (TTFB): XX ms
+        - 总耗时: XX 秒
+        - X-Performance-Metrics 头信息: {...}
+      render: markdown
     validations:
-      required: false
+      required: true
 
   - type: textarea
-    id: additional-context
+    id: reproduction
+    attributes:
+      label: 重现步骤
+      description: 提供详细的重现步骤和测试命令
+      render: shell
+      placeholder: |
+        # 测试命令
+        time git clone https://your-xget-instance/gh/user/repo
+
+        # 或使用 curl 测试
+        curl -w "@curl-format.txt" -o /dev/null https://your-xget-instance/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境信息
+      description: 提供详细的环境信息
+      value: |
+        - Xget 部署方式: [Cloudflare Workers / 自托管 / ...]
+        - Xget 区域: [US/EU/ASIA/...]
+        - 客户端位置: [国家/地区]
+        - 网络环境: [家庭宽带 / 公司网络 / VPS / ...]
+        - ISP:
+        - 客户端工具版本:
+        - 操作系统:
+    validations:
+      required: true
+
+  - type: textarea
+    id: resource_size
+    attributes:
+      label: 资源规模
+      description: 描述涉及的资源大小
+      placeholder: |
+        - 存储库大小: XX MB
+        - 文件数量: XX 个
+        - 单个文件大小: XX MB
+        - Docker 镜像大小: XX GB
+        - 镜像层数: XX 层
+
+  - type: textarea
+    id: comparison
+    attributes:
+      label: 性能对比
+      description: 对比 Xget 与直接访问上游的性能差异
+      placeholder: |
+        | 操作 | 通过 Xget | 直接访问上游 | 差异 |
+        |------|-----------|--------------|------|
+        | 克隆 | 30s       | 10s          | +200% |
+        | 拉取 | 5s        | 2s           | +150% |
+      render: markdown
+
+  - type: textarea
+    id: cache_info
+    attributes:
+      label: 缓存信息
+      description: 检查响应的缓存相关 Header
+      placeholder: |
+        - CF-Cache-Status:
+        - X-Cache-Status:
+        - Age:
+        - Cache-Control:
+      render: markdown
+
+  - type: textarea
+    id: network_trace
+    attributes:
+      label: 网络追踪
+      description: 如果可能，提供网络追踪信息（如 curl -v 输出的关键部分）
+      render: shell
+      placeholder: |
+        * Connected to your-xget-instance (...)
+        * TLS handshake...
+        < HTTP/2 200
+        < x-performance-metrics: {...}
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: 问题频率
+      description: 这个性能问题多久发生一次？
+      options:
+        - 每次都发生
+        - 经常发生 (>50%)
+        - 偶尔发生 (10-50%)
+        - 很少发生 (<10%)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: 影响程度
+      description: 这个性能问题的影响有多大？
+      options:
+        - 严重 - 完全无法使用
+        - 高 - 严重影响工作效率
+        - 中 - 造成明显不便
+        - 低 - 轻微影响
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_performance
+    attributes:
+      label: 期望的性能
+      description: 描述你期望的性能指标
+      placeholder: |
+        - 理想响应时间: < 100ms
+        - 可接受的下载速度: > 1MB/s
+        - 目标改进: 减少 50% 的延迟
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: 优化建议
+      description: 如果你有优化建议，请在此描述
+      placeholder: |
+        可能的优化方向:
+        - 增加缓存时长
+        - 使用流式传输
+        - 优化重试策略
+        - ...
+
+  - type: textarea
+    id: additional
     attributes:
       label: 附加信息
-      description: 任何其他可能有助于诊断性能问题的信息
-      placeholder: 其他相关信息...
-    validations:
-      required: false
-
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: 确认
-      description: 在提交之前，请确认以下内容
-      options:
-        - label: 我已经尝试了多次测试以确认问题的一致性
-          required: true
-        - label: 我已经检查了网络连接和本地环境
-          required: true
-        - label: 我提供的性能数据准确可靠
-          required: true
+      description: 提供任何其他有助于诊断性能问题的信息
