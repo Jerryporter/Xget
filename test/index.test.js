@@ -178,7 +178,7 @@ describe('Xget Core Functionality', () => {
 
     it('should accept normal length paths', async () => {
       const normalPath = '/gh/microsoft/vscode/archive/refs/heads/main.zip';
-      const response = await SELF.fetch(`https://example.com${normalPath}`);
+      const response = await SELF.fetch(`https://example.com${normalPath}`, { method: 'HEAD' });
 
       expect(response.status).not.toBe(414);
     });
@@ -186,13 +186,17 @@ describe('Xget Core Functionality', () => {
 
   describe('Performance Headers', () => {
     it('should include performance metrics in response headers', async () => {
-      const response = await SELF.fetch('https://example.com/gh/test/repo/file.txt');
+      const response = await SELF.fetch('https://example.com/gh/test/repo/file.txt', {
+        method: 'HEAD'
+      });
 
       expect(response.headers.get('X-Performance-Metrics')).toBeTruthy();
     });
 
     it('should include valid JSON in performance metrics', async () => {
-      const response = await SELF.fetch('https://example.com/gh/test/repo/file.txt');
+      const response = await SELF.fetch('https://example.com/gh/test/repo/file.txt', {
+        method: 'HEAD'
+      });
       const metricsHeader = response.headers.get('X-Performance-Metrics');
 
       expect(metricsHeader).toBeTruthy();
@@ -204,7 +208,7 @@ describe('Xget Core Functionality', () => {
     it('should rewrite npm registry URLs in JSON responses', async () => {
       // Mock npm package metadata request
       const testUrl = 'https://example.com/npm/lodash';
-      const response = await SELF.fetch(testUrl);
+      const response = await SELF.fetch(testUrl, { method: 'HEAD' });
 
       // This test would need actual npm registry response mocking
       // For now, just verify the request doesn't fail

@@ -13,11 +13,11 @@ import { SORTED_PLATFORMS, transformPath } from './config/platforms.js';
 import { configureAIHeaders, isAIInferenceRequest } from './protocols/ai.js';
 import { configureHuggingFaceHeaders, isHuggingFaceAPIRequest } from './protocols/huggingface.js';
 import {
-    fetchToken,
-    getScopeFromUrl,
-    handleDockerAuth,
-    parseAuthenticate,
-    responseUnauthorized
+  fetchToken,
+  getScopeFromUrl,
+  handleDockerAuth,
+  parseAuthenticate,
+  responseUnauthorized
 } from './protocols/docker.js';
 import { configureGitHeaders, isGitLFSRequest, isGitRequest } from './protocols/git.js';
 import { PerformanceMonitor, addPerformanceHeaders } from './utils/performance.js';
@@ -27,7 +27,7 @@ import { isDockerRequest, validateRequest } from './utils/validation.js';
 /**
  * Main request handler with comprehensive caching, retry logic, and security measures.
  * @param {Request} request - The incoming HTTP request
- * @param {object} env - Cloudflare Workers environment variables for runtime config overrides
+ * @param {Record<string, unknown>} env - Cloudflare Workers environment variables for runtime config overrides
  * @param {ExecutionContext} ctx - Cloudflare Workers execution context for background tasks
  * @returns {Promise<Response>} The HTTP response with appropriate headers and body
  */
@@ -117,6 +117,11 @@ async function handleRequest(request, env, ctx) {
 
                 const targetUrl = `${config.PLATFORMS[platform]}${finalTargetPath}${url.search}`;
                 const authorization = request.headers.get('Authorization');
+                const hasSensitiveHeaders = Boolean(
+                  authorization ||
+                  request.headers.get('Cookie') ||
+                  request.headers.get('Proxy-Authorization')
+                );
 
                 // Check if this is a Git operation
                 const isGit = isGitRequest(request, url);
@@ -138,7 +143,15 @@ async function handleRequest(request, env, ctx) {
                     ? /** @type {any} */ (caches).default // eslint-disable-line jsdoc/reject-any-type
                     : null;
 
-                if (cache && !isGit && !isGitLFS && !isDocker && !isAI && !isHF) {
+                if (
+                  cache &&
+                  !isGit &&
+                  !isGitLFS &&
+                  !isDocker &&
+                  !isAI &&
+                  !isHF &&
+                  !hasSensitiveHeaders
+                ) {
                   try {
                     // For Range requests, try cache match first
                     const cacheKey = new Request(targetUrl, {
@@ -304,24 +317,6 @@ async function handleRequest(request, env, ctx) {
                             }
                           } else if (rangeResponse.ok) {
                             contentLength = rangeResponse.headers.get('Content-Length');
-                            if (!contentLength) {
-                              const sizeLimit = 50 * 1024 * 1024;
-                              const contentLengthHint = rangeResponse.headers.get('Content-Length');
-                              if (
-                                !contentLengthHint ||
-                                parseInt(contentLengthHint, 10) < sizeLimit
-                              ) {
-                                try {
-                                  const arrayBuffer = await rangeResponse.arrayBuffer();
-                                  contentLength = arrayBuffer.byteLength.toString();
-                                } catch (error) {
-                                  console.warn(
-                                    'Could not buffer response to get Content-Length:',
-                                    error
-                                  );
-                                }
-                              }
-                            }
                           }
 
                           if (contentLength) {
@@ -341,21 +336,26 @@ async function handleRequest(request, env, ctx) {
                       clearTimeout(timeoutId);
 
                       // Handle manual redirect for Docker
-                      if (isDocker && (response.status === 301 || response.status === 302 || response.status === 307)) {
-                         const location = response.headers.get('Location');
-                         if (location) {
-                            // Fetch the new location without Authorization header
-                            // Cloudflare Workers fetch should follow this automatically if we used 'follow',
-                            // but we used 'manual' to strip headers.
-                            const redirectHeaders = new Headers(finalFetchOptions.headers);
-                            redirectHeaders.delete('Authorization');
-                            
-                            response = await fetch(location, {
-                              ...finalFetchOptions,
-                              headers: redirectHeaders,
-                              redirect: 'follow' // Follow subsequent redirects normally
-                            });
-                         }
+                      if (
+                        isDocker &&
+                        (response.status === 301 ||
+                          response.status === 302 ||
+                          response.status === 307)
+                      ) {
+                        const location = response.headers.get('Location');
+                        if (location) {
+                          // Fetch the new location without Authorization header
+                          // Cloudflare Workers fetch should follow this automatically if we used 'follow',
+                          // but we used 'manual' to strip headers.
+                          const redirectHeaders = new Headers(finalFetchOptions.headers);
+                          redirectHeaders.delete('Authorization');
+
+                          response = await fetch(location, {
+                            ...finalFetchOptions,
+                            headers: redirectHeaders,
+                            redirect: 'follow' // Follow subsequent redirects normally
+                          });
+                        }
                       }
 
                       if (response.ok || response.status === 206) {
@@ -368,9 +368,9 @@ async function handleRequest(request, env, ctx) {
                         monitor.mark('docker_auth_challenge');
 
                         const authenticateStr = response.headers.get('WWW-Authenticate');
-                        
+
                         // Calculate scope for upstream token fetch
-                        let scope = getScopeFromUrl(url, effectivePath, platform);
+                        const scope = getScopeFromUrl(url, effectivePath, platform);
 
                         if (authenticateStr) {
                           try {
@@ -388,12 +388,12 @@ async function handleRequest(request, env, ctx) {
                               if (tokenData.token) {
                                 const retryHeaders = new Headers(requestHeaders);
                                 retryHeaders.set('Authorization', `Bearer ${tokenData.token}`);
-                                
+
                                 const retryOptions = {
                                   ...finalFetchOptions,
                                   headers: retryHeaders
                                 };
-                                
+
                                 // Also use manual redirect for retry
                                 if (isDocker) {
                                   retryOptions.redirect = 'manual';
@@ -402,17 +402,22 @@ async function handleRequest(request, env, ctx) {
                                 let retryResponse = await fetch(targetUrl, retryOptions);
 
                                 // Handle manual redirect for retry
-                                if (isDocker && (retryResponse.status === 301 || retryResponse.status === 302 || retryResponse.status === 307)) {
+                                if (
+                                  isDocker &&
+                                  (retryResponse.status === 301 ||
+                                    retryResponse.status === 302 ||
+                                    retryResponse.status === 307)
+                                ) {
                                   const location = retryResponse.headers.get('Location');
                                   if (location) {
-                                     const redirectHeaders = new Headers(retryOptions.headers);
-                                     redirectHeaders.delete('Authorization');
-                                     
-                                     retryResponse = await fetch(location, {
-                                       ...retryOptions,
-                                       headers: redirectHeaders,
-                                       redirect: 'follow'
-                                     });
+                                    const redirectHeaders = new Headers(retryOptions.headers);
+                                    redirectHeaders.delete('Authorization');
+
+                                    retryResponse = await fetch(location, {
+                                      ...retryOptions,
+                                      headers: redirectHeaders,
+                                      redirect: 'follow'
+                                    });
                                   }
                                 }
 
@@ -533,8 +538,20 @@ async function handleRequest(request, env, ctx) {
 
                     const headers = new Headers(response.headers);
 
-                    if (!isGit && !isDocker) {
-                      headers.set('Cache-Control', `public, max-age=${config.CACHE_DURATION}`);
+                    if (!isGit && !isGitLFS && !isDocker && !isAI && !isHF) {
+                      if (hasSensitiveHeaders) {
+                        headers.set('Cache-Control', 'private, no-store');
+                        const existingVary = headers.get('Vary');
+                        headers.set(
+                          'Vary',
+                          existingVary
+                            ? `${existingVary}, Authorization, Cookie`
+                            : 'Authorization, Cookie'
+                        );
+                      } else {
+                        headers.set('Cache-Control', `public, max-age=${config.CACHE_DURATION}`);
+                      }
+
                       headers.set('X-Content-Type-Options', 'nosniff');
                       headers.set('Accept-Ranges', 'bytes');
 
@@ -564,6 +581,8 @@ async function handleRequest(request, env, ctx) {
                       !isGitLFS &&
                       !isDocker &&
                       !isAI &&
+                      !isHF &&
+                      !hasSensitiveHeaders &&
                       request.method === 'GET' &&
                       response.ok &&
                       response.status === 200
@@ -636,7 +655,7 @@ export default {
   /**
    * Main Worker entry point.
    * @param {Request} request
-   * @param {object} env
+   * @param {Record<string, unknown>} env
    * @param {ExecutionContext} ctx
    */
   fetch(request, env, ctx) {

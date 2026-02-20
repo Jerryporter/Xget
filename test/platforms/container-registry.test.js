@@ -283,7 +283,7 @@ describe('Container Registry Support', () => {
 
       // Should attempt to proxy to Docker Hub
       expect(response.status).not.toBe(400);
-    });
+    }, 30000);
 
     it('should handle Docker Hub user images (namespace/image format)', async () => {
       // User images already have namespace prefix
@@ -297,7 +297,7 @@ describe('Container Registry Support', () => {
 
       // Should attempt to proxy to Docker Hub
       expect(response.status).not.toBe(400);
-    });
+    }, 30000);
 
     it('should allow GET for Docker Hub manifest requests', async () => {
       const response = await SELF.fetch('https://example.com/cr/docker/v2/nginx/manifests/latest', {

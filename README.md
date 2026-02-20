@@ -2440,7 +2440,7 @@ client = OpenAI(
 3. **Configure GitHub Secrets**:
    - Go to your GitHub repository → Settings → Secrets and variables → Actions
    - Add the following secret:
-     - `EDGEONE_PAGES_API_TOKEN`: Your API Token
+     - `EDGEONE_API_TOKEN`: Your API Token
 
 4. **Trigger deployment**:
    - The repository will automatically convert Workers code to Pages-compatible format and sync to the `pages` branch

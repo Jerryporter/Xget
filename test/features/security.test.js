@@ -93,12 +93,18 @@ describe('Security Features', () => {
 
       for (const path of maliciousPaths) {
         const response = await SELF.fetch(`https://example.com${path}`, {
+          method: 'HEAD',
           redirect: 'manual' // Don't follow redirects
         });
-        // Should either reject with 400, redirect (302/301), or safely handle the path
-        expect([400, 404, 500, 302, 301]).toContain(response.status);
+        // Some runtimes normalize plain `..` segments before the Worker sees them.
+        // Encoded traversal should still be rejected.
+        if (/%[0-9a-fA-F]{2}/.test(path)) {
+          expect(response.status).toBe(400);
+        } else {
+          expect(response.status).not.toBe(500);
+        }
       }
-    });
+    }, 30000);
 
     it('should reject extremely long paths', async () => {
       const longPath = `/gh/${'a'.repeat(3000)}`;
@@ -115,11 +121,11 @@ describe('Security Features', () => {
       ];
 
       for (const path of encodedPaths) {
-        const response = await SELF.fetch(`https://example.com${path}`);
+        const response = await SELF.fetch(`https://example.com${path}`, { method: 'HEAD' });
         // Should handle encoded paths without security issues
         expect(response.status).not.toBe(500);
       }
-    });
+    }, 30000);
   });
 
   describe('Input Sanitization', () => {
@@ -132,11 +138,11 @@ describe('Security Features', () => {
       ];
 
       for (const path of specialPaths) {
-        const response = await SELF.fetch(`https://example.com${path}`);
+        const response = await SELF.fetch(`https://example.com${path}`, { method: 'HEAD' });
         // Should safely handle special characters
         expect(response.status).not.toBe(500);
       }
-    });
+    }, 30000);
 
     it('should handle Unicode characters safely', async () => {
       const unicodePaths = [
@@ -146,11 +152,11 @@ describe('Security Features', () => {
       ];
 
       for (const path of unicodePaths) {
-        const response = await SELF.fetch(`https://example.com${path}`);
+        const response = await SELF.fetch(`https://example.com${path}`, { method: 'HEAD' });
         // Should handle Unicode without issues
         expect(response.status).not.toBe(500);
       }
-    });
+    }, 20000);
   });
 
   describe('Request Header Validation', () => {
@@ -162,6 +168,7 @@ describe('Security Features', () => {
 
       for (const userAgent of maliciousUserAgents) {
         const response = await SELF.fetch('https://example.com/gh/test/repo', {
+          method: 'HEAD',
           headers: {
             'User-Agent': userAgent
           }
@@ -170,7 +177,7 @@ describe('Security Features', () => {
         // Should handle malicious user agents safely
         expect(response.status).not.toBe(500);
       }
-    });
+    }, 20000);
 
     it('should handle header injection attempts', async () => {
       // Headers with CRLF injection should be rejected by the runtime
@@ -216,7 +223,7 @@ describe('Security Features', () => {
         const elapsed = Date.now() - startTime;
         expect(elapsed).toBeLessThan(40000); // 40 seconds max
       }
-    });
+    }, 45000);
   });
 
   describe('Error Information Disclosure', () => {

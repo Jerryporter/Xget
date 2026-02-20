@@ -26,7 +26,6 @@
  * Identifies Hugging Face API requests by checking for:
  * - Hugging Face platform prefix (/hf/)
  * - API path segment (/api/)
- *
  * @param {Request} request - The incoming request object
  * @param {URL} url - Parsed URL object
  * @returns {boolean} True if this is a Hugging Face API operation
@@ -47,14 +46,13 @@ export function isHuggingFaceAPIRequest(request, url) {
 
 /**
  * Configures headers for Hugging Face API requests.
- *
  * @param {Headers} headers - The headers object to modify
  * @param {Request} request - The original request
  */
 export function configureHuggingFaceHeaders(headers, request) {
-  // Pass through Authorization header if present
-  if (request.headers.has('Authorization')) {
-    headers.set('Authorization', request.headers.get('Authorization'));
+  const authHeader = request.headers.get('Authorization');
+  if (authHeader) {
+    headers.set('Authorization', authHeader);
   }
 
   if (request.method === 'POST' && !headers.has('Content-Type')) {

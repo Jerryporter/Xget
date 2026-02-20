@@ -28,6 +28,59 @@ import { isGitLFSRequest, isGitRequest } from '../protocols/git.js';
 import { isHuggingFaceAPIRequest } from '../protocols/huggingface.js';
 
 /**
+ * Best-effort decode for security validation.
+ *
+ * URL.pathname may keep some reserved characters percent-encoded (e.g. %2F).
+ * We decode a couple of times to catch traversal attempts like %2e%2e%2f.
+ * @param {string} pathname
+ * @returns {{ok: true, value: string} | {ok: false}} Decoded path result
+ */
+function decodePathnameForValidation(pathname) {
+  let decoded = pathname;
+  for (let i = 0; i < 2; i++) {
+    if (!/%[0-9a-fA-F]{2}/.test(decoded)) {
+      break;
+    }
+    try {
+      decoded = decodeURIComponent(decoded);
+    } catch {
+      return { ok: false };
+    }
+  }
+  return { ok: true, value: decoded };
+}
+
+/**
+ * Detects directory traversal patterns in a URL path.
+ * @param {string} pathname
+ * @returns {boolean} True if traversal is detected
+ */
+function hasPathTraversal(pathname) {
+  const decodedResult = decodePathnameForValidation(pathname);
+  if (!decodedResult.ok) {
+    return true;
+  }
+
+  const decoded = decodedResult.value.replace(/\\/g, '/');
+  return /(^|\/)\.\.(\/|$)/.test(decoded);
+}
+
+/**
+ * Checks for ASCII control characters.
+ * @param {string} value
+ * @returns {boolean} True if ASCII control chars are present
+ */
+function hasAsciiControlChars(value) {
+  for (let i = 0; i < value.length; i++) {
+    const code = value.charCodeAt(i);
+    if (code <= 31 || code === 127) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Detects if a request is a container registry operation (Docker/OCI).
  *
  * Identifies Docker and OCI registry requests by checking for:
@@ -109,6 +162,26 @@ export function validateRequest(request, url, config = CONFIG) {
 
   if (url.pathname.length > config.SECURITY.MAX_PATH_LENGTH) {
     return { valid: false, error: 'Path too long', status: 414 };
+  }
+
+  // Reject obvious traversal in the raw URL path (before URL normalization).
+  // Some runtimes normalize `..` segments when parsing URL.pathname.
+  const rawPathname = request.url.startsWith(url.origin)
+    ? request.url.slice(url.origin.length).split('?')[0].split('#')[0].replace(/\\/g, '/')
+    : url.pathname;
+
+  if (/(^|\/)\.\.(\/|$)/.test(rawPathname)) {
+    return { valid: false, error: 'Invalid path', status: 400 };
+  }
+
+  // Reject control characters and directory traversal attempts.
+  // This protects both our routing logic and upstream requests.
+  if (hasAsciiControlChars(url.pathname)) {
+    return { valid: false, error: 'Invalid path', status: 400 };
+  }
+
+  if (hasPathTraversal(url.pathname)) {
+    return { valid: false, error: 'Invalid path', status: 400 };
   }
 
   return { valid: true };

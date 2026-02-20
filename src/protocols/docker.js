@@ -74,7 +74,7 @@ export async function fetchToken(wwwAuthenticate, scope, authorization) {
 
 /**
  * Parses the request URL to determine the appropriate Docker registry scope.
- * 
+ *
  * Analyzes the path to extract the repository name and constructs a standard
  * Docker scope string (repository:name:pull). Handles platform-specific
  * path conventions and defaults.
@@ -90,7 +90,7 @@ export function getScopeFromUrl(url, effectivePath, platform) {
   // Infer scope from the request path for container registry requests
   let scope = '';
   const pathParts = url.pathname.split('/');
-  
+
   // Check for catalog endpoint
   if (pathParts.includes('_catalog')) {
     return 'registry:catalog:*';
@@ -104,13 +104,12 @@ export function getScopeFromUrl(url, effectivePath, platform) {
       if (repoParts.length >= 1) {
         // Remove /manifests/tag or /blobs/sha suffix to get repo name
         // Common suffixes in v2 API: /manifests/, /blobs/, /tags/
-        const suffixIndex = repoParts.findIndex(p => 
+        const suffixIndex = repoParts.findIndex(p =>
           ['manifests', 'blobs', 'tags', 'referrers'].includes(p)
         );
-        
-        let repoName = suffixIndex !== -1 
-          ? repoParts.slice(0, suffixIndex).join('/') 
-          : repoParts.join('/');
+
+        let repoName =
+          suffixIndex !== -1 ? repoParts.slice(0, suffixIndex).join('/') : repoParts.join('/');
 
         if (platform === 'cr-docker' && repoName && !repoName.includes('/')) {
           repoName = `library/${repoName}`;
@@ -131,22 +130,26 @@ export function getScopeFromUrl(url, effectivePath, platform) {
  * Generates a Docker/OCI registry-compliant 401 response with a WWW-Authenticate
  * header that directs clients to the token authentication endpoint.
  * @param {URL} url - Request URL used to construct authentication realm
- * @param {URL} url - Request URL used to construct authentication realm
  * @returns {Response} Unauthorized response with WWW-Authenticate header
  */
 export function responseUnauthorized(url) {
   const headers = new Headers();
   headers.set('WWW-Authenticate', `Bearer realm="https://${url.hostname}/v2/auth",service="Xget"`);
-  return new Response(JSON.stringify({ 
-    errors: [{
-      code: 'UNAUTHORIZED',
-      message: 'authentication required',
-      detail: null
-    }]
-  }), {
-    status: 401,
-    headers
-  });
+  return new Response(
+    JSON.stringify({
+      errors: [
+        {
+          code: 'UNAUTHORIZED',
+          message: 'authentication required',
+          detail: null
+        }
+      ]
+    }),
+    {
+      status: 401,
+      headers
+    }
+  );
 }
 
 /**
