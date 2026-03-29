@@ -13,6 +13,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
+env:
+  WRANGLER_VERSION: "4.76.0"
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -55,9 +58,16 @@ jobs:
 
           echo "Pages project created."
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=xget --branch=${{ github.ref_name }}
+          node-version: "24"
+
+      - name: Install Wrangler CLI
+        run: npm install --global wrangler@${{ env.WRANGLER_VERSION }}
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: wrangler pages deploy . --project-name=xget --branch=${{ github.ref_name }}

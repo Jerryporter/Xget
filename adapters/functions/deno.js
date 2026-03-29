@@ -1,24 +1,24 @@
 /**
  * Xget - High-performance acceleration engine for developer resources
- * Copyright (C) 2025 Xi Xu
+ * Copyright (C) Xi Xu
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/* eslint-disable no-undef, no-unused-vars */
+/* eslint-disable no-undef */
 
-import { handleRequest } from './src/index.js';
+import { handleRequest } from '../../src/app/handle-request.js';
 
 /**
  * Deno Deploy handler.
@@ -40,13 +40,17 @@ async function handler(request) {
     CACHE_DURATION: Deno.env.get('CACHE_DURATION'),
     ALLOWED_METHODS: Deno.env.get('ALLOWED_METHODS'),
     ALLOWED_ORIGINS: Deno.env.get('ALLOWED_ORIGINS'),
-    MAX_PATH_LENGTH: Deno.env.get('MAX_PATH_LENGTH'),
+    MAX_PATH_LENGTH: Deno.env.get('MAX_PATH_LENGTH')
   };
 
   // Create minimal ExecutionContext-like object
   // Deno Deploy doesn't support waitUntil, so cache writes are synchronous
   const ctx = {
-    waitUntil: (promise) => {
+    waitUntil: (
+      /** @type {Promise<unknown>} */
+      promise
+    ) => {
+      void promise;
       // No-op on Deno: background tasks not supported
       console.warn('waitUntil is not supported in Deno Deploy');
     },
@@ -59,5 +63,9 @@ async function handler(request) {
   return handleRequest(request, env, ctx);
 }
 
-// Start the server
-Deno.serve(handler);
+// Start the server only when executing inside Deno.
+if (typeof Deno !== 'undefined' && typeof Deno.serve === 'function') {
+  Deno.serve(handler);
+}
+
+export { handler };

@@ -1,18 +1,18 @@
 /**
  * Xget - High-performance acceleration engine for developer resources
- * Copyright (C) 2025 Xi Xu
+ * Copyright (C) Xi Xu
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
@@ -20,7 +20,7 @@
  * Docker/OCI Registry protocol handler for Xget
  */
 
-import { SORTED_PLATFORMS } from '../config/platforms.js';
+import { SORTED_PLATFORMS } from '../routing/platform-index.js';
 import { createErrorResponse } from '../utils/security.js';
 
 /**
@@ -38,7 +38,7 @@ export function parseAuthenticate(authenticateStr) {
   const serviceMatch = authenticateStr.match(/service="([^"]+)"/);
 
   if (!realmMatch || !serviceMatch) {
-    throw new Error(`invalid Www-Authenticate Header: ${authenticateStr}`);
+    throw new Error(`invalid WWW-Authenticate header: ${authenticateStr}`);
   }
 
   return {
@@ -73,6 +73,41 @@ export async function fetchToken(wwwAuthenticate, scope, authorization) {
 }
 
 /**
+ * Reads a bearer token from an upstream registry token response.
+ *
+ * Registry token services commonly return either `token` or `access_token`.
+ * Some registries also respond with an empty or malformed body on transient
+ * failures, so this parser fails closed and lets the caller fall back to the
+ * standard 401 challenge flow.
+ * @param {Response} response
+ * @returns {Promise<string | null>} Resolved bearer token, or null when unavailable.
+ */
+export async function readRegistryTokenResponse(response) {
+  const rawBody = await response.text().catch(() => '');
+  if (!rawBody.trim()) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(rawBody);
+    if (!parsed || typeof parsed !== 'object') {
+      return null;
+    }
+
+    const tokenValue =
+      'token' in parsed && typeof parsed.token === 'string'
+        ? parsed.token
+        : 'access_token' in parsed && typeof parsed.access_token === 'string'
+          ? parsed.access_token
+          : null;
+
+    return tokenValue;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Parses the request URL to determine the appropriate Docker registry scope.
  *
  * Analyzes the path to extract the repository name and constructs a standard
@@ -87,41 +122,134 @@ export async function fetchToken(wwwAuthenticate, scope, authorization) {
  *   - "" (empty string) if scope cannot be determined
  */
 export function getScopeFromUrl(url, effectivePath, platform) {
-  // Infer scope from the request path for container registry requests
-  let scope = '';
-  const pathParts = url.pathname.split('/');
+  void url;
+  const platformPrefix = `/${platform.replace(/-/g, '/')}/`;
 
   // Check for catalog endpoint
-  if (pathParts.includes('_catalog')) {
+  if (effectivePath.includes('/_catalog')) {
     return 'registry:catalog:*';
   }
 
-  if (pathParts.length >= 4 && pathParts[1] === 'v2') {
-    const platformPrefix = `/${platform.replace(/-/g, '/')}/`;
-    if (effectivePath.startsWith(platformPrefix)) {
-      const repoPathFull = effectivePath.slice(platformPrefix.length);
-      const repoParts = repoPathFull.split('/');
-      if (repoParts.length >= 1) {
-        // Remove /manifests/tag or /blobs/sha suffix to get repo name
-        // Common suffixes in v2 API: /manifests/, /blobs/, /tags/
-        const suffixIndex = repoParts.findIndex(p =>
-          ['manifests', 'blobs', 'tags', 'referrers'].includes(p)
-        );
+  const apiPath = normalizeRegistryApiPath(
+    platform,
+    effectivePath.startsWith(platformPrefix)
+      ? `/${effectivePath.slice(platformPrefix.length)}`
+      : effectivePath
+  );
+  const repoName = extractRepositoryPath(apiPath);
 
-        let repoName =
-          suffixIndex !== -1 ? repoParts.slice(0, suffixIndex).join('/') : repoParts.join('/');
+  if (repoName) {
+    return `repository:${repoName}:pull`;
+  }
 
-        if (platform === 'cr-docker' && repoName && !repoName.includes('/')) {
-          repoName = `library/${repoName}`;
+  return '';
+}
+
+/**
+ * Normalizes Docker Hub official images to the canonical library namespace.
+ * @param {string} platformKey
+ * @param {string} repoPath
+ * @returns {string} Normalized upstream repository path.
+ */
+function normalizeRepoPath(platformKey, repoPath) {
+  if (platformKey === 'cr-docker' && repoPath && !repoPath.includes('/')) {
+    return `library/${repoPath}`;
+  }
+
+  return repoPath;
+}
+
+/**
+ * Extracts the repository path from a Docker registry API path.
+ * @param {string} apiPath
+ * @returns {string} Repository path without the `/v2/` prefix or operation suffix.
+ */
+function extractRepositoryPath(apiPath) {
+  const normalizedPath = apiPath.startsWith('/v2/')
+    ? apiPath.slice(4)
+    : apiPath.replace(/^\/+/, '');
+  const pathParts = normalizedPath.split('/').filter(Boolean);
+
+  if (pathParts.length === 0 || pathParts[0].startsWith('_')) {
+    return '';
+  }
+
+  const suffixIndex = pathParts.findIndex(part =>
+    ['manifests', 'blobs', 'tags', 'referrers'].includes(part)
+  );
+
+  if (suffixIndex <= 0) {
+    return '';
+  }
+
+  return pathParts.slice(0, suffixIndex).join('/');
+}
+
+/**
+ * Normalizes a Docker registry API path for upstream compatibility.
+ * @param {string} platformKey
+ * @param {string} apiPath
+ * @returns {string} Upstream API path with any registry-specific normalization applied.
+ */
+export function normalizeRegistryApiPath(platformKey, apiPath) {
+  if (platformKey !== 'cr-docker' || !apiPath.startsWith('/v2/')) {
+    return apiPath;
+  }
+
+  const repoPath = extractRepositoryPath(apiPath);
+  const normalizedRepoPath = normalizeRepoPath(platformKey, repoPath);
+
+  if (!repoPath || normalizedRepoPath === repoPath) {
+    return apiPath;
+  }
+
+  return apiPath.replace(`/v2/${repoPath}`, `/v2/${normalizedRepoPath}`);
+}
+
+/**
+ * Resolves the target registry and scope for Docker auth proxy requests.
+ * @param {URL} url
+ * @param {{ [key: string]: string }} platforms
+ * @returns {{ platformKey: string, upstreamScope: string }} Resolved auth target info.
+ */
+function resolveDockerAuthTarget(url, platforms) {
+  const scope = url.searchParams.get('scope') || '';
+  const pathMatch = url.pathname.match(/^\/cr\/([^/]+)\/v2\/auth\/?$/);
+
+  let platformKey = pathMatch ? `cr-${pathMatch[1]}` : '';
+  let repoPath = '';
+  let upstreamScope = scope;
+
+  if (scope) {
+    const parts = scope.split(':');
+    if (parts.length >= 3 && parts[0] === 'repository') {
+      const [, fullRepoPath] = parts;
+
+      if (fullRepoPath.startsWith('cr/')) {
+        for (const key of SORTED_PLATFORMS) {
+          if (!key.startsWith('cr-')) continue;
+
+          const prefix = key.replace(/-/g, '/');
+          if (fullRepoPath.startsWith(`${prefix}/`)) {
+            platformKey = key;
+            repoPath = fullRepoPath.slice(prefix.length + 1);
+            break;
+          }
         }
-
-        if (repoName) {
-          scope = `repository:${repoName}:pull`;
-        }
+      } else {
+        repoPath = fullRepoPath;
       }
+
+      repoPath = normalizeRepoPath(platformKey, repoPath);
+      upstreamScope = repoPath ? `repository:${repoPath}:${parts.slice(2).join(':')}` : scope;
     }
   }
-  return scope;
+
+  if (!platformKey || !platforms[platformKey]) {
+    throw new Error('Unsupported registry platform in scope');
+  }
+
+  return { platformKey, upstreamScope };
 }
 
 /**
@@ -130,11 +258,14 @@ export function getScopeFromUrl(url, effectivePath, platform) {
  * Generates a Docker/OCI registry-compliant 401 response with a WWW-Authenticate
  * header that directs clients to the token authentication endpoint.
  * @param {URL} url - Request URL used to construct authentication realm
+ * @param {string} platform - Registry platform key (e.g. cr-ghcr)
  * @returns {Response} Unauthorized response with WWW-Authenticate header
  */
-export function responseUnauthorized(url) {
+export function responseUnauthorized(url, platform) {
+  const realmPath = platform ? `/cr/${platform.slice(3)}/v2/auth` : '/v2/auth';
   const headers = new Headers();
-  headers.set('WWW-Authenticate', `Bearer realm="https://${url.hostname}/v2/auth",service="Xget"`);
+  headers.set('Content-Type', 'application/json');
+  headers.set('WWW-Authenticate', `Bearer realm="${url.origin}${realmPath}",service="Xget"`);
   return new Response(
     JSON.stringify({
       errors: [
@@ -162,46 +293,17 @@ export function responseUnauthorized(url) {
  * @returns {Promise<Response>} The response (token or error)
  */
 export async function handleDockerAuth(request, url, config) {
-  const scope = url.searchParams.get('scope');
-  if (!scope) {
-    return createErrorResponse('Missing scope parameter', 400);
+  let target;
+  try {
+    target = resolveDockerAuthTarget(url, config.PLATFORMS);
+  } catch (error) {
+    // Log internal error details server-side without exposing them to the client
+    console.error('Failed to resolve Docker auth target:', error);
+    // Return a generic error response to avoid leaking implementation details
+    return createErrorResponse('Invalid Docker authentication request', 400);
   }
 
-  // Parse scope to find the target platform and repository
-  // Format: repository:cr/docker/library/ubuntu:pull
-  // We need to extract 'cr/docker' as the platform
-  const parts = scope.split(':');
-  if (parts.length < 3 || parts[0] !== 'repository') {
-    // If not a repository scope, or invalid format, we can't easily proxy it
-    return createErrorResponse('Invalid scope format', 400);
-  }
-
-  const [, fullRepoPath] = parts; // e.g., cr/docker/library/ubuntu
-  let platformKey = '';
-  let repoPath = '';
-
-  // Find the platform from the start of the repo path
-  // Try to match 'cr/docker', 'cr/ghcr', etc.
-  // We need to find which platform prefix matches the start of fullRepoPath
-  // Uses global SORTED_PLATFORMS which is imported
-
-  for (const key of SORTED_PLATFORMS) {
-    if (!key.startsWith('cr-')) continue;
-
-    // Convert key cr-docker to cr/docker for matching
-    const prefix = key.replace(/-/g, '/');
-    if (fullRepoPath.startsWith(`${prefix}/`)) {
-      platformKey = key;
-      repoPath = fullRepoPath.slice(prefix.length + 1); // +1 for the slash
-      break;
-    }
-  }
-
-  if (!platformKey || !config.PLATFORMS[platformKey]) {
-    return createErrorResponse('Unsupported registry platform in scope', 400);
-  }
-
-  const upstreamUrl = config.PLATFORMS[platformKey];
+  const upstreamUrl = config.PLATFORMS[target.platformKey];
   const authorization = request.headers.get('Authorization');
 
   // 1. Fetch the upstream root (v2) to get the proper realm and service
@@ -225,14 +327,6 @@ export async function handleDockerAuth(request, url, config) {
 
   const wwwAuthenticate = parseAuthenticate(authenticateStr);
 
-  // 2. Construct the new scope for the upstream registry
-  // We replace our prefixed path with the actual repo path
-  // e.g. repository:cr/docker/library/ubuntu:pull -> repository:library/ubuntu:pull
-
-  // However, we also need to respect the service name if possible,
-  // but usually we just need to fix the repository part of the scope.
-  const newScope = `repository:${repoPath}:${parts.slice(2).join(':')}`;
-
   // 3. Fetch the token from the upstream realm
-  return await fetchToken(wwwAuthenticate, newScope, authorization || '');
+  return await fetchToken(wwwAuthenticate, target.upstreamScope, authorization || '');
 }

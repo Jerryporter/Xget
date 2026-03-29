@@ -1,12 +1,16 @@
 # Deploying and Optimizing Xget on DigitalOcean
 
-Xget itself is shipped as a container image, so it fits very naturally into DigitalOcean’s ecosystem (Droplets, App Platform, Kubernetes, and Container Registry).
+Xget itself is shipped as a container image, so it fits very naturally into
+DigitalOcean’s ecosystem (Droplets, App Platform, Kubernetes, and Container
+Registry).
 
-This guide explains how to run Xget efficiently on DigitalOcean and how to design a simple, robust acceleration layer for your team.
+This guide explains how to run Xget efficiently on DigitalOcean and how to
+design a simple, robust acceleration layer for your team.
 
 ## 1. Which DigitalOcean product should I use for Xget?
 
-Depending on your scale and operations model, you can pick one of these typical setups:
+Depending on your scale and operations model, you can pick one of these typical
+setups:
 
 | Scenario                                    | Recommended option             | Characteristics                                                     |
 | ------------------------------------------- | ------------------------------ | ------------------------------------------------------------------- |
@@ -14,26 +18,27 @@ Depending on your scale and operations model, you can pick one of these typical 
 | Small / mid-size team, prefer fully managed | App Platform (container mode)  | Automatic HTTPS, deployments, and autoscaling                       |
 | Large team / enterprise, complex traffic    | DigitalOcean Kubernetes (DOKS) | Most flexible; supports fine-grained scaling and rollout strategies |
 
-You can also use DigitalOcean Container Registry (DOCR) for your own Xget builds or to host business images that Xget will accelerate.
+You can also use DigitalOcean Container Registry (DOCR) for your own Xget builds
+or to host business images that Xget will accelerate.
 
 ## 2. Option 1: Droplet + Docker Compose (closest to "plain" self-hosting)
 
 ### 2.1 Prerequisites
 
 1. **Create a Droplet**
+   - Recommended OS: Ubuntu 22.04 / 24.04 LTS.
+   - Size suggestions:
+     - Personal / small team: 1 vCPU / 1–2 GB RAM to start with.
+     - High concurrent downloads: prefer Premium Intel/AMD or CPU-Optimized
+       Droplets.
 
-   * Recommended OS: Ubuntu 22.04 / 24.04 LTS.
-   * Size suggestions:
-
-     * Personal / small team: 1 vCPU / 1–2 GB RAM to start with.
-     * High concurrent downloads: prefer Premium Intel/AMD or CPU-Optimized Droplets.
-   * Region: pick a region close to your main users or to upstream services (e.g., GitHub, GHCR, DOCR).
+   - Region: pick a region close to your main users or to upstream services
+     (e.g., GitHub, GHCR, DOCR).
 
 2. **Configure DNS**
 
    In DigitalOcean DNS, create a record, for example:
-
-   * `xget.example.com` → your Droplet’s public IP address.
+   - `xget.example.com` → your Droplet’s public IP address.
 
 3. **Install Docker & Docker Compose (example on Ubuntu)**
 
@@ -67,7 +72,8 @@ You can also use DigitalOcean Container Registry (DOCR) for your own Xget builds
 
 ### 2.2 Deploy Xget using Docker Compose
 
-Based on the self-hosting examples in the Xget README, it’s recommended to manage the container via Docker Compose.
+Based on the self-hosting examples in the Xget README, it’s recommended to
+manage the container via Docker Compose.
 
 1. **Create a directory and `docker-compose.yml`:**
 
@@ -85,7 +91,7 @@ Based on the self-hosting examples in the Xget README, it’s recommended to man
        container_name: xget
        # Bind only to 127.0.0.1; expose via reverse proxy
        ports:
-         - "127.0.0.1:8080:8080"
+         - '127.0.0.1:8080:8080'
        restart: unless-stopped
    ```
 
@@ -99,7 +105,8 @@ Based on the self-hosting examples in the Xget README, it’s recommended to man
 
 ### 2.3 Expose HTTPS via nginx + Let’s Encrypt
 
-Instead of exposing port 8080 directly, run nginx on the Droplet as a reverse proxy with HTTPS.
+Instead of exposing port 8080 directly, run nginx on the Droplet as a reverse
+proxy with HTTPS.
 
 1. **Install nginx and Certbot:**
 
@@ -115,7 +122,8 @@ Instead of exposing port 8080 directly, run nginx on the Droplet as a reverse pr
 
 3. **Configure reverse proxy**
 
-   Certbot will create a `server` block for you. You can adapt/add configuration like:
+   Certbot will create a `server` block for you. You can adapt/add configuration
+   like:
 
    ```nginx
    server {
@@ -152,75 +160,78 @@ Instead of exposing port 8080 directly, run nginx on the Droplet as a reverse pr
    sudo systemctl reload nginx
    ```
 
-Now users can access Xget via `https://xget.example.com` through nginx → Xget container.
+Now users can access Xget via `https://xget.example.com` through nginx → Xget
+container.
 
 ### 2.4 Harden security with DigitalOcean Cloud Firewall
 
 To reduce attack surface and abuse risk:
 
-* In Cloud Firewalls:
+- In Cloud Firewalls:
+  - Allow inbound only: `22` (SSH), `80` (HTTP) and `443` (HTTPS).
+  - Do _not_ expose `8080` to the public Internet.
 
-  * Allow inbound only: `22` (SSH), `80` (HTTP) and `443` (HTTPS).
-  * Do *not* expose `8080` to the public Internet.
-* If needed, further restrict:
-
-  * Only allow company office IP ranges or CI/CD nodes.
-  * Combine with a VPN or other gateway if you need more control.
+- If needed, further restrict:
+  - Only allow company office IP ranges or CI/CD nodes.
+  - Combine with a VPN or other gateway if you need more control.
 
 ## 3. Option 2: DigitalOcean App Platform (fully managed)
 
-App Platform can run Xget directly from a container image or source code repo. It handles load balancing, TLS, and autoscaling for you, which is great if you don’t want to manage servers.
+App Platform can run Xget directly from a container image or source code repo.
+It handles load balancing, TLS, and autoscaling for you, which is great if you
+don’t want to manage servers.
 
 ### 3.1 Basic flow
 
 1. **Prepare the container image**
 
    Two common options:
-
-   * Use the official image: `ghcr.io/xixu-me/xget:latest`
-   * Or mirror/rebuild Xget into DOCR if you want a private registry or faster internal pulls.
+   - Use the official image: `ghcr.io/xixu-me/xget:latest`
+   - Or mirror/rebuild Xget into DOCR if you want a private registry or faster
+     internal pulls.
 
 2. **Create an App**
 
    In the DigitalOcean control panel:
+   - Create new App → choose "Container".
+   - Source:
+     - DigitalOcean Container Registry _or_
+     - an external image (`ghcr.io/xixu-me/xget:latest`).
 
-   * Create new App → choose "Container".
-   * Source:
-
-     * DigitalOcean Container Registry *or*
-     * an external image (`ghcr.io/xixu-me/xget:latest`).
-   * Set the internal listening port to `8080`.
+   - Set the internal listening port to `8080`.
 
 3. **Configure routing**
-
-   * Map external path `/` to the Xget service.
-   * Bind your domain (e.g. `xget.example.com`) to the app and enable automatic HTTPS.
+   - Map external path `/` to the Xget service.
+   - Bind your domain (e.g. `xget.example.com`) to the app and enable automatic
+     HTTPS.
 
 4. **Scaling**
-
-   * In the Scaling section, set minimum number of instances, e.g. 2 replicas for high availability.
-   * Configure autoscaling based on CPU / memory usage.
+   - In the Scaling section, set minimum number of instances, e.g. 2 replicas
+     for high availability.
+   - Configure autoscaling based on CPU / memory usage.
 
 ### 3.2 Pros and caveats
 
-* **Pros**
+- **Pros**
+  - No OS or Docker maintenance.
+  - Built-in TLS / certificate management.
+  - Simple scaling and deployment UX.
 
-  * No OS or Docker maintenance.
-  * Built-in TLS / certificate management.
-  * Simple scaling and deployment UX.
-
-* **Caveats**
-
-  * Xget is sensitive to large download traffic: you should monitor bandwidth and outbound data transfer costs.
-  * For advanced network control (VPC-only access, strict firewall rules), combine App Platform with Cloud Firewall and VPC.
+- **Caveats**
+  - Xget is sensitive to large download traffic: you should monitor bandwidth
+    and outbound data transfer costs.
+  - For advanced network control (VPC-only access, strict firewall rules),
+    combine App Platform with Cloud Firewall and VPC.
 
 ## 4. Option 3: DigitalOcean Kubernetes (DOKS)
 
-When you need multiple replicas, blue-green deployments, or fine-grained rollout strategies, run Xget on DOKS as a standard `Deployment`.
+When you need multiple replicas, blue-green deployments, or fine-grained rollout
+strategies, run Xget on DOKS as a standard `Deployment`.
 
 ### 4.1 Example Deployment & Service
 
-> Note: the health check path below uses `/`. If your build of Xget exposes a dedicated health endpoint, adjust accordingly.
+> Note: the health check path below uses `/`. If your build of Xget exposes a
+> dedicated health endpoint, adjust accordingly.
 
 ```yaml
 apiVersion: apps/v1
@@ -244,11 +255,11 @@ spec:
             - containerPort: 8080
           resources:
             requests:
-              cpu: "250m"
-              memory: "256Mi"
+              cpu: '250m'
+              memory: '256Mi'
             limits:
-              cpu: "1"
-              memory: "512Mi"
+              cpu: '1'
+              memory: '512Mi'
           readinessProbe:
             httpGet:
               path: /
@@ -275,17 +286,21 @@ spec:
   type: LoadBalancer
 ```
 
-* `type: LoadBalancer` will automatically create a DigitalOcean Load Balancer and assign a public IP.
-* Point `xget.example.com` to the Load Balancer IP in your DNS.
+- `type: LoadBalancer` will automatically create a DigitalOcean Load Balancer
+  and assign a public IP.
+- Point `xget.example.com` to the Load Balancer IP in your DNS.
 
-If you are using an Ingress Controller (nginx Ingress, Traefik, etc.), you can change the service type to `ClusterIP` and configure Ingress + cert-manager for Let’s Encrypt.
+If you are using an Ingress Controller (nginx Ingress, Traefik, etc.), you can
+change the service type to `ClusterIP` and configure Ingress + cert-manager for
+Let’s Encrypt.
 
 ## 5. Using DOCR + Xget as an image accelerator
 
-Xget can act as a registry accelerator for multiple container registries, including DigitalOcean Container Registry (DOCR). The typical pattern is:
+Xget can act as a registry accelerator for multiple container registries,
+including DigitalOcean Container Registry (DOCR). The typical pattern is:
 
-* Original: `https://registry.digitalocean.com/...`
-* Through Xget: `https://<your Xget domain>/cr/digitalocean/...`
+- Original: `https://registry.digitalocean.com/...`
+- Through Xget: `https://<your Xget domain>/cr/digitalocean/...`
 
 ### 5.1 Example: accelerate DOCR pulls
 
@@ -301,27 +316,31 @@ You can convert it to:
 https://xget.example.com/cr/digitalocean/my-registry/my-image:latest
 ```
 
-This is especially useful for scripting, diagnostic, or advanced caching setups around DOCR.
+This is especially useful for scripting, diagnostic, or advanced caching setups
+around DOCR.
 
 ### 5.2 Using Xget as a pull accelerator (daemon.json idea)
 
-In some environments you can configure Docker / containerd to use Xget as a registry mirror. For example, in `/etc/docker/daemon.json`:
+In some environments you can configure Docker / containerd to use Xget as a
+registry mirror. For example, in `/etc/docker/daemon.json`:
 
 ```json
 {
-  "registry-mirrors": [
-    "https://xget.example.com/cr/digitalocean"
-  ]
+  "registry-mirrors": ["https://xget.example.com/cr/digitalocean"]
 }
 ```
 
-> Note: Support for non–Docker Hub mirrors depends on the Docker/containerd version and configuration. Treat this as a pattern; always verify behavior in your own environment.
+> Note: Support for non–Docker Hub mirrors depends on the Docker/containerd
+> version and configuration. Treat this as a pattern; always verify behavior in
+> your own environment.
 
 ## 6. Using Xget on DigitalOcean to accelerate AI inference and dev dependencies
 
-Xget also supports API acceleration for multiple AI inference providers (e.g., OpenAI, Anthropic, Gemini) through URL conversions such as `ip/<provider>`.
+Xget also supports API acceleration for multiple AI inference providers (e.g.,
+OpenAI, Anthropic, Gemini) through URL conversions such as `ip/<provider>`.
 
-Once Xget is deployed on DigitalOcean, simply replace the public demo domain in examples with your own domain:
+Once Xget is deployed on DigitalOcean, simply replace the public demo domain in
+examples with your own domain:
 
 ```env
 # .env example
@@ -342,42 +361,51 @@ client = OpenAI(
 )
 ```
 
-If your CI/CD pipelines or backend services also run on DigitalOcean (Droplets, App Platform, DOKS), they can access Xget very close in network topology, reducing latency and cross-region hops.
+If your CI/CD pipelines or backend services also run on DigitalOcean (Droplets,
+App Platform, DOKS), they can access Xget very close in network topology,
+reducing latency and cross-region hops.
 
 ## 7. Monitoring, logging, and cost optimization
 
 1. **Monitoring**
-
-   * **Droplet**: Install the DigitalOcean Monitoring Agent to track CPU, memory, and bandwidth.
-   * **App Platform / DOKS**: Use the built-in metrics views and alerts.
-   * At the application level, you can inspect Xget’s response headers (e.g., performance metrics) to understand cache hits and upstream delays if Xget exposes such information in your setup.
+   - **Droplet**: Install the DigitalOcean Monitoring Agent to track CPU,
+     memory, and bandwidth.
+   - **App Platform / DOKS**: Use the built-in metrics views and alerts.
+   - At the application level, you can inspect Xget’s response headers (e.g.,
+     performance metrics) to understand cache hits and upstream delays if Xget
+     exposes such information in your setup.
 
 2. **Logging**
-
-   * Use `docker logs` or `kubectl logs` to inspect Xget container logs.
-   * Aggregate nginx / Ingress logs plus Xget logs into a centralized stack (ELK, Loki, etc.) for easier debugging.
+   - Use `docker logs` or `kubectl logs` to inspect Xget container logs.
+   - Aggregate nginx / Ingress logs plus Xget logs into a centralized stack
+     (ELK, Loki, etc.) for easier debugging.
 
 3. **Cost optimization**
+   - Start with a smaller Droplet or the lowest App Platform plan, then scale
+     based on real traffic.
+   - For very high outbound traffic, focus on:
+     - Improving cache hit ratio.
+     - Avoiding redundant upstream requests.
 
-   * Start with a smaller Droplet or the lowest App Platform plan, then scale based on real traffic.
-   * For very high outbound traffic, focus on:
-
-     * Improving cache hit ratio.
-     * Avoiding redundant upstream requests.
-   * Choose regions that balance:
-
-     * End-user latency.
-     * Upstream connectivity quality (e.g., to GitHub, DOCR, AI providers).
+   - Choose regions that balance:
+     - End-user latency.
+     - Upstream connectivity quality (e.g., to GitHub, DOCR, AI providers).
 
 ## 8. Security and abuse prevention
 
-Because Xget is fundamentally a high-performance HTTP / Git / container registry proxy, you need to be careful about abuse:
+Because Xget is fundamentally a high-performance HTTP / Git / container registry
+proxy, you need to be careful about abuse:
 
-* Do not expose a completely open, unauthenticated Xget service to the entire public Internet if you don’t fully understand the risk.
-* Recommended mitigations:
+- Do not expose a completely open, unauthenticated Xget service to the entire
+  public Internet if you don’t fully understand the risk.
+- Recommended mitigations:
+  - Restrict access to trusted IP ranges (office network, VPN, CI/CD nodes).
+  - Add authentication at the reverse proxy or gateway layer (e.g., Basic Auth,
+    token-based, or JWT).
+  - Configure reasonable timeouts and concurrency limits to reduce the impact of
+    misuse and protect upstreams.
 
-  * Restrict access to trusted IP ranges (office network, VPN, CI/CD nodes).
-  * Add authentication at the reverse proxy or gateway layer (e.g., Basic Auth, token-based, or JWT).
-  * Configure reasonable timeouts and concurrency limits to reduce the impact of misuse and protect upstreams.
-
-With these patterns, you can deploy Xget on DigitalOcean using Droplets, App Platform, or Kubernetes, and combine it with DOCR, DNS, and firewalls to build a unified, robust acceleration layer for repositories, container images, and AI inference traffic.
+With these patterns, you can deploy Xget on DigitalOcean using Droplets, App
+Platform, or Kubernetes, and combine it with DOCR, DNS, and firewalls to build a
+unified, robust acceleration layer for repositories, container images, and AI
+inference traffic.

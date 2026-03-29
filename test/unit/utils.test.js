@@ -1,149 +1,19 @@
 import { describe, expect, it } from 'vitest';
 
-// Mock utility functions for testing
-// These would normally be imported from actual utility modules
-
-/**
- * Check if request is a Git request
- * @param {Request} request - Request object
- * @param {URL} url - URL object
- * @returns {boolean} True if Git request
- */
-function isGitRequest(request, url) {
-  // Check for Git-specific endpoints
-  if (url.pathname.endsWith('/info/refs')) {
-    return true;
-  }
-
-  if (url.pathname.endsWith('/git-upload-pack') || url.pathname.endsWith('/git-receive-pack')) {
-    return true;
-  }
-
-  // Check for Git user agents
-  const userAgent = request.headers.get('User-Agent') || '';
-  if (userAgent.includes('git/') || userAgent.startsWith('git/')) {
-    return true;
-  }
-
-  // Check for Git-specific query parameters
-  if (url.searchParams.has('service')) {
-    const service = url.searchParams.get('service');
-    return service === 'git-upload-pack' || service === 'git-receive-pack';
-  }
-
-  // Check for Git-specific content types
-  const contentType = request.headers.get('Content-Type') || '';
-  if (contentType.includes('git-upload-pack') || contentType.includes('git-receive-pack')) {
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Check if request is a Git LFS request
- * @param {Request} request - Request object
- * @param {URL} url - URL object
- * @returns {boolean} True if Git LFS request
- */
-function isGitLFSRequest(request, url) {
-  // Check for LFS-specific endpoints
-  if (url.pathname.includes('/info/lfs')) {
-    return true;
-  }
-
-  if (url.pathname.includes('/objects/batch')) {
-    return true;
-  }
-
-  // Check for LFS object storage endpoints (SHA-256 hash is 64 hex characters)
-  if (url.pathname.match(/\/objects\/[a-fA-F0-9]{64}$/)) {
-    return true;
-  }
-
-  // Check for LFS-specific headers
-  const accept = request.headers.get('Accept') || '';
-  const contentType = request.headers.get('Content-Type') || '';
-
-  if (
-    accept.includes('application/vnd.git-lfs') ||
-    contentType.includes('application/vnd.git-lfs')
-  ) {
-    return true;
-  }
-
-  // Check for LFS user agent
-  const userAgent = request.headers.get('User-Agent') || '';
-  if (userAgent.includes('git-lfs')) {
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Validate request method and path
- * @param {Request} request - Request object
- * @param {URL} url - URL object
- * @returns {{valid: boolean, error?: string, status?: number}} Validation result
- */
-function validateRequest(request, url) {
-  const CONFIG = {
-    SECURITY: {
-      ALLOWED_METHODS: ['GET', 'HEAD'],
-      MAX_PATH_LENGTH: 2048
-    }
-  };
-
-  // Allow POST method for Git operations
-  const allowedMethods = isGitRequest(request, url)
-    ? ['GET', 'HEAD', 'POST']
-    : CONFIG.SECURITY.ALLOWED_METHODS;
-
-  if (!allowedMethods.includes(request.method)) {
-    return { valid: false, error: 'Method not allowed', status: 405 };
-  }
-
-  if (url.pathname.length > CONFIG.SECURITY.MAX_PATH_LENGTH) {
-    return { valid: false, error: 'Path too long', status: 414 };
-  }
-
-  return { valid: true };
-}
-
-/**
- * Add security headers to response headers
- * @param {Headers} headers - Response headers
- * @returns {Headers} Headers with security headers added
- */
-function addSecurityHeaders(headers) {
-  headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-  headers.set('X-Frame-Options', 'DENY');
-  headers.set('X-XSS-Protection', '1; mode=block');
-  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  headers.set('Content-Security-Policy', "default-src 'none'; img-src 'self'; script-src 'none'");
-  headers.set('Permissions-Policy', 'interest-cohort=()');
-  return headers;
-}
+import { createConfig } from '../../src/config/index.js';
+import { isGitLFSRequest, isGitRequest } from '../../src/protocols/git.js';
+import {
+  addCorsHeaders,
+  addSecurityHeaders,
+  createErrorResponse,
+  resolveAllowedOrigin
+} from '../../src/utils/security.js';
+import { getAllowedMethods, isDockerRequest, validateRequest } from '../../src/utils/validation.js';
 
 describe('Utility Functions', () => {
   describe('isGitRequest', () => {
     it('should identify Git info/refs requests', () => {
       const request = new Request('https://example.com/repo.git/info/refs');
-      const url = new URL(request.url);
-
-      expect(isGitRequest(request, url)).toBe(true);
-    });
-
-    it('should identify Git upload-pack requests', () => {
-      const request = new Request('https://example.com/repo.git/git-upload-pack');
-      const url = new URL(request.url);
-
-      expect(isGitRequest(request, url)).toBe(true);
-    });
-
-    it('should identify Git receive-pack requests', () => {
-      const request = new Request('https://example.com/repo.git/git-receive-pack');
       const url = new URL(request.url);
 
       expect(isGitRequest(request, url)).toBe(true);
@@ -158,32 +28,8 @@ describe('Utility Functions', () => {
       expect(isGitRequest(request, url)).toBe(true);
     });
 
-    it('should identify Git requests by service parameter', () => {
-      const request = new Request('https://example.com/repo.git/info/refs?service=git-upload-pack');
-      const url = new URL(request.url);
-
-      expect(isGitRequest(request, url)).toBe(true);
-    });
-
-    it('should identify Git requests by content type', () => {
-      const request = new Request('https://example.com/repo.git/git-upload-pack', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-git-upload-pack-request' }
-      });
-      const url = new URL(request.url);
-
-      expect(isGitRequest(request, url)).toBe(true);
-    });
-
     it('should not identify regular file requests as Git', () => {
       const request = new Request('https://example.com/repo/file.txt');
-      const url = new URL(request.url);
-
-      expect(isGitRequest(request, url)).toBe(false);
-    });
-
-    it('should handle edge cases gracefully', () => {
-      const request = new Request('https://example.com/');
       const url = new URL(request.url);
 
       expect(isGitRequest(request, url)).toBe(false);
@@ -191,42 +37,7 @@ describe('Utility Functions', () => {
   });
 
   describe('isGitLFSRequest', () => {
-    it('should identify LFS info/lfs requests', () => {
-      const request = new Request('https://example.com/repo.git/info/lfs');
-      const url = new URL(request.url);
-
-      expect(isGitLFSRequest(request, url)).toBe(true);
-    });
-
     it('should identify LFS batch API requests', () => {
-      const request = new Request('https://example.com/repo.git/objects/batch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/vnd.git-lfs+json' }
-      });
-      const url = new URL(request.url);
-
-      expect(isGitLFSRequest(request, url)).toBe(true);
-    });
-
-    it('should identify LFS object storage requests by path', () => {
-      const request = new Request(
-        'https://example.com/repo.git/objects/a1b2c3d4e5f6789012345678901234567890123456789012345678901234abcd'
-      );
-      const url = new URL(request.url);
-
-      expect(isGitLFSRequest(request, url)).toBe(true);
-    });
-
-    it('should identify LFS requests by Accept header', () => {
-      const request = new Request('https://example.com/repo.git/objects/batch', {
-        headers: { Accept: 'application/vnd.git-lfs+json' }
-      });
-      const url = new URL(request.url);
-
-      expect(isGitLFSRequest(request, url)).toBe(true);
-    });
-
-    it('should identify LFS requests by Content-Type header', () => {
       const request = new Request('https://example.com/repo.git/objects/batch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/vnd.git-lfs+json' }
@@ -251,20 +62,6 @@ describe('Utility Functions', () => {
 
       expect(isGitLFSRequest(request, url)).toBe(false);
     });
-
-    it('should not identify standard Git requests as LFS', () => {
-      const request = new Request('https://example.com/repo.git/info/refs');
-      const url = new URL(request.url);
-
-      expect(isGitLFSRequest(request, url)).toBe(false);
-    });
-
-    it('should handle edge cases gracefully', () => {
-      const request = new Request('https://example.com/');
-      const url = new URL(request.url);
-
-      expect(isGitLFSRequest(request, url)).toBe(false);
-    });
   });
 
   describe('validateRequest', () => {
@@ -272,25 +69,8 @@ describe('Utility Functions', () => {
       const request = new Request('https://example.com/test', { method: 'GET' });
       const url = new URL(request.url);
 
-      const result = validateRequest(request, url);
+      const result = validateRequest(request, url, createConfig());
       expect(result.valid).toBe(true);
-    });
-
-    it('should allow HEAD requests', () => {
-      const request = new Request('https://example.com/test', { method: 'HEAD' });
-      const url = new URL(request.url);
-
-      const result = validateRequest(request, url);
-      expect(result.valid).toBe(true);
-    });
-
-    it('should reject PUT requests for non-Git operations', () => {
-      const request = new Request('https://example.com/test', { method: 'PUT' });
-      const url = new URL(request.url);
-
-      const result = validateRequest(request, url);
-      expect(result.valid).toBe(false);
-      expect(result.status).toBe(405);
     });
 
     it('should allow POST requests for Git operations', () => {
@@ -300,27 +80,140 @@ describe('Utility Functions', () => {
       });
       const url = new URL(request.url);
 
-      const result = validateRequest(request, url);
+      const result = validateRequest(request, url, createConfig());
       expect(result.valid).toBe(true);
     });
 
-    it('should reject extremely long paths', () => {
-      const longPath = `/${'a'.repeat(3000)}`;
-      const request = new Request(`https://example.com${longPath}`);
+    it('should reject encoded traversal attempts against the production validator', () => {
+      const request = new Request('https://example.com/gh/user/repo/%2e%2e%2fsecret');
       const url = new URL(request.url);
 
-      const result = validateRequest(request, url);
+      const result = validateRequest(request, url, createConfig());
+      expect(result.valid).toBe(false);
+      expect(result.status).toBe(400);
+    });
+
+    it('should reject raw traversal sequences from the original request URL', () => {
+      const request = /** @type {Request} */ ({
+        headers: new Headers(),
+        method: 'GET',
+        url: 'https://example.com/gh/user/repo/../secret'
+      });
+      const url = new URL('https://example.com/gh/user/secret');
+
+      const result = validateRequest(request, url, createConfig());
+      expect(result.valid).toBe(false);
+      expect(result.status).toBe(400);
+    });
+
+    it('should reject paths containing ASCII control characters', () => {
+      const baseUrl = new URL('https://example.com/gh/user/repo/%00file');
+      const request = /** @type {Request} */ ({
+        headers: new Headers(),
+        method: 'GET',
+        url: 'https://example.com/gh/user/repo/%00file'
+      });
+      const url = /** @type {URL} */ ({
+        origin: 'https://example.com',
+        pathname: '/gh/user/repo/\u0000file',
+        searchParams: baseUrl.searchParams
+      });
+
+      const result = validateRequest(request, url, createConfig());
+      expect(result.valid).toBe(false);
+      expect(result.status).toBe(400);
+    });
+
+    it('should reject malformed percent-encoded paths', () => {
+      const baseUrl = new URL('https://example.com/gh/user/repo/%E0%A4%A');
+      const request = /** @type {Request} */ ({
+        headers: new Headers(),
+        method: 'GET',
+        url: 'https://example.com/gh/user/repo/%E0%A4%A'
+      });
+      const url = /** @type {URL} */ ({
+        origin: 'https://example.com',
+        pathname: '/gh/user/repo/%E0%A4%A',
+        searchParams: baseUrl.searchParams
+      });
+
+      const result = validateRequest(request, url, createConfig());
+      expect(result.valid).toBe(false);
+      expect(result.status).toBe(400);
+    });
+
+    it('should reject unsupported methods for regular requests', () => {
+      const request = new Request('https://example.com/gh/user/repo/file.txt', { method: 'PATCH' });
+      const url = new URL(request.url);
+
+      const result = validateRequest(request, url, createConfig());
+      expect(result.valid).toBe(false);
+      expect(result.status).toBe(405);
+    });
+
+    it('should reject paths longer than the configured maximum', () => {
+      const request = new Request(`https://example.com/gh/${'a'.repeat(200)}`);
+      const url = new URL(request.url);
+
+      const result = validateRequest(request, url, createConfig({ MAX_PATH_LENGTH: '32' }));
       expect(result.valid).toBe(false);
       expect(result.status).toBe(414);
     });
+  });
 
-    it('should accept normal length paths', () => {
-      const normalPath = '/gh/microsoft/vscode/archive/refs/heads/main.zip';
-      const request = new Request(`https://example.com${normalPath}`);
+  describe('getAllowedMethods', () => {
+    it('should respect configured methods for regular requests', () => {
+      const config = createConfig({ ALLOWED_METHODS: 'GET,HEAD,POST' });
+      const request = new Request('https://example.com/gh/test/repo/issues', { method: 'POST' });
       const url = new URL(request.url);
 
-      const result = validateRequest(request, url);
-      expect(result.valid).toBe(true);
+      expect(getAllowedMethods(request, url, config)).toEqual(['GET', 'HEAD', 'POST']);
+    });
+
+    it('should allow mutating methods for Hugging Face API endpoints', () => {
+      const request = new Request('https://example.com/hf/token', { method: 'DELETE' });
+      const url = new URL(request.url);
+
+      expect(getAllowedMethods(request, url)).toEqual([
+        'GET',
+        'HEAD',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE'
+      ]);
+    });
+  });
+
+  describe('isDockerRequest', () => {
+    it('should identify canonical registry API paths', () => {
+      const request = new Request('https://example.com/cr/ghcr/v2/demo/manifests/latest');
+      const url = new URL(request.url);
+
+      expect(isDockerRequest(request, url)).toBe(true);
+    });
+
+    it('should identify Docker requests by user agent or manifest headers', () => {
+      const userAgentRequest = new Request('https://example.com/cr/docker/library/nginx', {
+        headers: { 'User-Agent': 'docker/27.0.0' }
+      });
+      const acceptRequest = new Request('https://example.com/cr/docker/library/nginx', {
+        headers: { Accept: 'application/vnd.oci.image.manifest.v1+json' }
+      });
+      const contentTypeRequest = new Request('https://example.com/cr/docker/library/nginx', {
+        headers: { 'Content-Type': 'application/vnd.docker.distribution.manifest.v2+json' }
+      });
+
+      expect(isDockerRequest(userAgentRequest, new URL(userAgentRequest.url))).toBe(true);
+      expect(isDockerRequest(acceptRequest, new URL(acceptRequest.url))).toBe(true);
+      expect(isDockerRequest(contentTypeRequest, new URL(contentTypeRequest.url))).toBe(true);
+    });
+
+    it('should not treat generic /cr/ requests as Docker traffic without registry hints', () => {
+      const request = new Request('https://example.com/cr/docker/library/nginx/readme');
+      const url = new URL(request.url);
+
+      expect(isDockerRequest(request, url)).toBe(false);
     });
   });
 
@@ -329,41 +222,12 @@ describe('Utility Functions', () => {
       const headers = new Headers();
       const result = addSecurityHeaders(headers);
 
-      expect(result.get('Strict-Transport-Security')).toBeTruthy();
+      expect(result.get('Strict-Transport-Security')).toContain('max-age=31536000');
       expect(result.get('X-Frame-Options')).toBe('DENY');
       expect(result.get('X-XSS-Protection')).toBe('1; mode=block');
       expect(result.get('Referrer-Policy')).toBe('strict-origin-when-cross-origin');
-      expect(result.get('Content-Security-Policy')).toBeTruthy();
-      expect(result.get('Permissions-Policy')).toBeTruthy();
-    });
-
-    it('should set HSTS with proper directives', () => {
-      const headers = new Headers();
-      const result = addSecurityHeaders(headers);
-
-      const hsts = result.get('Strict-Transport-Security');
-      expect(hsts).toContain('max-age=31536000');
-      expect(hsts).toContain('includeSubDomains');
-      expect(hsts).toContain('preload');
-    });
-
-    it('should set CSP with restrictive policy', () => {
-      const headers = new Headers();
-      const result = addSecurityHeaders(headers);
-
-      const csp = result.get('Content-Security-Policy');
-      expect(csp).toContain("default-src 'none'");
-      expect(csp).toContain("script-src 'none'");
-    });
-
-    it('should not overwrite existing headers', () => {
-      const headers = new Headers();
-      headers.set('X-Custom-Header', 'custom-value');
-
-      const result = addSecurityHeaders(headers);
-
-      expect(result.get('X-Custom-Header')).toBe('custom-value');
-      expect(result.get('X-Frame-Options')).toBe('DENY');
+      expect(result.get('Content-Security-Policy')).toContain("default-src 'none'");
+      expect(result.get('Permissions-Policy')).toContain('interest-cohort=()');
     });
 
     it('should return the same Headers object', () => {
@@ -374,101 +238,73 @@ describe('Utility Functions', () => {
     });
   });
 
-  describe('URL and Path Utilities', () => {
-    it('should handle URL parsing correctly', () => {
-      const testUrls = [
-        'https://example.com/gh/user/repo/file.txt',
-        'https://example.com/gl/group/project/-/blob/main/README.md',
-        'https://example.com/hf/microsoft/model/resolve/main/config.json'
-      ];
-
-      testUrls.forEach(urlString => {
-        expect(() => new URL(urlString)).not.toThrow();
-
-        const url = new URL(urlString);
-        expect(url.protocol).toBe('https:');
-        expect(url.hostname).toBe('example.com');
-        expect(url.pathname).toBeTruthy();
+  describe('resolveAllowedOrigin', () => {
+    it('should return the matching origin from the production config', () => {
+      const config = createConfig({ ALLOWED_ORIGINS: 'https://app.example.com' });
+      const request = new Request('https://example.com/gh/test/repo', {
+        headers: { Origin: 'https://app.example.com' }
       });
+
+      expect(resolveAllowedOrigin(request, config)).toBe('https://app.example.com');
     });
 
-    it('should handle query parameters correctly', () => {
-      const url = new URL('https://example.com/gh/repo?ref=main&path=src');
+    it('should reject origins that are not configured', () => {
+      const config = createConfig({ ALLOWED_ORIGINS: 'https://app.example.com' });
+      const request = new Request('https://example.com/gh/test/repo', {
+        headers: { Origin: 'https://evil.example.com' }
+      });
 
-      expect(url.searchParams.get('ref')).toBe('main');
-      expect(url.searchParams.get('path')).toBe('src');
-      expect(url.searchParams.has('nonexistent')).toBe(false);
+      expect(resolveAllowedOrigin(request, config)).toBeNull();
     });
 
-    it('should handle URL fragments correctly', () => {
-      const url = new URL('https://example.com/gh/repo/README.md#section');
+    it('should allow any origin when wildcard CORS is configured', () => {
+      const config = createConfig({ ALLOWED_ORIGINS: '*' });
+      const request = new Request('https://example.com/gh/test/repo', {
+        headers: { Origin: 'https://app.example.com' }
+      });
 
-      expect(url.hash).toBe('#section');
-      expect(url.pathname).toBe('/gh/repo/README.md');
+      expect(resolveAllowedOrigin(request, config)).toBe('*');
     });
   });
 
-  describe('Request and Response Utilities', () => {
-    it('should create requests with proper headers', () => {
-      const request = new Request('https://example.com/test', {
-        method: 'GET',
+  describe('addCorsHeaders', () => {
+    it('should append allow headers and preserve existing Vary values', () => {
+      const config = createConfig({ ALLOWED_ORIGINS: '*' });
+      const request = new Request('https://example.com/gh/test/repo', {
         headers: {
-          'User-Agent': 'Xget/1.0',
-          Accept: 'application/json'
+          Origin: 'https://app.example.com',
+          'Access-Control-Request-Headers': 'X-Test-Header'
         }
       });
 
-      expect(request.method).toBe('GET');
-      expect(request.headers.get('User-Agent')).toBe('Xget/1.0');
-      expect(request.headers.get('Accept')).toBe('application/json');
-    });
+      const headers = addCorsHeaders(new Headers({ Vary: 'Accept-Encoding' }), request, config);
 
-    it('should handle request cloning', () => {
-      const originalRequest = new Request('https://example.com/test', {
-        method: 'POST',
-        body: 'test data',
-        headers: { 'Content-Type': 'text/plain' }
-      });
-
-      const clonedRequest = originalRequest.clone();
-
-      expect(clonedRequest.method).toBe(originalRequest.method);
-      expect(clonedRequest.url).toBe(originalRequest.url);
-      expect(clonedRequest.headers.get('Content-Type')).toBe('text/plain');
-    });
-
-    it('should create responses with proper status codes', () => {
-      const responses = [
-        new Response('OK', { status: 200 }),
-        new Response('Not Found', { status: 404 }),
-        new Response('Server Error', { status: 500 })
-      ];
-
-      expect(responses[0].status).toBe(200);
-      expect(responses[1].status).toBe(404);
-      expect(responses[2].status).toBe(500);
+      expect(headers.get('Access-Control-Allow-Origin')).toBe('*');
+      expect(headers.get('Access-Control-Allow-Headers')).toBe('X-Test-Header');
+      expect(headers.get('Vary')).toBe('Accept-Encoding, Origin');
     });
   });
 
-  describe('Error Handling Utilities', () => {
-    it('should create proper error responses', () => {
-      const errorResponse = new Response('Bad Request', {
-        status: 400,
-        statusText: 'Bad Request',
-        headers: { 'Content-Type': 'text/plain' }
-      });
+  describe('createErrorResponse', () => {
+    it('should create a plain-text error response with security headers', async () => {
+      const response = createErrorResponse('Bad Request', 400);
 
-      expect(errorResponse.status).toBe(400);
-      expect(errorResponse.statusText).toBe('Bad Request');
-      expect(errorResponse.headers.get('Content-Type')).toBe('text/plain');
+      expect(response.status).toBe(400);
+      expect(response.headers.get('Content-Type')).toBe('text/plain');
+      expect(response.headers.get('X-Frame-Options')).toBe('DENY');
+      expect(await response.text()).toBe('Bad Request');
     });
 
-    it('should handle async error scenarios', async () => {
-      const asyncFunction = async () => {
-        throw new Error('Test error');
-      };
+    it('should create detailed JSON error responses when requested', async () => {
+      const response = createErrorResponse('Unauthorized', 401, true);
+      const body = await response.json();
 
-      await expect(asyncFunction()).rejects.toThrow('Test error');
+      expect(response.headers.get('Content-Type')).toBe('application/json');
+      expect(body).toMatchObject({
+        error: 'Unauthorized',
+        status: 401
+      });
+      expect(body.timestamp).toBeTruthy();
     });
   });
 });

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { PLATFORMS, transformPath } from '../../src/config/platforms.js';
+import { PLATFORM_CATALOG as PLATFORMS } from '../../src/config/platform-catalog.js';
+import { transformPath } from '../../src/routing/platform-transformers.js';
 
 describe('Platform Configuration', () => {
   describe('Platform Definitions', () => {
@@ -16,6 +17,7 @@ describe('Platform Configuration', () => {
         'npm',
         'pypi',
         'conda',
+        'flathub',
         'homebrew'
       ];
 
@@ -134,6 +136,13 @@ describe('Platform Configuration', () => {
       ).toBe('/conda-forge/linux-64/repodata.json');
     });
 
+    it('should transform Flathub paths correctly', () => {
+      expect(transformPath('/flathub/repo/summary', 'flathub')).toBe('/repo/summary');
+      expect(transformPath('/flathub/repo/flathub.flatpakrepo', 'flathub')).toBe(
+        '/repo/flathub.flatpakrepo'
+      );
+    });
+
     it('should transform container registry paths correctly', () => {
       expect(
         transformPath('/cr/ghcr/v2/nginxinc/nginx-unprivileged/manifests/latest', 'cr-ghcr')
@@ -189,6 +198,10 @@ describe('Platform Configuration', () => {
     it('should have correct conda base URLs', () => {
       expect(PLATFORMS.conda).toBe('https://repo.anaconda.com');
       expect(PLATFORMS['conda-community']).toBe('https://conda.anaconda.org');
+    });
+
+    it('should have correct Flathub base URL', () => {
+      expect(PLATFORMS.flathub).toBe('https://dl.flathub.org');
     });
 
     it('should have correct container registry base URLs', () => {
@@ -328,6 +341,10 @@ describe('Platform Configuration', () => {
         expect(PLATFORMS[registry]).toBeDefined();
         expect(typeof PLATFORMS[registry]).toBe('string');
       });
+    });
+
+    it('should use the correct Amazon ECR Public base URL', () => {
+      expect(PLATFORMS['cr-ecr']).toBe('https://public.ecr.aws');
     });
 
     it('should transform all container registry paths correctly', () => {

@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 📚 文档
-    url: https://github.com/xixu-me/Xget/blob/main/README.zh-Hans.md
-    about: 查看存储库的 README 文档
-  - name: 🔁 URL 转换器
-    url: https://xuc.xi-xu.me
-    about: 访问配套 web 应用程序
-  - name: 🔐 安全漏洞报告
-    url: https://github.com/xixu-me/xget/security/policy#-%E6%8A%A5%E5%91%8A%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E
-    about: 报告安全漏洞
+  - name: Read the README
+    url: https://github.com/xixu-me/Xget/blob/main/README.md
+    about: Check supported platforms, usage examples, and deployment options first.
+  - name: Contributing Guide
+    url: https://github.com/xixu-me/Xget/blob/main/CONTRIBUTING.md
+    about: Learn how to prepare a bug report or pull request.
+  - name: Maintainer contact page
+    url: https://xi-xu.me/#contact
+    about: Use a private contact path for sensitive or non-public matters.

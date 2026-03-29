@@ -1,106 +1,23 @@
-## 概述
+## Summary
 
-<!-- 请简要描述此 PR 的目的和改动内容 -->
+- What does this change do?
+- Why is it needed?
 
-## 改动类型
+## Testing
 
-<!-- 请勾选适用的改动类型 -->
-
-- [ ] 🐛 bug 修复
-- [ ] ✨ 新功能
-- [ ] 📝 文档更新
-- [ ] 🎨 代码风格/格式调整
-- [ ] ♻️ 代码重构
-- [ ] ⚡️ 性能优化
-- [ ] ✅ 测试相关
-- [ ] 🔧 配置文件修改
-- [ ] 🌐 新增平台支持
-- [ ] 🔒 安全相关
-
-## 相关 Issue
-
-<!-- 如果此 PR 解决了某个 Issue，请在此关联 -->
-
-Closes #
-Related to #
-
-## 改动说明
-
-<!-- 详细描述你做了什么改动，以及为什么这样做 -->
-
-### 主要改动
-
--
-
-### 技术细节
-
--
-
-## 测试
-
-<!-- 描述你如何测试了这些改动 -->
-
-- [ ] 已通过所有现有测试 (`npm run test:run`)
-- [ ] 已添加新的测试用例
-- [ ] 已在本地开发环境测试 (`npm run dev`)
-- [ ] 已验证代码格式 (`npm run format:check`)
-- [ ] 已通过类型检查 (`npm run type-check`)
-- [ ] 已通过 lint 检查 (`npm run lint`)
-
-### 测试环境
-
-<!-- 描述测试的环境和场景 -->
-
--
-
-## 影响范围
-
-<!-- 此改动会影响哪些部分？ -->
-
-- [ ] 核心请求处理逻辑
-- [ ] 平台配置
-- [ ] 协议处理 (Git/Docker/AI)
-- [ ] 缓存策略
-- [ ] 安全功能
-- [ ] 性能监控
-- [ ] 文档
-- [ ] CI/CD 流程
-
-## 破坏性变更
-
-<!-- 此 PR 是否包含破坏性变更？如果是，请详细说明 -->
-
-- [ ] 是
-- [ ] 否
-
-<details>
-<summary>破坏性变更详情</summary>
-
-<!-- 如果有破坏性变更，请在此详细说明 -->
-
-</details>
-
-## 部署说明
-
-<!-- 部署此改动时需要注意什么？是否需要环境变量配置？ -->
-
--
-
-## 截图/演示
-
-<!-- 如果适用，请提供截图或演示 -->
+- [ ] `npm run lint`
+- [ ] `npm run format:check`
+- [ ] `npm run test:run`
+- [ ] `npm run type-check`
 
 ## Checklist
 
-- [ ] 代码遵循存储库的编码规范
-- [ ] 已进行自我代码审查
-- [ ] 代码注释清晰，特别是复杂逻辑部分
-- [ ] 已更新相关文档
-- [ ] 改动不会产生新的警告
-- [ ] 已添加必要的测试，且测试通过
-- [ ] 新增和现有的单元测试都通过
-- [ ] 依赖的改动已合并并发布
+- [ ] I kept the change focused and avoided unrelated edits
+- [ ] I added or updated tests when behavior changed
+- [ ] I updated documentation when user-facing behavior changed
+- [ ] I removed or redacted secrets, tokens, and private data from examples
 
-## 附加说明
+## Notes for reviewers
 
-<!-- 其他需要审查者知道的信息 -->
+- Related issue:
+- Risk or rollout notes:

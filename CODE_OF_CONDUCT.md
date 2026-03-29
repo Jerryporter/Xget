@@ -1,80 +1,80 @@
-# 贡献者行为准则
+# Code of Conduct
 
-## 我们的承诺
+## Our commitment
 
-作为成员、贡献者和领导者，我们承诺让每个人都能在我们的社区中获得无骚扰的体验，无论其年龄、体型、明显或不明显的残疾、种族、性别特征、性别认同和表达、经验水平、教育程度、社会经济地位、国籍、外貌、种族、宗教或性取向如何。
+Xget aims to be a welcoming, respectful, and technically constructive open
+source project. Contributors, maintainers, and community members are expected to
+help create an environment where people can ask questions, share ideas, and
+collaborate without harassment or hostility.
 
-我们承诺以有助于建立开放、友好、多元、包容和健康社区的方式行事和互动。
+## Scope
 
-## 我们的标准
+This code of conduct applies to project spaces, including:
 
-有助于为我们社区创造积极环境的行为示例包括：
+- GitHub issues, pull requests, reviews, and discussions
+- Documentation, examples, and other repository content
+- Community spaces or events that are explicitly presented as part of Xget
 
-* 对他人表现出同理心和善意
-* 尊重不同的观点、看法和经历
-* 给予并优雅地接受建设性反馈
-* 承担责任并向受我们错误影响的人道歉，并从经验中学习
-* 专注于不仅对我们个人最好，而且对整个社区最好的事情
+## Expected behavior
 
-不可接受的行为示例包括：
+- Be respectful and professional, even in disagreement
+- Focus feedback on code, design, documentation, and behavior, not on people
+- Share context, evidence, and reproduction steps when raising concerns
+- Welcome contributors with different backgrounds, skill levels, and use cases
+- Accept constructive feedback and course-correction gracefully
 
-* 使用性化的语言或图像，以及任何形式的性关注或性挑逗
-* 恶意评论、侮辱性或贬损性评论，以及个人或政治攻击
-* 公开或私下骚扰
-* 未经明确许可发布他人的私人信息，如物理地址或电子邮件地址
-* 在专业环境中可能被合理认为不当的其他行为
+## Unacceptable behavior
 
-## 执行责任
+- Harassment, intimidation, threats, or personal attacks
+- Discriminatory or demeaning language
+- Deliberate disruption, trolling, or bad-faith engagement
+- Publishing private information without explicit permission
+- Sexualized language or imagery in project spaces
+- Repeatedly ignoring project rules, review boundaries, or moderator direction
 
-社区领导者有责任澄清和执行我们的可接受行为标准，并将对他们认为不当、威胁、冒犯或有害的任何行为采取适当和公平的纠正措施。
+## Enforcement responsibilities
 
-社区领导者有权利和责任删除、编辑或拒绝与本行为准则不符的评论、提交、代码、wiki 编辑、问题和其他贡献，并在适当时传达审核决定的原因。
+Project maintainers are responsible for clarifying and enforcing these
+standards. They may take any action they consider appropriate to protect the
+community, including editing or removing content, closing discussions, rejecting
+contributions, temporarily restricting participation, or permanently banning a
+participant from project spaces.
 
-## 适用范围
+## Reporting concerns
 
-本行为准则适用于所有社区空间，也适用于个人在公共空间正式代表社区的情况。代表我们社区的示例包括使用官方电子邮件地址、通过官方社交媒体账户发布信息，或在线上或线下活动中担任指定代表。
+If you experience or witness behavior that violates this code of conduct, report
+it privately to the maintainer using the contact information published on the
+maintainer contact page:
 
-## 执行
+- <https://xi-xu.me/#contact>
 
-可以向负责执行的社区领导者报告滥用、骚扰或其他不可接受的行为，联系邮箱：<i@xi-xu.me>。
-所有投诉都将得到及时和公正的审查和调查。
+Please include:
 
-所有社区领导者都有义务尊重任何事件报告者的隐私和安全。
+- A description of what happened
+- Links, screenshots, or other relevant evidence
+- When and where the incident occurred
+- Any immediate safety or privacy concerns
 
-## 执行指南
+If the report concerns the current primary maintainer, use another private
+contact method listed on the same contact page, or GitHub's site-wide reporting
+tools when the incident took place on GitHub.
 
-社区领导者将遵循这些社区影响指南来确定他们认为违反本行为准则的任何行为的后果：
+## Enforcement process
 
-### 1. 纠正
+- Reports will be reviewed as confidentially as practical
+- Maintainers will investigate in good faith and evaluate context carefully
+- Outcomes may include a warning, content removal, temporary restriction, or
+  permanent ban
+- Retaliation against someone for making a good-faith report is itself a code of
+  conduct violation
 
-**社区影响**：使用不当语言或其他被认为在社区中不专业或不受欢迎的行为。
+## Project responsibility
 
-**后果**：社区领导者的私人书面警告，澄清违规的性质并解释为什么该行为不当。可能会要求公开道歉。
+Maintainers are expected to apply this policy fairly and consistently. Not every
+disagreement is a code of conduct violation, but behavior that makes the project
+unsafe, exclusionary, or hostile will be addressed.
 
-### 2. 警告
+## Attribution
 
-**社区影响**：通过单一事件或一系列行为的违规。
-
-**后果**：对持续行为后果的警告。在指定时间内不得与相关人员互动，包括与执行行为准则的人员进行主动互动。这包括避免在社区空间以及社交媒体等外部渠道中的互动。违反这些条款可能导致临时或永久禁令。
-
-### 3. 临时禁令
-
-**社区影响**：严重违反社区标准，包括持续的不当行为。
-
-**后果**：在指定时间内禁止与社区进行任何形式的互动或公开交流。在此期间不允许与相关人员进行公开或私人互动，包括与执行行为准则的人员进行主动互动。违反这些条款可能导致永久禁令。
-
-### 4. 永久禁令
-
-**社区影响**：表现出违反社区标准的模式，包括持续的不当行为、对个人的骚扰或对某类个人的攻击或贬低。
-
-**后果**：永久禁止在社区内进行任何形式的公开互动。
-
-## 归属
-
-本行为准则改编自[贡献者公约][homepage] 2.0 版，可在 <https://www.contributor-covenant.org/version/2/0/code_of_conduct.html> 获取。
-
-社区影响指南的灵感来自 [Mozilla 的行为准则执行阶梯](https://github.com/mozilla/diversity)。
-
-有关本行为准则常见问题的答案，请参阅 <https://www.contributor-covenant.org/faq> 的常见问题解答。翻译版本可在 <https://www.contributor-covenant.org/translations> 获取。
-
-[homepage]: https://www.contributor-covenant.org
+This document is informed by the practices recommended by Open Source Guides and
+other established open source community standards.

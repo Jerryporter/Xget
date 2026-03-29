@@ -14,6 +14,14 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
+    groups:
+      docker-actions:
+        applies-to: version-updates
+        patterns:
+          - "docker/build-push-action"
+          - "docker/login-action"
+          - "docker/metadata-action"
+          - "docker/setup-buildx-action"
     reviewers:
       - "xixu-me"
     assignees:
@@ -33,6 +41,19 @@ updates:
     labels:
       - "dependencies"
       - "npm"
+    groups:
+      cloudflare-dev:
+        applies-to: version-updates
+        patterns:
+          - "@cloudflare/vitest-pool-workers"
+          - "@cloudflare/workers-types"
+          - "wrangler"
+      linting:
+        applies-to: version-updates
+        patterns:
+          - "@eslint/js"
+          - "eslint"
+          - "eslint-*"
     reviewers:
       - "xixu-me"
     assignees:

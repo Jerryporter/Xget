@@ -1,18 +1,18 @@
 /**
  * Xget - High-performance acceleration engine for developer resources
- * Copyright (C) 2025 Xi Xu
+ * Copyright (C) Xi Xu
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
@@ -26,6 +26,43 @@ import { CONFIG } from '../config/index.js';
 import { isAIInferenceRequest } from '../protocols/ai.js';
 import { isGitLFSRequest, isGitRequest } from '../protocols/git.js';
 import { isHuggingFaceAPIRequest } from '../protocols/huggingface.js';
+
+/**
+ * Computes protocol and request traits used across validation, routing, and response handling.
+ * @param {Request} request
+ * @param {URL} url
+ * @returns {{
+ *   isAI: boolean,
+ *   isDocker: boolean,
+ *   isGit: boolean,
+ *   isGitLFS: boolean,
+ *   isHF: boolean
+ * }} Request traits for the current request.
+ */
+export function getRequestTraits(request, url) {
+  return {
+    isAI: isAIInferenceRequest(request, url),
+    isDocker: isDockerRequest(request, url),
+    isGit: isGitRequest(request, url),
+    isGitLFS: isGitLFSRequest(request, url),
+    isHF: isHuggingFaceAPIRequest(request, url)
+  };
+}
+
+/**
+ * Checks whether a request should use protocol passthrough behavior.
+ * @param {{
+ *   isAI: boolean,
+ *   isDocker: boolean,
+ *   isGit: boolean,
+ *   isGitLFS: boolean,
+ *   isHF: boolean
+ * }} traits
+ * @returns {boolean} True when request handling should follow protocol passthrough rules.
+ */
+export function isProtocolRequest(traits) {
+  return traits.isGit || traits.isGitLFS || traits.isDocker || traits.isAI || traits.isHF;
+}
 
 /**
  * Best-effort decode for security validation.
@@ -92,34 +129,39 @@ function hasAsciiControlChars(value) {
  * @returns {boolean} True if this is a container registry operation
  */
 export function isDockerRequest(request, url) {
+  const { pathname } = url;
+
   // Check for container registry API endpoints
-  if (url.pathname.includes('/v2/') || url.pathname === '/v2') {
+  if (pathname === '/v2' || pathname === '/v2/' || pathname.startsWith('/v2/')) {
     return true;
   }
 
-  // Check for Docker-specific User-Agent
-  const userAgent = request.headers.get('User-Agent') || '';
-  if (userAgent.toLowerCase().includes('docker/')) {
-    return true;
-  }
+  if (pathname.startsWith('/cr/')) {
+    if (/^\/cr\/[^/]+\/v2(?:\/|$)/.test(pathname)) {
+      return true;
+    }
 
-  // Check for Docker-specific Accept headers
-  const accept = request.headers.get('Accept') || '';
-  if (
-    accept.includes('application/vnd.docker.distribution.manifest') ||
-    accept.includes('application/vnd.oci.image.manifest') ||
-    accept.includes('application/vnd.docker.image.rootfs.diff.tar.gzip')
-  ) {
-    return true;
-  }
+    const userAgent = request.headers.get('User-Agent') || '';
+    if (userAgent.toLowerCase().includes('docker/')) {
+      return true;
+    }
 
-  // Check for Docker-specific Content-Type headers (for PUT/POST)
-  const contentType = request.headers.get('Content-Type') || '';
-  if (
-    contentType.includes('application/vnd.docker.distribution.manifest') ||
-    contentType.includes('application/vnd.oci.image.manifest')
-  ) {
-    return true;
+    const accept = request.headers.get('Accept') || '';
+    if (
+      accept.includes('application/vnd.docker.distribution.manifest') ||
+      accept.includes('application/vnd.oci.image.manifest') ||
+      accept.includes('application/vnd.docker.image.rootfs.diff.tar.gzip')
+    ) {
+      return true;
+    }
+
+    const contentType = request.headers.get('Content-Type') || '';
+    if (
+      contentType.includes('application/vnd.docker.distribution.manifest') ||
+      contentType.includes('application/vnd.oci.image.manifest')
+    ) {
+      return true;
+    }
   }
 
   return false;
@@ -129,32 +171,51 @@ export function isDockerRequest(request, url) {
 export { isAIInferenceRequest, isGitLFSRequest, isGitRequest, isHuggingFaceAPIRequest };
 
 /**
+ * Computes the allowed methods for a request based on protocol detection.
+ * @param {Request} request
+ * @param {URL} url
+ * @param {import('../config/index.js').ApplicationConfig} config
+ * @returns {string[]} Allowed HTTP methods for this request shape.
+ */
+export function getAllowedMethods(request, url, config = CONFIG) {
+  const traits = getRequestTraits(request, url);
+
+  return isProtocolRequest(traits)
+    ? ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE']
+    : config.SECURITY.ALLOWED_METHODS;
+}
+
+/**
  * Validates incoming requests against security rules.
  *
  * Performs security validation including:
- * - HTTP method validation (with special allowances for Git/Docker/AI operations)
+ * - HTTP method validation (with special allowances for protocol-specific operations)
  * - URL path length limits
  *
  * Different protocols have different allowed methods:
  * - Regular requests: GET, HEAD (configurable via SECURITY.ALLOWED_METHODS)
- * - Git/LFS/Docker/AI: GET, HEAD, POST, PUT, PATCH
+ * - Git/LFS/Docker/AI/Hugging Face API: GET, HEAD, POST, PUT, PATCH, DELETE
  * @param {Request} request - The incoming request object
  * @param {URL} url - Parsed URL object
  * @param {import('../config/index.js').ApplicationConfig} config - Configuration object
+ * @param {{
+ *   isAI: boolean,
+ *   isDocker: boolean,
+ *   isGit: boolean,
+ *   isGitLFS: boolean,
+ *   isHF: boolean
+ * }} traits - Pre-computed request traits to avoid repeated protocol detection.
  * @returns {{valid: boolean, error?: string, status?: number}} Validation result object
  */
-export function validateRequest(request, url, config = CONFIG) {
-  // Allow POST method for Git, Git LFS, Docker, AI inference, and HF API operations
-  const isGit = isGitRequest(request, url);
-  const isGitLFS = isGitLFSRequest(request, url);
-  const isDocker = isDockerRequest(request, url);
-  const isAI = isAIInferenceRequest(request, url);
-  const isHF = isHuggingFaceAPIRequest(request, url);
-
-  const allowedMethods =
-    isGit || isGitLFS || isDocker || isAI || isHF
-      ? ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE']
-      : config.SECURITY.ALLOWED_METHODS;
+export function validateRequest(
+  request,
+  url,
+  config = CONFIG,
+  traits = getRequestTraits(request, url)
+) {
+  const allowedMethods = isProtocolRequest(traits)
+    ? ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE']
+    : config.SECURITY.ALLOWED_METHODS;
 
   if (!allowedMethods.includes(request.method)) {
     return { valid: false, error: 'Method not allowed', status: 405 };

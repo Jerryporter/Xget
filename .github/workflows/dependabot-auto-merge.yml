@@ -1,0 +1,125 @@
+name: Dependabot Auto Merge
+
+on:
+  workflow_run:
+    workflows:
+      - CI
+      - Commit Lint
+    types:
+      - completed
+
+concurrency:
+  group: dependabot-auto-merge-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  merge:
+    name: Auto-merge Dependabot PRs
+    if: ${{ github.event.workflow_run.event == 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Find matching Dependabot PR
+        id: pr
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const branch = context.payload.workflow_run.head_branch;
+            const { owner, repo } = context.repo;
+
+            const { data: pulls } = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: "open",
+              head: `${owner}:${branch}`,
+              per_page: 10,
+            });
+
+            const pr = pulls.find((item) => item.user?.login === "dependabot[bot]");
+
+            if (!pr) {
+              core.info(`No open Dependabot PR found for branch ${branch}.`);
+              core.setOutput("should_merge", "false");
+              return;
+            }
+
+            core.setOutput("should_merge", "true");
+            core.setOutput("number", String(pr.number));
+
+      - name: Merge PR when checks pass
+        if: steps.pr.outputs.should_merge == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pull_number = Number("${{ steps.pr.outputs.number }}");
+
+            const isSuccessful = (status) =>
+              status === "SUCCESS" ||
+              status === "SKIPPED" ||
+              status === "NEUTRAL";
+
+            const { data: pr } = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number,
+            });
+
+            if (pr.user?.login !== "dependabot[bot]") {
+              core.info(`PR #${pull_number} is no longer a Dependabot PR.`);
+              return;
+            }
+
+            if (pr.draft) {
+              core.info(`PR #${pull_number} is still a draft.`);
+              return;
+            }
+
+            if (pr.mergeable === false) {
+              core.info(`PR #${pull_number} has merge conflicts.`);
+              return;
+            }
+
+            const { data: checks } = await github.rest.checks.listForRef({
+              owner,
+              repo,
+              ref: pr.head.sha,
+            });
+
+            const requiredChecks = ["Lint", "Test and Coverage", "Type Check"];
+            const checkMap = new Map(checks.check_runs.map((run) => [run.name, run]));
+            const missing = requiredChecks.filter((name) => !checkMap.has(name));
+            if (missing.length > 0) {
+              core.info(`PR #${pull_number} is missing checks: ${missing.join(", ")}.`);
+              return;
+            }
+
+            const failed = requiredChecks.filter((name) => {
+              const run = checkMap.get(name);
+              return run.status !== "completed" || !isSuccessful(String(run.conclusion).toUpperCase());
+            });
+
+            if (failed.length > 0) {
+              core.info(`PR #${pull_number} still has pending or failing checks: ${failed.join(", ")}.`);
+              return;
+            }
+
+            await github.rest.pulls.merge({
+              owner,
+              repo,
+              pull_number,
+              merge_method: "merge",
+            });
+
+            await github.rest.git.deleteRef({
+              owner,
+              repo,
+              ref: `heads/${pr.head.ref}`,
+            });
+
+            core.info(`Merged Dependabot PR #${pull_number} and deleted ${pr.head.ref}.`);

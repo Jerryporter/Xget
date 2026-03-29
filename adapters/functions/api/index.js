@@ -1,33 +1,48 @@
 /**
  * Xget - High-performance acceleration engine for developer resources
- * Copyright (C) 2025 Xi Xu
+ * Copyright (C) Xi Xu
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { handleRequest } from '../../../src/app/handle-request.js';
 
+/**
+ * @typedef {{
+ *   ALLOWED_METHODS?: string,
+ *   ALLOWED_ORIGINS?: string,
+ *   CACHE_DURATION?: string,
+ *   MAX_PATH_LENGTH?: string,
+ *   MAX_RETRIES?: string,
+ *   RETRY_DELAY_MS?: string,
+ *   TIMEOUT_SECONDS?: string
+ * }} RuntimeEnv
+ */
 
-import { handleRequest } from '../src/index.js';
+/**
+ * @typedef {{
+ *   env?: RuntimeEnv,
+ *   geo?: unknown,
+ *   ip?: string,
+ *   waitUntil?: (promise: Promise<unknown>) => void
+ * }} FunctionAdapterContext
+ */
 
 /**
  * Edge Function handler.
  * @param {Request} request - Standard Web API Request object
- * @param {object} [context] - Platform-specific context (Netlify only)
- * @param {object} [context.geo] - Geolocation data (Netlify)
- * @param {string} [context.ip] - Client IP address (Netlify)
- * @param {object} [context.env] - Environment variables (Netlify)
- * @param {(promise: Promise<unknown>) => void} [context.waitUntil] - Background task extension (Netlify)
+ * @param {FunctionAdapterContext} [context] - Platform-specific context (Netlify only)
  * @returns {Promise<Response>} Standard Web API Response
  * @example
  * // Netlify invokes with context
@@ -37,14 +52,17 @@ import { handleRequest } from '../src/index.js';
  * handler(request)
  */
 export default async function handler(request, context) {
+  const runtimeContext = context || /** @type {FunctionAdapterContext} */ ({});
+
   // Detect runtime environment
-  const isNetlify = context && (context.geo !== undefined || context.ip !== undefined);
+  const isNetlify = runtimeContext.geo !== undefined || runtimeContext.ip !== undefined;
 
   // Normalize environment variables
   // Netlify provides context.env, Vercel Edge uses globalThis
+  /** @type {RuntimeEnv} */
   let envSource;
   if (isNetlify) {
-    envSource = context.env || {};
+    envSource = runtimeContext.env || {};
   } else if (typeof process !== 'undefined' && process.env) {
     // Vercel or Node.js environment
     envSource = process.env;
@@ -60,14 +78,23 @@ export default async function handler(request, context) {
     CACHE_DURATION: envSource.CACHE_DURATION,
     ALLOWED_METHODS: envSource.ALLOWED_METHODS,
     ALLOWED_ORIGINS: envSource.ALLOWED_ORIGINS,
-    MAX_PATH_LENGTH: envSource.MAX_PATH_LENGTH,
+    MAX_PATH_LENGTH: envSource.MAX_PATH_LENGTH
   };
 
   // Create normalized execution context
+  const waitUntil = isNetlify && runtimeContext.waitUntil ? runtimeContext.waitUntil : null;
   const ctx = {
-    waitUntil: isNetlify && context.waitUntil
-      ? (promise) => context.waitUntil(promise)
-      : (_promise) => {
+    waitUntil: waitUntil
+      ? /**
+         * Forwards background work in runtimes that support waitUntil.
+         * @param {Promise<unknown>} promise
+         */
+        promise => waitUntil(promise)
+      : (
+          /** @type {Promise<unknown>} */
+          _promise
+        ) => {
+          void _promise;
           // No-op on Vercel: background tasks not supported
           // Cache writes will run synchronously instead
           console.warn('waitUntil is not supported in Vercel Edge Runtime');
@@ -84,5 +111,5 @@ export default async function handler(request, context) {
 
 // Vercel Edge Runtime configuration (ignored by Netlify)
 export const config = {
-  runtime: 'edge',
+  runtime: 'edge'
 };

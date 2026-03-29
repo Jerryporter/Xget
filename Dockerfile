@@ -13,13 +13,19 @@ RUN npx wrangler deploy --dry-run --outdir=dist
 
 # --- Stage 2: minimal runtime with workerd -------------------------
 FROM node:25-slim AS runtime
+ARG TARGETARCH
 
 # Install ca-certificates for SSL, then install workerd via npm
 RUN apt-get update && \
     apt-get install -y ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
-    npm install -g @cloudflare/workerd-linux-64 && \
-    ln -s /usr/local/lib/node_modules/@cloudflare/workerd-linux-64/bin/workerd /usr/local/bin/workerd && \
+    case "${TARGETARCH}" in \
+      amd64) WORKERD_PKG="@cloudflare/workerd-linux-64" ;; \
+      arm64) WORKERD_PKG="@cloudflare/workerd-linux-arm64" ;; \
+      *) echo "Unsupported TARGETARCH: ${TARGETARCH}" && exit 1 ;; \
+    esac && \
+    npm install -g "${WORKERD_PKG}" && \
+    ln -s "/usr/local/lib/node_modules/${WORKERD_PKG}/bin/workerd" /usr/local/bin/workerd && \
     workerd --version
 
 WORKDIR /worker

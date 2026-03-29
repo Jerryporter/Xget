@@ -1,22 +1,22 @@
 /**
  * Xget - High-performance acceleration engine for developer resources
- * Copyright (C) 2025 Xi Xu
+ * Copyright (C) Xi Xu
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { PLATFORMS } from './platforms.js';
+import { PLATFORMS } from './platform-catalog.js';
 
 /**
  * Security-related configuration options for request validation and CORS.
@@ -132,16 +132,27 @@ import { PLATFORMS } from './platforms.js';
  * // ['https://example.com', 'https://app.example.com']
  */
 export function createConfig(env = {}) {
+  const allowedMethods =
+    typeof env.ALLOWED_METHODS === 'string'
+      ? env.ALLOWED_METHODS.split(',')
+          .map(method => method.trim())
+          .filter(Boolean)
+      : ['GET', 'HEAD'];
+  const allowedOrigins =
+    typeof env.ALLOWED_ORIGINS === 'string'
+      ? env.ALLOWED_ORIGINS.split(',')
+          .map(origin => origin.trim())
+          .filter(Boolean)
+      : ['*'];
+
   return {
     TIMEOUT_SECONDS: parseInt(String(env.TIMEOUT_SECONDS), 10) || 30,
     MAX_RETRIES: parseInt(String(env.MAX_RETRIES), 10) || 3,
     RETRY_DELAY_MS: parseInt(String(env.RETRY_DELAY_MS), 10) || 1000,
     CACHE_DURATION: parseInt(String(env.CACHE_DURATION), 10) || 1800, // 30 minutes
     SECURITY: {
-      ALLOWED_METHODS:
-        typeof env.ALLOWED_METHODS === 'string' ? env.ALLOWED_METHODS.split(',') : ['GET', 'HEAD'],
-      ALLOWED_ORIGINS:
-        typeof env.ALLOWED_ORIGINS === 'string' ? env.ALLOWED_ORIGINS.split(',') : ['*'],
+      ALLOWED_METHODS: allowedMethods.length ? allowedMethods : ['GET', 'HEAD'],
+      ALLOWED_ORIGINS: allowedOrigins.length ? allowedOrigins : ['*'],
       MAX_PATH_LENGTH: parseInt(String(env.MAX_PATH_LENGTH), 10) || 2048
     },
     PLATFORMS

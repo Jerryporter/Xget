@@ -6,6 +6,7 @@
 
 [![Ask Zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/xixu-me/Xget)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/xixu-me/Xget)
+[![codecov](https://codecov.io/github/xixu-me/xget/graph/badge.svg?token=KDFMG9YX8G)](https://codecov.io/github/xixu-me/xget)
 [![Chromium](https://img.shields.io/badge/Chromium-4285F4?logo=googlechrome&logoColor=white)](#-生态系统集成)
 [![Firefox](https://img.shields.io/badge/Firefox-FF7139?logo=Firefox&logoColor=white)](#-生态系统集成)
 
@@ -13,7 +14,7 @@
 [![EdgeOne](https://img.shields.io/badge/EdgeOne-006EFF?&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACNklEQVR4nJ1W7XHbMAx96ul/lQnCDapOUG3gdIIkG6QjdINOUGeDNhNYmUDuBHIWiNQF/PqDYAxDoMUGdzx+AXgAAQGqSKKAOgAbma8BXMn5DGAv4wlAv6qJ5KVxR3LkOR3NWu9HkcnqzF0EkoMDcsysLd8oOooAb0lOF7wqpYnkzRrgZkVJ8mp0jLFzotscYOC6ZyNjjLbOnTZI7weSjQc4ZoQmkjuSneIdMoADyR9iVKuB0qglWYOT0n9Uys/qPAD4ZHgfAXwzfO/6LLyxcTxbJEdufFi1aEk32l6Z+1Lhep1lQa1aVwI2O3wBsTIFxOoUADzVspgzQp6S1pztATRyvpG5lTNLTUVykssJwF91OQP4bATuAGzVngBexJD0vJW51/u5VpZc4VSUgViMLX1xlIUCoERNLoYE8Ns579S6chTngGYZh1oWjRGoEGOjKSAGP/HovqblDoiJtAfwLPv5xHnqCrbNeK3K8qX9juQDMx3CVpoesXLop7DeATF+2rsKsbo8oizD3zzsjLWk30RHw7N7R5V68/AgMUpeWg9bLLOxL/AniOw1Yp58t/FZi5+mzuFrJJY/Sb6qFzmmV9PMgzBsHUW/eN5gJwdk54Rm4YTXgHPx00p24qEGydFElb3e09nUbpXVuZ+oS/88Z62rJLMelHAJSDqf6LxWSXvS35/+Vr0SlqrPHsBXxOw/o5IGHDLKE4AucS8A7hG7zAIMACryv371WxkfxYhZFD8jFvt+TdE/deK28xBAUlEAAAAASUVORK5CYII=)](#部署到-edgeone-pages)
 [![Vercel](https://img.shields.io/badge/Vercel-000000?&logo=vercel&logoColor=white)](#部署到-vercel)
 [![Netlify](https://img.shields.io/badge/Netlify-00C7B7?&logo=netlify&logoColor=white)](#部署到-netlify)
-[![Deno](https://img.shields.io/badge/Deno-70FFAF?&logo=deno&logoColor=black)](#部署到-deno-deploy)
+[![Deno](https://img.shields.io/badge/Deno-000000?&logo=deno&logoColor=white)](#部署到-deno-deploy)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?&logo=docker&logoColor=white)](#自托管部署)
 [![Podman](https://img.shields.io/badge/Podman-892CA0?&logo=podman&logoColor=white)](#自托管部署)
 
@@ -44,6 +45,7 @@
 [![NuGet](https://img.shields.io/badge/NuGet-004880?logo=nuget&logoColor=white)](#nuget-包管理加速)
 [![Rust](https://img.shields.io/badge/Rust-000000?logo=rust&logoColor=white)](#rust-包管理加速)
 [![Packagist](https://img.shields.io/badge/Packagist-F28D1A?logo=packagist&logoColor=white)](#php-包管理加速)
+[![Flathub](https://img.shields.io/badge/Flathub-000000?logo=flathub&logoColor=white)](#flathub-存储库镜像)
 [![Debian](https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=white)](#debianubuntu-apt-配置)
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white)](#debianubuntu-apt-配置)
 [![Fedora](https://img.shields.io/badge/Fedora-51A2DA?logo=fedora&logoColor=white)](#fedora-dnf-配置)
@@ -56,26 +58,36 @@
 [![容器注册表](https://img.shields.io/badge/容器注册表-262261?logo=opencontainersinitiative&logoColor=white)](#容器注册表)
 [![AI 推理提供商](https://img.shields.io/badge/AI%20推理提供商-94A3B8?logo=openrouter&logoColor=white)](#ai-推理提供商)
 
-面向开发者资源的超高性能、安全、一体化加速引擎，其性能显著优于传统解决方案，为代码存储库、模型和数据集中心、软件包注册表、容器注册表、AI 推理提供商等提供统一、高效的加速。
+面向开发者资源的超高性能、安全、一体化加速引擎，其性能显著优于传统解决方案，为代码托管、模型和数据集中心、包管理存储库、容器注册表、AI 推理提供商等提供统一、高效的加速，同时替你处理缓存、重试、安全响应头以及协议相关兼容行为。
 
-技术深度解析文章已发布：**[《深入剖析 Xget：一个高性能、多协议、高安全性的开发者资源加速引擎》](https://blog.xi-xu.me/2025/10/07/deep-dive-into-xget-technology.html)**。
+技术深度解析文章：**[《深入剖析 Xget：一个高性能、多协议、高安全性的开发者资源加速引擎》](https://blog.xi-xu.me/en/2025/10/07/Deep-Dive-into-Xget.html)**。
+
+Xget 已受邀入驻
+[GitCode 平台](https://gitcode.com/xixu-me/xget)，并被认证为 G-Star 毕业项目；同时也获得多位技术博主自发推荐，包括[阮一峰](https://www.ruanyifeng.com/blog/2025/12/weekly-issue-379.html#:~:text=Xget)、[GitHubDaily](https://x.com/i/status/1956204203937829256)、[鱼 C](https://www.bilibili.com/video/BV1EeeBzVEop/)、[玄离 199](https://www.bilibili.com/video/BV197hqzsE8Y/?t=8)
+等。在此感谢 GitCode 的认可，也感谢每一位分享、推荐和实际使用 Xget 的朋友。
 
 ## 🎯 快速使用
 
-**预部署实例（不保证可靠性）：`xget.xi-xu.me`**
+**预部署实例：`xget.xi-xu.me`** - 仅适合评估和试用，生产环境或对可用性敏感的场景建议自部署
 
-**URL 转换器：**[**`xuc.xi-xu.me`**](https://xuc.xi-xu.me) - 一键转换任意支持平台的 URL 为 Xget 的加速格式！
+> [!WARNING]
+> 如果你选择自托管，除非你明确要做公开镜像，否则请至少加上鉴权、IP 白名单，或同时启用两者。
+
+**URL 转换器：**[**`xuc.xi-xu.me`**](https://xuc.xi-xu.me) - 一键转换任意支持平台的 URL 为 Xget 的加速格式
+
+**Agent Skills：`npx skills add xixu-me/skills -s xget`**
 
 ## 🌟 核心优势 - 为什么选择 Xget？
 
-### ⚡ 极速性能 - 突破传统加速器瓶颈
+### ⚡ 面向性能的设计
 
-- **⚡ 毫秒级响应**：Cloudflare 全球 330+ 边缘节点，平均响应时间 < 50ms
-- **🌐 HTTP/3 极速协议**：启用最新 HTTP/3 协议，连接延迟降低 40%，传输速度提升 30%
-- **📦 智能多重压缩**：gzip、deflate、brotli 三重压缩算法，传输效率提升 60%
-- **🔗 零延迟预连接**：连接预热和保持活跃，消除握手开销，实现秒级响应
-- **⚡ 并行分片下载**：完整支持 HTTP Range 请求，多线程下载速度倍增
-- **🎯 智能路由优化**：自动选择最优传输路径，避开网络拥堵节点
+- **🌐 全球边缘运行时**：基于 Cloudflare Workers，尽量让请求更靠近用户和上游服务
+- **⚡ 协议感知处理**：支持 HTTP/3、Range 请求、Git 流量、容器注册表流程和 AI 推理 API
+- **📦 缓存与重试链路**：对可兼容响应提供边缘缓存，对临时性上游失败提供重试，并对支持的平台做请求规范化
+- **🔗 连接复用**：在运行时和上游允许的前提下，复用标准 HTTP
+  keep-alive 与连接复用能力
+- **📊 请求耗时可观测**：在协议兼容的情况下，可通过 `X-Performance-Metrics`
+  响应头暴露阶段性耗时信息
 
 ### 🌐 多平台深度集成
 
@@ -88,11 +100,13 @@
 - **多层安全标头**：
   - `Strict-Transport-Security`：强制 HTTPS 传输，预防中间人攻击
   - `X-Frame-Options: DENY`：防止点击劫持攻击
-  - `X-XSS-Protection`：内置 XSS 防护机制
   - `Content-Security-Policy`：严格的内容安全策略
   - `Referrer-Policy`：控制引用信息泄露
+  - `Permissions-Policy`：默认限制浏览器中的隐私敏感能力
+  - `X-XSS-Protection`：面向旧浏览器的兼容性响应头
 - **请求验证机制**：
-  - HTTP 方法白名单：常规请求限制为 GET/HEAD，Git 操作动态允许 POST
+  - HTTP 方法白名单：常规请求限制为 GET/HEAD，而 Git/LFS、容器镜像存储库、AI 推理和 Hugging
+    Face API 请求会按需允许 `POST`、`PUT`、`PATCH` 和 `DELETE`
   - 路径长度限制：防止超长 URL 攻击（最大 2048 字符）
   - 输入清理：防止路径遍历和注入攻击
 - **超时保护**：30 秒请求超时，防止资源耗尽和恶意请求
@@ -130,7 +144,8 @@
 
 ### 📱 生态系统集成
 
-- **专用浏览器扩展**：[Xget Now](https://github.com/xixu-me/Xget-Now) 提供无缝体验
+- **专用浏览器扩展**：[Xget Now](https://github.com/xixu-me/Xget-Now)
+  提供无缝体验
   - 自动 URL 重定向，无需手动修改 URL
   - 支持自定义 Xget 实例域名
   - 多平台偏好设置和黑白名单管理
@@ -178,11 +193,17 @@ graph TD
 ```mermaid
 classDiagram
     class Worker {
-        +handleRequest(request)
+        +fetch(request)
     }
-    class Config {
-        +PLATFORMS
+    class AppHandler {
+        +handleRequest(request, env, ctx)
+    }
+    class PlatformCatalog {
+        +PLATFORM_CATALOG
+    }
+    class PlatformRouting {
         +transformPath()
+        +resolveTarget()
     }
     class Validation {
         +validateRequest()
@@ -199,6 +220,13 @@ classDiagram
     class AIProtocol {
         +configureAIHeaders()
     }
+    class UpstreamPipeline {
+        +tryReadCachedResponse()
+        +fetchUpstreamResponse()
+    }
+    class ResponsePipeline {
+        +finalizeResponse()
+    }
     class Security {
         +addSecurityHeaders()
     }
@@ -206,58 +234,65 @@ classDiagram
         +monitor()
     }
 
-    Worker --> Config
-    Worker --> Validation
-    Worker --> GitProtocol
-    Worker --> DockerProtocol
-    Worker --> AIProtocol
-    Worker --> Security
-    Worker --> Performance
+    Worker --> AppHandler
+    AppHandler --> PlatformCatalog
+    AppHandler --> PlatformRouting
+    AppHandler --> Validation
+    AppHandler --> GitProtocol
+    AppHandler --> DockerProtocol
+    AppHandler --> AIProtocol
+    AppHandler --> UpstreamPipeline
+    AppHandler --> ResponsePipeline
+    AppHandler --> Security
+    AppHandler --> Performance
+    PlatformRouting --> PlatformCatalog
 ```
 
 ## 📖 URL 转换规则
 
-使用预部署实例 **`xget.xi-xu.me`** 或你自己部署的实例，只需简单替换域名并添加平台前缀：
+使用预部署实例 **`xget.xi-xu.me`**
+或你自己部署的实例，只需简单替换域名并添加平台前缀：
 
 ### 转换格式
 
-| 平台 | 平台前缀 | 原始 URL 格式 | 加速 URL 格式 |
-|------|----------|--------------|--------------|
-| GitHub | `gh` | `https://github.com/...` | `https://xget.xi-xu.me/gh/...` |
-| GitHub Gist | `gist` | `https://gist.github.com/...` | `https://xget.xi-xu.me/gist/...` |
-| GitLab | `gl` | `https://gitlab.com/...` | `https://xget.xi-xu.me/gl/...` |
-| Gitea | `gitea` | `https://gitea.com/...` | `https://xget.xi-xu.me/gitea/...` |
-| Codeberg | `codeberg` | `https://codeberg.org/...` | `https://xget.xi-xu.me/codeberg/...` |
-| SourceForge | `sf` | `https://sourceforge.net/...` | `https://xget.xi-xu.me/sf/...` |
-| AOSP | `aosp` | `https://android.googlesource.com/...` | `https://xget.xi-xu.me/aosp/...` |
-| Hugging Face | `hf` | `https://huggingface.co/...` | `https://xget.xi-xu.me/hf/...` |
-| Civitai | `civitai` | `https://civitai.com/...` | `https://xget.xi-xu.me/civitai/...` |
-| npm | `npm` | `https://registry.npmjs.org/...` | `https://xget.xi-xu.me/npm/...` |
-| PyPI | `pypi` | `https://pypi.org/...` | `https://xget.xi-xu.me/pypi/...` |
-| conda | `conda` | `https://repo.anaconda.com/...` 和 `https://conda.anaconda.org/...` | `https://xget.xi-xu.me/conda/...` 和 `https://xget.xi-xu.me/conda/community/...` |
-| Maven | `maven` | `https://repo1.maven.org/...` | `https://xget.xi-xu.me/maven/...` |
-| Apache | `apache` | `https://downloads.apache.org/...` | `https://xget.xi-xu.me/apache/...` |
-| Gradle | `gradle` | `https://plugins.gradle.org/...` | `https://xget.xi-xu.me/gradle/...` |
-| Homebrew | `homebrew` | `https://github.com/Homebrew/...` | `https://xget.xi-xu.me/homebrew/...` |
-| RubyGems | `rubygems` | `https://rubygems.org/...` | `https://xget.xi-xu.me/rubygems/...` |
-| CRAN | `cran` | `https://cran.r-project.org/...` | `https://xget.xi-xu.me/cran/...` |
-| CPAN | `cpan` | `https://www.cpan.org/...` | `https://xget.xi-xu.me/cpan/...` |
-| CTAN | `ctan` | `https://tug.ctan.org/...` | `https://xget.xi-xu.me/ctan/...` |
-| Go 模块 | `golang` | `https://proxy.golang.org/...` | `https://xget.xi-xu.me/golang/...` |
-| NuGet | `nuget` | `https://api.nuget.org/...` | `https://xget.xi-xu.me/nuget/...` |
-| Rust Crates | `crates` | `https://crates.io/...` | `https://xget.xi-xu.me/crates/...` |
-| Packagist | `packagist` | `https://repo.packagist.org/...` | `https://xget.xi-xu.me/packagist/...` |
-| Debian | `debian` | `https://deb.debian.org/...` | `https://xget.xi-xu.me/debian/...` |
-| Ubuntu | `ubuntu` | `https://archive.ubuntu.com/...` | `https://xget.xi-xu.me/ubuntu/...` |
-| Fedora | `fedora` | `https://dl.fedoraproject.org/...` | `https://xget.xi-xu.me/fedora/...` |
-| Rocky Linux | `rocky` | `https://download.rockylinux.org/...` | `https://xget.xi-xu.me/rocky/...` |
-| openSUSE | `opensuse` | `https://download.opensuse.org/...` | `https://xget.xi-xu.me/opensuse/...` |
-| Arch Linux | `arch` | `https://geo.mirror.pkgbuild.com/...` | `https://xget.xi-xu.me/arch/...` |
-| arXiv | `arxiv` | `https://arxiv.org/...` | `https://xget.xi-xu.me/arxiv/...` |
-| F-Droid | `fdroid` | `https://f-droid.org/...` | `https://xget.xi-xu.me/fdroid/...` |
-| Jenkins 插件 | `jenkins` | `https://updates.jenkins.io/...` | `https://xget.xi-xu.me/jenkins/...` |
-| 容器注册表 | `cr` | 见[容器注册表](#容器注册表) | 见[容器注册表](#容器注册表) |
-| AI 推理提供商 | `ip` | 见 [AI 推理提供商](#ai-推理提供商) | 见 [AI 推理提供商](#ai-推理提供商) |
+| 平台          | 平台前缀    | 原始 URL 格式                                                       | 加速 URL 格式                                                                    |
+| ------------- | ----------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| GitHub        | `gh`        | `https://github.com/...`                                            | `https://xget.xi-xu.me/gh/...`                                                   |
+| GitHub Gist   | `gist`      | `https://gist.github.com/...`                                       | `https://xget.xi-xu.me/gist/...`                                                 |
+| GitLab        | `gl`        | `https://gitlab.com/...`                                            | `https://xget.xi-xu.me/gl/...`                                                   |
+| Gitea         | `gitea`     | `https://gitea.com/...`                                             | `https://xget.xi-xu.me/gitea/...`                                                |
+| Codeberg      | `codeberg`  | `https://codeberg.org/...`                                          | `https://xget.xi-xu.me/codeberg/...`                                             |
+| SourceForge   | `sf`        | `https://sourceforge.net/...`                                       | `https://xget.xi-xu.me/sf/...`                                                   |
+| AOSP          | `aosp`      | `https://android.googlesource.com/...`                              | `https://xget.xi-xu.me/aosp/...`                                                 |
+| Hugging Face  | `hf`        | `https://huggingface.co/...`                                        | `https://xget.xi-xu.me/hf/...`                                                   |
+| Civitai       | `civitai`   | `https://civitai.com/...`                                           | `https://xget.xi-xu.me/civitai/...`                                              |
+| npm           | `npm`       | `https://registry.npmjs.org/...`                                    | `https://xget.xi-xu.me/npm/...`                                                  |
+| PyPI          | `pypi`      | `https://pypi.org/...`                                              | `https://xget.xi-xu.me/pypi/...`                                                 |
+| conda         | `conda`     | `https://repo.anaconda.com/...` 和 `https://conda.anaconda.org/...` | `https://xget.xi-xu.me/conda/...` 和 `https://xget.xi-xu.me/conda/community/...` |
+| Maven         | `maven`     | `https://repo1.maven.org/...`                                       | `https://xget.xi-xu.me/maven/...`                                                |
+| Apache        | `apache`    | `https://downloads.apache.org/...`                                  | `https://xget.xi-xu.me/apache/...`                                               |
+| Gradle        | `gradle`    | `https://plugins.gradle.org/...`                                    | `https://xget.xi-xu.me/gradle/...`                                               |
+| Homebrew      | `homebrew`  | `https://github.com/Homebrew/...`                                   | `https://xget.xi-xu.me/homebrew/...`                                             |
+| RubyGems      | `rubygems`  | `https://rubygems.org/...`                                          | `https://xget.xi-xu.me/rubygems/...`                                             |
+| CRAN          | `cran`      | `https://cran.r-project.org/...`                                    | `https://xget.xi-xu.me/cran/...`                                                 |
+| CPAN          | `cpan`      | `https://www.cpan.org/...`                                          | `https://xget.xi-xu.me/cpan/...`                                                 |
+| CTAN          | `ctan`      | `https://tug.ctan.org/...`                                          | `https://xget.xi-xu.me/ctan/...`                                                 |
+| Go 模块       | `golang`    | `https://proxy.golang.org/...`                                      | `https://xget.xi-xu.me/golang/...`                                               |
+| NuGet         | `nuget`     | `https://api.nuget.org/...`                                         | `https://xget.xi-xu.me/nuget/...`                                                |
+| Rust Crates   | `crates`    | `https://crates.io/...`                                             | `https://xget.xi-xu.me/crates/...`                                               |
+| Packagist     | `packagist` | `https://repo.packagist.org/...`                                    | `https://xget.xi-xu.me/packagist/...`                                            |
+| Flathub       | `flathub`   | `https://dl.flathub.org/...`                                        | `https://xget.xi-xu.me/flathub/...`                                              |
+| Debian        | `debian`    | `https://deb.debian.org/...`                                        | `https://xget.xi-xu.me/debian/...`                                               |
+| Ubuntu        | `ubuntu`    | `https://archive.ubuntu.com/...`                                    | `https://xget.xi-xu.me/ubuntu/...`                                               |
+| Fedora        | `fedora`    | `https://dl.fedoraproject.org/...`                                  | `https://xget.xi-xu.me/fedora/...`                                               |
+| Rocky Linux   | `rocky`     | `https://download.rockylinux.org/...`                               | `https://xget.xi-xu.me/rocky/...`                                                |
+| openSUSE      | `opensuse`  | `https://download.opensuse.org/...`                                 | `https://xget.xi-xu.me/opensuse/...`                                             |
+| Arch Linux    | `arch`      | `https://geo.mirror.pkgbuild.com/...`                               | `https://xget.xi-xu.me/arch/...`                                                 |
+| arXiv         | `arxiv`     | `https://arxiv.org/...`                                             | `https://xget.xi-xu.me/arxiv/...`                                                |
+| F-Droid       | `fdroid`    | `https://f-droid.org/...`                                           | `https://xget.xi-xu.me/fdroid/...`                                               |
+| Jenkins 插件  | `jenkins`   | `https://updates.jenkins.io/...`                                    | `https://xget.xi-xu.me/jenkins/...`                                              |
+| 容器注册表    | `cr`        | 见[容器注册表](#容器注册表)                                         | 见[容器注册表](#容器注册表)                                                      |
+| AI 推理提供商 | `ip`        | 见 [AI 推理提供商](#ai-推理提供商)                                  | 见 [AI 推理提供商](#ai-推理提供商)                                               |
 
 ### 各平台转换示例
 
@@ -633,6 +668,22 @@ https://repo.packagist.org/packages/list.json
 https://xget.xi-xu.me/packagist/packages/list.json
 ```
 
+#### Flathub
+
+```url
+# Flathub 存储库原始 URL
+https://dl.flathub.org/repo/summary
+
+# 转换后（添加 flathub 前缀）
+https://xget.xi-xu.me/flathub/repo/summary
+
+# Flathub 应用引用原始 URL
+https://dl.flathub.org/repo/appstream/org.gnome.gedit.flatpakref
+
+# 转换后（添加 flathub 前缀）
+https://xget.xi-xu.me/flathub/repo/appstream/org.gnome.gedit.flatpakref
+```
+
 #### Linux 发行版
 
 ```url
@@ -725,25 +776,25 @@ https://xget.xi-xu.me/jenkins/download/plugins/maven-plugin/3.27/maven-plugin.hp
 
 Xget 支持多个容器注册表，使用 `cr/[容器注册表前缀]` 格式：
 
-| 容器注册表 | 容器注册表前缀 | 原始 URL 格式 | 加速 URL 格式 |
-|----------|------|--------------|--------------|
-| Docker Hub | `docker` | `https://registry-1.docker.io/...` | `https://xget.xi-xu.me/cr/docker/...` |
-| Quay.io | `quay` | `https://quay.io/...` | `https://xget.xi-xu.me/cr/quay/...` |
-| 谷歌容器注册表 | `gcr` | `https://gcr.io/...` | `https://xget.xi-xu.me/cr/gcr/...` |
-| 微软容器注册表 | `mcr` | `https://mcr.microsoft.com/...` | `https://xget.xi-xu.me/cr/mcr/...` |
-| 亚马逊公共弹性容器注册表 | `ecr` | `https://public.ecr.aws/...` | `https://xget.xi-xu.me/cr/ecr/...` |
-| GitHub 容器注册表 | `ghcr` | `https://ghcr.io/...` | `https://xget.xi-xu.me/cr/ghcr/...` |
-| GitLab 容器注册表 | `gitlab` | `https://registry.gitlab.com/...` | `https://xget.xi-xu.me/cr/gitlab/...` |
-| 红帽注册表 | `redhat` | `https://registry.redhat.io/...` | `https://xget.xi-xu.me/cr/redhat/...` |
-| 甲骨文容器注册表 | `oracle` | `https://container-registry.oracle.com/...` | `https://xget.xi-xu.me/cr/oracle/...` |
-| Cloudsmith | `cloudsmith` | `https://docker.cloudsmith.io/...` | `https://xget.xi-xu.me/cr/cloudsmith/...` |
-| DigitalOcean 注册表 | `digitalocean` | `https://registry.digitalocean.com/...` | `https://xget.xi-xu.me/cr/digitalocean/...` |
-| VMware 注册表 | `vmware` | `https://projects.registry.vmware.com/...` | `https://xget.xi-xu.me/cr/vmware/...` |
-| Kubernetes 注册表 | `k8s` | `https://registry.k8s.io/...` | `https://xget.xi-xu.me/cr/k8s/...` |
-| Heroku 注册表 | `heroku` | `https://registry.heroku.com/...` | `https://xget.xi-xu.me/cr/heroku/...` |
-| SUSE 注册表 | `suse` | `https://registry.suse.com/...` | `https://xget.xi-xu.me/cr/suse/...` |
-| openSUSE 注册表 | `opensuse` | `https://registry.opensuse.org/...` | `https://xget.xi-xu.me/cr/opensuse/...` |
-| Gitpod 注册表 | `gitpod` | `https://registry.gitpod.io/...` | `https://xget.xi-xu.me/cr/gitpod/...` |
+| 容器注册表               | 容器注册表前缀 | 原始 URL 格式                               | 加速 URL 格式                               |
+| ------------------------ | -------------- | ------------------------------------------- | ------------------------------------------- |
+| Docker Hub               | `docker`       | `https://registry-1.docker.io/...`          | `https://xget.xi-xu.me/cr/docker/...`       |
+| Quay.io                  | `quay`         | `https://quay.io/...`                       | `https://xget.xi-xu.me/cr/quay/...`         |
+| 谷歌容器注册表           | `gcr`          | `https://gcr.io/...`                        | `https://xget.xi-xu.me/cr/gcr/...`          |
+| 微软容器注册表           | `mcr`          | `https://mcr.microsoft.com/...`             | `https://xget.xi-xu.me/cr/mcr/...`          |
+| 亚马逊公共弹性容器注册表 | `ecr`          | `https://public.ecr.aws/...`                | `https://xget.xi-xu.me/cr/ecr/...`          |
+| GitHub 容器注册表        | `ghcr`         | `https://ghcr.io/...`                       | `https://xget.xi-xu.me/cr/ghcr/...`         |
+| GitLab 容器注册表        | `gitlab`       | `https://registry.gitlab.com/...`           | `https://xget.xi-xu.me/cr/gitlab/...`       |
+| 红帽注册表               | `redhat`       | `https://registry.redhat.io/...`            | `https://xget.xi-xu.me/cr/redhat/...`       |
+| 甲骨文容器注册表         | `oracle`       | `https://container-registry.oracle.com/...` | `https://xget.xi-xu.me/cr/oracle/...`       |
+| Cloudsmith               | `cloudsmith`   | `https://docker.cloudsmith.io/...`          | `https://xget.xi-xu.me/cr/cloudsmith/...`   |
+| DigitalOcean 注册表      | `digitalocean` | `https://registry.digitalocean.com/...`     | `https://xget.xi-xu.me/cr/digitalocean/...` |
+| VMware 注册表            | `vmware`       | `https://projects.registry.vmware.com/...`  | `https://xget.xi-xu.me/cr/vmware/...`       |
+| Kubernetes 注册表        | `k8s`          | `https://registry.k8s.io/...`               | `https://xget.xi-xu.me/cr/k8s/...`          |
+| Heroku 注册表            | `heroku`       | `https://registry.heroku.com/...`           | `https://xget.xi-xu.me/cr/heroku/...`       |
+| SUSE 注册表              | `suse`         | `https://registry.suse.com/...`             | `https://xget.xi-xu.me/cr/suse/...`         |
+| openSUSE 注册表          | `opensuse`     | `https://registry.opensuse.org/...`         | `https://xget.xi-xu.me/cr/opensuse/...`     |
+| Gitpod 注册表            | `gitpod`       | `https://registry.gitpod.io/...`            | `https://xget.xi-xu.me/cr/gitpod/...`       |
 
 ```url
 # Docker Hub 原始 URL（官方镜像）
@@ -777,36 +828,36 @@ https://xget.xi-xu.me/cr/gcr/v2/distroless/base/manifests/latest
 
 Xget 支持众多主流 AI 推理提供商的 API 加速，使用 `ip/[AI 推理提供商前缀]` 格式：
 
-| AI 推理提供商 | AI 推理提供商前缀 | 原始 URL 格式 | 加速 URL 格式 |
-|-------------|----------|-------------|-------------|
-| OpenAI | `openai` | `https://api.openai.com/...` | `https://xget.xi-xu.me/ip/openai/...` |
-| Anthropic | `anthropic` | `https://api.anthropic.com/...` | `https://xget.xi-xu.me/ip/anthropic/...` |
-| Gemini | `gemini` | `https://generativelanguage.googleapis.com/...` | `https://xget.xi-xu.me/ip/gemini/...` |
-| Vertex AI | `vertexai` | `https://aiplatform.googleapis.com/...` | `https://xget.xi-xu.me/ip/vertexai/...` |
-| Cohere | `cohere` | `https://api.cohere.ai/...` | `https://xget.xi-xu.me/ip/cohere/...` |
-| Mistral AI | `mistralai` | `https://api.mistral.ai/...` | `https://xget.xi-xu.me/ip/mistralai/...` |
-| xAI | `xai` | `https://api.x.ai/...` | `https://xget.xi-xu.me/ip/xai/...` |
-| GitHub 模型 | `githubmodels` | `https://models.github.ai/...` | `https://xget.xi-xu.me/ip/githubmodels/...` |
-| NVIDIA API | `nvidiaapi` | `https://integrate.api.nvidia.com/...` | `https://xget.xi-xu.me/ip/nvidiaapi/...` |
-| Perplexity | `perplexity` | `https://api.perplexity.ai/...` | `https://xget.xi-xu.me/ip/perplexity/...` |
-| Groq | `groq` | `https://api.groq.com/...` | `https://xget.xi-xu.me/ip/groq/...` |
-| Cerebras | `cerebras` | `https://api.cerebras.ai/...` | `https://xget.xi-xu.me/ip/cerebras/...` |
-| SambaNova | `sambanova` | `https://api.sambanova.ai/...` | `https://xget.xi-xu.me/ip/sambanova/...` |
-| Siray | `siray` | `https://api.siray.ai/...` | `https://xget.xi-xu.me/ip/siray/...` |
-| HF Inference | `huggingface` | `https://router.huggingface.co/...` | `https://xget.xi-xu.me/ip/huggingface/...` |
-| Together | `together` | `https://api.together.xyz/...` | `https://xget.xi-xu.me/ip/together/...` |
-| Replicate | `replicate` | `https://api.replicate.com/...` | `https://xget.xi-xu.me/ip/replicate/...` |
-| Fireworks | `fireworks` | `https://api.fireworks.ai/...` | `https://xget.xi-xu.me/ip/fireworks/...` |
-| Nebius | `nebius` | `https://api.studio.nebius.ai/...` | `https://xget.xi-xu.me/ip/nebius/...` |
-| Jina | `jina` | `https://api.jina.ai/...` | `https://xget.xi-xu.me/ip/jina/...` |
-| Voyage AI | `voyageai` | `https://api.voyageai.com/...` | `https://xget.xi-xu.me/ip/voyageai/...` |
-| Fal AI | `falai` | `https://fal.run/...` | `https://xget.xi-xu.me/ip/falai/...` |
-| Novita | `novita` | `https://api.novita.ai/...` | `https://xget.xi-xu.me/ip/novita/...` |
-| Burncloud | `burncloud` | `https://ai.burncloud.com/...` | `https://xget.xi-xu.me/ip/burncloud/...` |
-| OpenRouter | `openrouter` | `https://openrouter.ai/...` | `https://xget.xi-xu.me/ip/openrouter/...` |
-| Poe | `poe` | `https://api.poe.com/...` | `https://xget.xi-xu.me/ip/poe/...` |
-| Featherless AI | `featherlessai` | `https://api.featherless.ai/...` | `https://xget.xi-xu.me/ip/featherlessai/...` |
-| Hyperbolic | `hyperbolic` | `https://api.hyperbolic.xyz/...` | `https://xget.xi-xu.me/ip/hyperbolic/...` |
+| AI 推理提供商  | AI 推理提供商前缀 | 原始 URL 格式                                   | 加速 URL 格式                                |
+| -------------- | ----------------- | ----------------------------------------------- | -------------------------------------------- |
+| OpenAI         | `openai`          | `https://api.openai.com/...`                    | `https://xget.xi-xu.me/ip/openai/...`        |
+| Anthropic      | `anthropic`       | `https://api.anthropic.com/...`                 | `https://xget.xi-xu.me/ip/anthropic/...`     |
+| Gemini         | `gemini`          | `https://generativelanguage.googleapis.com/...` | `https://xget.xi-xu.me/ip/gemini/...`        |
+| Vertex AI      | `vertexai`        | `https://aiplatform.googleapis.com/...`         | `https://xget.xi-xu.me/ip/vertexai/...`      |
+| Cohere         | `cohere`          | `https://api.cohere.ai/...`                     | `https://xget.xi-xu.me/ip/cohere/...`        |
+| Mistral AI     | `mistralai`       | `https://api.mistral.ai/...`                    | `https://xget.xi-xu.me/ip/mistralai/...`     |
+| xAI            | `xai`             | `https://api.x.ai/...`                          | `https://xget.xi-xu.me/ip/xai/...`           |
+| GitHub 模型    | `githubmodels`    | `https://models.github.ai/...`                  | `https://xget.xi-xu.me/ip/githubmodels/...`  |
+| NVIDIA API     | `nvidiaapi`       | `https://integrate.api.nvidia.com/...`          | `https://xget.xi-xu.me/ip/nvidiaapi/...`     |
+| Perplexity     | `perplexity`      | `https://api.perplexity.ai/...`                 | `https://xget.xi-xu.me/ip/perplexity/...`    |
+| Groq           | `groq`            | `https://api.groq.com/...`                      | `https://xget.xi-xu.me/ip/groq/...`          |
+| Cerebras       | `cerebras`        | `https://api.cerebras.ai/...`                   | `https://xget.xi-xu.me/ip/cerebras/...`      |
+| SambaNova      | `sambanova`       | `https://api.sambanova.ai/...`                  | `https://xget.xi-xu.me/ip/sambanova/...`     |
+| Siray          | `siray`           | `https://api.siray.ai/...`                      | `https://xget.xi-xu.me/ip/siray/...`         |
+| HF Inference   | `huggingface`     | `https://router.huggingface.co/...`             | `https://xget.xi-xu.me/ip/huggingface/...`   |
+| Together       | `together`        | `https://api.together.xyz/...`                  | `https://xget.xi-xu.me/ip/together/...`      |
+| Replicate      | `replicate`       | `https://api.replicate.com/...`                 | `https://xget.xi-xu.me/ip/replicate/...`     |
+| Fireworks      | `fireworks`       | `https://api.fireworks.ai/...`                  | `https://xget.xi-xu.me/ip/fireworks/...`     |
+| Nebius         | `nebius`          | `https://api.studio.nebius.ai/...`              | `https://xget.xi-xu.me/ip/nebius/...`        |
+| Jina           | `jina`            | `https://api.jina.ai/...`                       | `https://xget.xi-xu.me/ip/jina/...`          |
+| Voyage AI      | `voyageai`        | `https://api.voyageai.com/...`                  | `https://xget.xi-xu.me/ip/voyageai/...`      |
+| Fal AI         | `falai`           | `https://fal.run/...`                           | `https://xget.xi-xu.me/ip/falai/...`         |
+| Novita         | `novita`          | `https://api.novita.ai/...`                     | `https://xget.xi-xu.me/ip/novita/...`        |
+| Burncloud      | `burncloud`       | `https://ai.burncloud.com/...`                  | `https://xget.xi-xu.me/ip/burncloud/...`     |
+| OpenRouter     | `openrouter`      | `https://openrouter.ai/...`                     | `https://xget.xi-xu.me/ip/openrouter/...`    |
+| Poe            | `poe`             | `https://api.poe.com/...`                       | `https://xget.xi-xu.me/ip/poe/...`           |
+| Featherless AI | `featherlessai`   | `https://api.featherless.ai/...`                | `https://xget.xi-xu.me/ip/featherlessai/...` |
+| Hyperbolic     | `hyperbolic`      | `https://api.hyperbolic.xyz/...`                | `https://xget.xi-xu.me/ip/hyperbolic/...`    |
 
 ```url
 # OpenAI API 原始 URL
@@ -1024,18 +1075,34 @@ npm config set registry https://xget.xi-xu.me/npm/
 npm config get registry
 ```
 
-#### 在项目中使用
+#### 配置 Bun 使用 Xget 镜像
+
+```toml
+# bunfig.toml（项目级）或 ~/.bunfig.toml（全局）
+[install]
+registry = "https://xget.xi-xu.me/npm/"
+```
 
 ```bash
-# 在 .npmrc 文件中配置项目级镜像
+# 使用 Bun 安装依赖
+bun install
+
+# Bun 也支持 .npmrc，可直接复用已有的 npm 镜像配置
+echo "registry=https://xget.xi-xu.me/npm/" > .npmrc
+bun install
+```
+
+#### 在项目中使用（npm / Bun）
+
+```bash
+# 在 .npmrc 文件中配置项目级镜像（npm / Bun 可复用）
 echo "registry=https://xget.xi-xu.me/npm/" > .npmrc
 
-# 安装依赖
+# 使用 npm 安装依赖
 npm install
 
-# 或者使用 yarn
-yarn config set registry https://xget.xi-xu.me/npm/
-yarn install
+# 使用 Bun 安装依赖
+bun install
 ```
 
 ### Python 包管理加速
@@ -1147,7 +1214,7 @@ dependencies:
   - scipy>=1.10.0
   - pip
   - pip:
-    - requests>=2.28.0
+      - requests>=2.28.0
 ```
 
 ```bash
@@ -1662,6 +1729,76 @@ composer config -l
 }
 ```
 
+### Flathub 存储库镜像
+
+#### 配置 Flatpak / Flathub 使用 Xget 镜像
+
+```bash
+# 如果之前从未添加过 Flathub，请先导入官方描述文件，
+# 让 Flatpak 信任 Flathub 的签名密钥。
+flatpak remote-add --if-not-exists flathub \
+  https://dl.flathub.org/repo/flathub.flatpakrepo
+
+# 然后把现有 Flathub 远程存储库改写到 Xget 镜像
+flatpak remote-modify flathub \
+  --url=https://xget.xi-xu.me/flathub/repo/
+
+# 需要时恢复默认上游地址
+flatpak remote-modify flathub \
+  --url=https://dl.flathub.org/repo/
+```
+
+Xget 镜像的是 Flathub 的 OSTree 存储库端点。根据当前 Flatpak 客户端的实际行为，直接导入镜像
+`.flatpakrepo`
+描述文件，或者直接添加镜像存储库 URL，仍然可能回退到上游 Flathub 地址，或者因为未导入签名密钥而失败，因此更可靠的做法是先添加官方 Flathub，再通过
+`flatpak remote-modify ... --url=...`
+改写远程地址。若你使用系统级远程存储库，请在相同命令前加上 `sudo`。
+
+#### 支持的 Flathub 服务
+
+```url
+# OSTree 存储库元数据
+https://xget.xi-xu.me/flathub/repo/config
+https://xget.xi-xu.me/flathub/repo/summary
+https://xget.xi-xu.me/flathub/repo/summary.sig
+https://xget.xi-xu.me/flathub/repo/summary.idx
+https://xget.xi-xu.me/flathub/repo/summaries/...
+
+# Flatpak 远程存储库描述文件
+https://xget.xi-xu.me/flathub/repo/flathub.flatpakrepo
+
+# 应用引用描述文件
+https://xget.xi-xu.me/flathub/repo/appstream/[应用 ID].flatpakref
+
+# 存储库对象与静态增量
+https://xget.xi-xu.me/flathub/repo/objects/...
+https://xget.xi-xu.me/flathub/repo/deltas/...
+https://xget.xi-xu.me/flathub/repo/delta-indexes/...
+```
+
+#### 使用示例
+
+```bash
+# 确认保存下来的远程存储库 URL 已经指向 Xget
+flatpak remotes --show-details
+
+# 查看远程存储库内容
+flatpak remote-ls flathub
+
+# 在改写 Flathub 远程存储库后安装应用
+flatpak install flathub org.gnome.gedit
+
+# 直接通过重写后的 .flatpakref 安装
+flatpak install --from \
+  https://xget.xi-xu.me/flathub/repo/appstream/org.gnome.gedit.flatpakref
+
+# 排查问题时打印 libcurl HTTP 调试输出
+OSTREE_DEBUG_HTTP=1 flatpak remote-ls flathub
+
+# 更新已安装的应用和运行时
+flatpak update
+```
+
 ### Linux 发行版加速
 
 #### Debian/Ubuntu APT 配置
@@ -1876,7 +2013,8 @@ task checkFDroidAvailability {
 
 1. 登录 Jenkins 管理界面
 2. 进入 **Manage Jenkins** → **Plugins** → **Advanced**
-3. 在 **Update Site** 部分，将 URL 更改为 `https://xget.xi-xu.me/jenkins/update-center.json`
+3. 在 **Update Site** 部分，将 URL 更改为
+   `https://xget.xi-xu.me/jenkins/update-center.json`
 
 4. 点击 **Submit** 保存配置
 
@@ -2089,14 +2227,14 @@ spec:
         app: nginx
     spec:
       containers:
-      - name: nginx
-        image: xget.xi-xu.me/cr/ghcr/nginxinc/nginx-unprivileged:latest
-        ports:
-        - containerPort: 80
-      - name: redis
-        image: xget.xi-xu.me/cr/ghcr/bitnami/redis:alpine
-        ports:
-        - containerPort: 6379
+        - name: nginx
+          image: xget.xi-xu.me/cr/ghcr/nginxinc/nginx-unprivileged:latest
+          ports:
+            - containerPort: 80
+        - name: redis
+          image: xget.xi-xu.me/cr/ghcr/bitnami/redis:alpine
+          ports:
+            - containerPort: 6379
 ```
 
 #### Docker Compose 配置
@@ -2108,7 +2246,7 @@ services:
   web:
     image: xget.xi-xu.me/cr/ghcr/nginxinc/nginx-unprivileged:latest
     ports:
-      - "80:80"
+      - '80:80'
     volumes:
       - ./html:/usr/share/nginx/html
 
@@ -2116,14 +2254,14 @@ services:
     image: xget.xi-xu.me/cr/mcr/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: Y
-      SA_PASSWORD: "MyStrongPassword123!"
+      SA_PASSWORD: 'MyStrongPassword123!'
     volumes:
       - mssql_data:/var/opt/mssql
 
   cache:
     image: xget.xi-xu.me/cr/ghcr/bitnami/redis:alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
 
 volumes:
   mssql_data:
@@ -2298,61 +2436,61 @@ for name, key, path, model in providers:
 
 ```javascript
 // OpenAI API 加速
-import OpenAI from "openai";
+import OpenAI from 'openai';
 
 const openaiClient = new OpenAI({
-  apiKey: "your-openai-api-key",
-  baseURL: "https://xget.xi-xu.me/ip/openai/v1",  // 使用 Xget
+  apiKey: 'your-openai-api-key',
+  baseURL: 'https://xget.xi-xu.me/ip/openai/v1' // 使用 Xget
 });
 
 async function chatWithGPT() {
   const response = await openaiClient.responses.create({
-    model: "gpt-5.1",
-    input: "Hello, GPT!",
+    model: 'gpt-5.1',
+    input: 'Hello, GPT!'
   });
 
   console.log(response.output_text);
 }
 
 // Claude API 加速
-import Anthropic from "@anthropic-ai/sdk";
+import Anthropic from '@anthropic-ai/sdk';
 
 const anthropicClient = new Anthropic({
-  apiKey: "your-claude-api-key",
-  baseURL: "https://xget.xi-xu.me/ip/anthropic",  // 使用 Xget
+  apiKey: 'your-claude-api-key',
+  baseURL: 'https://xget.xi-xu.me/ip/anthropic' // 使用 Xget
 });
 
 async function chatWithClaude() {
   const message = await anthropicClient.messages.create({
-    model: "claude-sonnet-4-5",
+    model: 'claude-sonnet-4-5',
     max_tokens: 256,
     messages: [
       {
-        role: "user",
-        content: "Hello, Claude!",
-      },
-    ],
+        role: 'user',
+        content: 'Hello, Claude!'
+      }
+    ]
   });
 
   console.log(message.content[0].text);
 }
 
 // Gemini API 加速
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from '@google/genai';
 
 const geminiClient = new GoogleGenAI({
-  apiKey: "your-gemini-api-key",
+  apiKey: 'your-gemini-api-key'
 });
 
 async function chatWithGemini() {
   const response = await geminiClient.models.generateContent({
-    model: "gemini-3-pro-preview",
-    contents: "Hello, Gemini!",
+    model: 'gemini-3-pro-preview',
+    contents: 'Hello, Gemini!',
     config: {
       httpOptions: {
-        baseUrl: "https://xget.xi-xu.me/ip/gemini",  // 使用 Xget
-      },
-    },
+        baseUrl: 'https://xget.xi-xu.me/ip/gemini' // 使用 Xget
+      }
+    }
   });
 
   console.log(response.text);
@@ -2391,8 +2529,11 @@ client = OpenAI(
 1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
 2. **获取 Cloudflare 凭证**：
-   - 访问[账户 API 令牌](https://dash.cloudflare.com/?to=/:account/api-tokens)创建并记录 API 令牌，使用“编辑 Cloudflare Workers”模板
-   - 访问 [Workers 和 Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages) 记录 Account ID
+   - 访问[账户 API 令牌](https://dash.cloudflare.com/?to=/:account/api-tokens)创建并记录 API 令牌，使用“编辑 Cloudflare
+     Workers”模板
+   - 访问
+     [Workers 和 Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages)
+     记录 Account ID
 
 3. **配置 GitHub Secrets**：
    - 进入你的 GitHub 存储库 → Settings → Secrets and variables → Actions
@@ -2412,8 +2553,11 @@ client = OpenAI(
 1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
 2. **获取 Cloudflare 凭证**：
-   - 访问[账户 API 令牌](https://dash.cloudflare.com/?to=/:account/api-tokens)创建并记录 API 令牌，使用“编辑 Cloudflare Workers”模板
-   - 访问 [Workers 和 Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages) 记录 Account ID
+   - 访问[账户 API 令牌](https://dash.cloudflare.com/?to=/:account/api-tokens)创建并记录 API 令牌，使用“编辑 Cloudflare
+     Workers”模板
+   - 访问
+     [Workers 和 Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages)
+     记录 Account ID
 
 3. **配置 GitHub Secrets**：
    - 进入你的 GitHub 存储库 → Settings → Secrets and variables → Actions
@@ -2429,14 +2573,16 @@ client = OpenAI(
 
 5. **绑定自定义域名**（可选）：在 Cloudflare Pages 控制台中绑定你的自定义域名
 
-**注意**：`pages` 分支是从 `main` 分支自动生成的。请勿手动编辑 `pages` 分支，因为它会被同步工作流覆盖。
+**注意**：`pages` 分支是从 `main` 分支自动生成的。请勿手动编辑 `pages`
+分支，因为它会被同步工作流覆盖。
 
 ### 部署到 EdgeOne Pages
 
 1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
 2. **获取 EdgeOne Pages API Token**：
-   - 访问[中国站 EdgeOne 控制台](https://console.cloud.tencent.com/edgeone/pages?tab=api)或[国际站 EdgeOne 控制台](https://console.tencentcloud.com/edgeone/pages?tab=api)创建并记录 API Token
+   - 访问[中国站 EdgeOne 控制台](https://console.cloud.tencent.com/edgeone/pages?tab=api)或[国际站 EdgeOne 控制台](https://console.tencentcloud.com/edgeone/pages?tab=api)创建并记录 API
+     Token
 
 3. **配置 GitHub Secrets**：
    - 进入你的 GitHub 存储库 → Settings → Secrets and variables → Actions
@@ -2451,14 +2597,16 @@ client = OpenAI(
 
 5. **绑定自定义域名**（可选）：在 EdgeOne Pages 控制台中绑定你的自定义域名
 
-**注意**：`pages` 分支是从 `main` 分支自动生成的。请勿手动编辑 `pages` 分支，因为它会被同步工作流覆盖。
+**注意**：`pages` 分支是从 `main` 分支自动生成的。请勿手动编辑 `pages`
+分支，因为它会被同步工作流覆盖。
 
 ### 部署到 Vercel
 
 1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
 2. **获取 Vercel 凭证**：
-   - 访问 [Vercel Account Settings](https://vercel.com/account/settings/tokens) 创建并记录 Access Token
+   - 访问 [Vercel Account Settings](https://vercel.com/account/settings/tokens)
+     创建并记录 Access Token
    - 访问 Team Settings 记录 Team ID
    - 新建项目后访问项目的 Settings 记录 Project ID
 
@@ -2470,21 +2618,24 @@ client = OpenAI(
      - `VERCEL_PROJECT_ID`：你的 Project ID
 
 4. **触发部署**：
-   - 存储库会自动将 Workers 代码转换为 Functions 兼容格式并同步到 `functions` 分支
+   - 存储库会自动将 Workers 代码转换为 Functions 兼容格式并同步到 `functions`
+     分支
    - 推送代码到 `main` 分支会自动触发同步和部署工作流
    - 仅修改文档文件（`.md`）、`LICENSE`、`.gitignore` 等不会触发部署
    - 也可以在 GitHub Actions 页面手动触发部署
 
 5. **绑定自定义域名**（可选）：在 Vercel 控制台中绑定你的自定义域名
 
-**注意**：`functions` 分支是从 `main` 分支自动生成的。请勿手动编辑 `functions` 分支，因为它会被同步工作流覆盖。
+**注意**：`functions` 分支是从 `main` 分支自动生成的。请勿手动编辑 `functions`
+分支，因为它会被同步工作流覆盖。
 
 ### 部署到 Netlify
 
 1. **fork 本存储库**：[Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
 2. **获取 Netlify 凭证**：
-   - 访问 [Netlify User Settings](https://app.netlify.com/user/applications) 创建并记录 personal access token
+   - 访问 [Netlify User Settings](https://app.netlify.com/user/applications)
+     创建并记录 personal access token
    - 新建项目后访问 Project configuration 记录 Project ID
 
 3. **配置 GitHub Secrets**：
@@ -2494,14 +2645,16 @@ client = OpenAI(
      - `NETLIFY_SITE_ID`：你的 Project ID
 
 4. **触发部署**：
-   - 存储库会自动将 Workers 代码转换为 Functions 兼容格式并同步到 `functions` 分支
+   - 存储库会自动将 Workers 代码转换为 Functions 兼容格式并同步到 `functions`
+     分支
    - 推送代码到 `main` 分支会自动触发同步和部署工作流
    - 仅修改文档文件（`.md`）、`LICENSE`、`.gitignore` 等不会触发部署
    - 也可以在 GitHub Actions 页面手动触发部署
 
 5. **绑定自定义域名**（可选）：在 Netlify 控制台中绑定你的自定义域名
 
-**注意**：`functions` 分支是从 `main` 分支自动生成的。请勿手动编辑 `functions` 分支，因为它会被同步工作流覆盖。
+**注意**：`functions` 分支是从 `main` 分支自动生成的。请勿手动编辑 `functions`
+分支，因为它会被同步工作流覆盖。
 
 ### 部署到 Deno Deploy
 
@@ -2512,12 +2665,14 @@ client = OpenAI(
    - 将默认分支从 `main` 切换到 `functions`
 
 3. **部署到 Deno Deploy**：
-   - 参考 [Deno Deploy 官方文档](https://docs.deno.com/deploy/getting_started/)执行部署
+   - 参考
+     [Deno Deploy 官方文档](https://docs.deno.com/deploy/getting_started/)执行部署
    - 在 Deno Deploy 控制台创建新项目并连接你的 GitHub 存储库
 
 4. **绑定自定义域名**（可选）：在 Deno Deploy 控制台中绑定你的自定义域名
 
-**注意**：`functions` 分支是从 `main` 分支自动生成的。请勿手动编辑 `functions` 分支，因为它会被同步工作流覆盖。
+**注意**：`functions` 分支是从 `main` 分支自动生成的。请勿手动编辑 `functions`
+分支，因为它会被同步工作流覆盖。
 
 ### 自托管部署
 
@@ -2603,7 +2758,7 @@ services:
     image: ghcr.io/xixu-me/xget:latest
     container_name: xget
     ports:
-      - "8080:8080"
+      - '8080:8080'
     restart: unless-stopped
 ```
 
@@ -2621,7 +2776,8 @@ podman compose up -d
 
 部署完成后，Xget 将在 8080 端口运行。
 
-如果你希望在 DigitalOcean 上部署和运行 Xget，可以参考文档[《Deploying and Optimizing Xget on DigitalOcean》](docs/deploy-on-digitalocean.md)。通过下方推荐链接注册账户，可获得 200 美元代金券积分，可用于创建 Droplet、Kubernetes、App Platform 等资源：
+如果你希望在 DigitalOcean 上部署和运行 Xget，可以参考文档[《Deploying and Optimizing Xget on DigitalOcean》](docs/deploy-on-digitalocean.md)。通过下方推荐链接注册账户，可获得 200 美元代金券积分，可用于创建 Droplet、Kubernetes、App
+Platform 等资源：
 
 <p>
   <a href="https://m.do.co/c/7efe110ca23f">
@@ -2639,15 +2795,15 @@ podman compose up -d
 
 ```javascript
 export const CONFIG = {
-  TIMEOUT_SECONDS: 30,       // 请求超时时间（秒）
-  MAX_RETRIES: 3,            // 最大重试次数
-  RETRY_DELAY_MS: 1000,      // 重试延迟时间（毫秒）
-  CACHE_DURATION: 1800,      // 缓存持续时间（1800秒 = 30分钟）
+  TIMEOUT_SECONDS: 30, // 请求超时时间（秒）
+  MAX_RETRIES: 3, // 最大重试次数
+  RETRY_DELAY_MS: 1000, // 重试延迟时间（毫秒）
+  CACHE_DURATION: 1800, // 缓存持续时间（1800秒 = 30分钟）
   SECURITY: {
-    ALLOWED_METHODS: ["GET", "HEAD"],  // 允许的 HTTP 方法（Git 操作会动态允许 POST）
-    ALLOWED_ORIGINS: ["*"],            // 允许的 CORS 源
-    MAX_PATH_LENGTH: 2048,             // 最大路径长度（字符）
-  },
+    ALLOWED_METHODS: ['GET', 'HEAD'], // 常规请求的基础允许列表；协议流量内置了更宽的允许范围
+    ALLOWED_ORIGINS: ['*'], // 允许的 CORS 源
+    MAX_PATH_LENGTH: 2048 // 最大路径长度（字符）
+  }
 };
 ```
 
@@ -2659,17 +2815,18 @@ export const CONFIG = {
 
 ### 添加新平台
 
-要添加对新平台的支持，编辑 `src/config/platforms.js`：
+要添加对新平台的支持，请更新平台目录；如果需要特殊路径转换，再补充转换器：
 
 ```javascript
-export const PLATFORMS = {
+// src/config/platform-catalog.js
+export const PLATFORM_CATALOG = {
   // 现有平台...
+  custom: 'https://example.com'
+};
 
-  // 新平台示例
-  custom: {
-    base: "https://example.com",
-    transform: (path) => path.replace(/^\/custom\//, "/"),
-  },
+// src/routing/platform-transformers.js
+const PLATFORM_PATH_TRANSFORMERS = {
+  custom: path => path.replace(/^\/custom\//, '/')
 };
 ```
 
@@ -2732,11 +2889,10 @@ A: 检查源文件是否已经在 CDN 边缘节点缓存，首次访问可能较
 **Q: Git 操作失败？**
 A: 确认使用了正确的 URL 格式，且 Git 客户端版本支持 HTTPS 代理。
 
-**Q: 部署后无法访问？**
-A: 检查 Cloudflare Workers 域名是否正确绑定，确认 `wrangler.toml` 配置正确。
+**Q: 部署后无法访问？** A: 检查 Cloudflare Workers 域名是否正确绑定，确认
+`wrangler.toml` 配置正确。
 
-**Q: 出现 400 错误？**
-A: 检查 URL 路径格式，确认平台前缀正确使用。
+**Q: 出现 400 错误？** A: 检查 URL 路径格式，确认平台前缀正确使用。
 
 ### 性能监控
 
@@ -2757,7 +2913,8 @@ npx wrangler dev --log-level debug
 
 - **合法合规使用**：本存储库旨在为代码存储库、软件包注册表、AI 推理 API、容器镜像、模型、数据集及更多合法开发者资源提供统一加速服务。使用者应严格遵守所在司法辖区法律法规及相关平台服务条款，任何非法用途的法律责任由使用者自行承担
 - **非关联性与独立责任**：本存储库与各第三方平台不存在任何隶属、代理或合作关系。任何基于本存储库的 fork、二次开发、再分发或衍生版本均由其维护者独立承担全部责任；作者、维护者及贡献者不对衍生存储库的任何行为或后果承担法律或连带责任
-- **无担保与免责条款**：在适用法律允许的最大范围内，本存储库按“现状（AS IS）”提供，不提供任何明示或暗示担保（包括但不限于适销性、特定用途适用性、非侵权等）。对因使用本存储库而造成的任何直接或间接损失（包括但不限于数据丢失、业务中断、利润损失等），作者、维护者及贡献者不承担任何责任
+- **无担保与免责条款**：在适用法律允许的最大范围内，本存储库按“现状（AS
+  IS）”提供，不提供任何明示或暗示担保（包括但不限于适销性、特定用途适用性、非侵权等）。对因使用本存储库而造成的任何直接或间接损失（包括但不限于数据丢失、业务中断、利润损失等），作者、维护者及贡献者不承担任何责任
 - **风险自担原则**：使用者应自行评估使用风险，确保其使用行为合法合规，不侵犯第三方权益，不得将本存储库用于任何违法、侵权、恶意或不当用途
 - **第三方平台合规**：使用者应遵守相关平台的服务条款、API 使用政策、速率限制及版权要求，避免对源平台造成过载或干扰。各平台对其内容、服务及政策拥有最终解释权
 - **知识产权保护**：通过本存储库获取的内容受相应版权法保护。使用者应遵守相关许可协议、版权声明及使用条款，不得从事任何侵犯知识产权的行为
@@ -2770,7 +2927,14 @@ npx wrangler dev --log-level debug
 
 我们欢迎各种形式的贡献！请查看[贡献指南](CONTRIBUTING.md)了解如何参与存储库开发。
 
-1. **报告问题**: 使用 [issue 模板](https://github.com/xixu-me/Xget/issues/new/choose)报告 bug 或提出功能请求
+社区协作与维护者职责说明请参考：
+
+- [行为准则](CODE_OF_CONDUCT.md)
+- [安全策略](SECURITY.md)
+- [治理说明](GOVERNANCE.md)
+
+1. **报告问题**: 使用
+   [issue 模板](https://github.com/xixu-me/Xget/issues/new/choose)报告 bug 或提出功能请求
 2. **提交代码**: fork 存储库，创建功能分支，提交 pull request
 3. **改进文档**: 修正错误、添加示例、完善说明
 4. **测试反馈**: 在不同环境下测试并提供反馈
@@ -2789,7 +2953,7 @@ npx wrangler dev --log-level debug
 
 版权所有 &copy; Xi Xu。
 
-本存储库采用 GPL-3.0 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+本存储库采用 AGPL-3.0 许可证 - 查看 [`LICENSE`](LICENSE) 文件了解详情。
 
 ---
 

@@ -9,6 +9,10 @@ const __dirname = dirname(__filename);
 const shouldFix = process.argv.includes('--fix');
 
 // Extract badge info from README file
+/**
+ *
+ * @param filePath
+ */
 function extractBadgeInfo(filePath) {
   const content = readFileSync(filePath, 'utf8');
   const badgeRegex =
@@ -38,6 +42,11 @@ function extractBadgeInfo(filePath) {
 }
 
 // Fix badge colors in README file
+/**
+ *
+ * @param filePath
+ * @param colorChanges
+ */
 function fixBadgeColors(filePath, colorChanges) {
   let content = readFileSync(filePath, 'utf8');
   let changeCount = 0;
@@ -69,6 +78,9 @@ function fixBadgeColors(filePath, colorChanges) {
   return 0;
 }
 
+/**
+ *
+ */
 async function fetchSimpleIcons() {
   const response = await fetch(
     'https://raw.githubusercontent.com/simple-icons/simple-icons/refs/heads/develop/data/simple-icons.json'
@@ -86,16 +98,17 @@ async function fetchSimpleIcons() {
   return iconMap;
 }
 
-async function main() {
-  console.log('Fetching Simple Icons data...\n');
-  const simpleIcons = await fetchSimpleIcons();
+/**
+ *
+ * @param filePath
+ * @param simpleIcons
+ */
+function checkReadme(filePath, simpleIcons) {
+  const fileName = filePath.split(/[\\/]/).pop();
+  const currentBadges = extractBadgeInfo(filePath);
 
-  // Get badge info from README files (one level up from scripts directory)
-  const readmePath = join(__dirname, '..', 'README.md');
-  const readmeEnPath = join(__dirname, '..', 'README.en.md');
-  const currentBadges = extractBadgeInfo(readmePath);
-
-  console.log('Verifying badge colors:\n');
+  console.log(`\n${'='.repeat(80)}`);
+  console.log(`📄 ${fileName}`);
   console.log('='.repeat(80));
   console.log(
     'Logo Name'.padEnd(25) + 'Current Color'.padEnd(20) + 'Official Color'.padEnd(20) + 'Status'
@@ -141,14 +154,13 @@ async function main() {
   }
 
   console.log('='.repeat(80));
-  console.log(`\nSummary:`);
+  console.log(`\nSummary for ${fileName}:`);
   console.log(`Total badges checked: ${totalChecked}`);
   console.log(`✅ Correct: ${correctCount}`);
   console.log(`❌ Incorrect: ${incorrectCount}`);
 
   if (Object.keys(issues).length > 0) {
-    console.log('\n\n🔧 Badges that need updating:\n');
-    console.log('='.repeat(80));
+    console.log('\n🔧 Badges that need updating:\n');
     Object.entries(issues).forEach(([logo, issue]) => {
       console.log(`${logo}:`);
       console.log(`  Current:  ${issue.current}`);
@@ -157,21 +169,43 @@ async function main() {
     });
 
     if (shouldFix) {
-      console.log('\n🔧 Applying fixes...\n');
-
-      const fixedCount1 = fixBadgeColors(readmePath, issues);
-      console.log(`\n✅ Fixed ${fixedCount1} badge(s) in README.md`);
-
-      const fixedCount2 = fixBadgeColors(readmeEnPath, issues);
-      console.log(`✅ Fixed ${fixedCount2} badge(s) in README.en.md`);
-
-      console.log('\n🎉 All badge colors have been fixed!');
-    } else {
-      console.log('\n💡 Tip: Run with --fix flag to automatically fix all mismatches:');
-      console.log('   node scripts/fix-badge-colors.js --fix\n');
+      console.log('🔧 Applying fixes...\n');
+      const fixedCount = fixBadgeColors(filePath, issues);
+      console.log(`✅ Fixed ${fixedCount} badge(s) in ${fileName}`);
     }
   } else {
     console.log('\n🎉 All badge colors are correct!');
+  }
+
+  return issues;
+}
+
+/**
+ *
+ */
+async function main() {
+  console.log('Fetching Simple Icons data...\n');
+  const simpleIcons = await fetchSimpleIcons();
+
+  const readmes = [
+    join(__dirname, '..', 'README.md'),
+    join(__dirname, '..', 'README.zh-Hans.md'),
+    join(__dirname, '..', 'README.zh-Hant.md')
+  ];
+
+  let anyIssues = false;
+  for (const readmePath of readmes) {
+    const issues = checkReadme(readmePath, simpleIcons);
+    if (Object.keys(issues).length > 0) anyIssues = true;
+  }
+
+  if (anyIssues && !shouldFix) {
+    console.log('\n💡 Tip: Run with --fix flag to automatically fix all mismatches:');
+    console.log('   node scripts/fix-badge-colors.js --fix\n');
+  } else if (!anyIssues) {
+    console.log('\n🎉 All badge colors across all READMEs are correct!');
+  } else {
+    console.log('\n🎉 All badge colors have been fixed!');
   }
 }
 

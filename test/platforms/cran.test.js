@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { PLATFORMS, transformPath } from '../../src/config/platforms.js';
+import { PLATFORM_CATALOG as PLATFORMS } from '../../src/config/platform-catalog.js';
+import { transformPath } from '../../src/routing/platform-transformers.js';
 
 describe('CRAN Platform Configuration', () => {
   it('should have CRAN platform configured', () => {

@@ -1,18 +1,18 @@
 /**
  * Xget - High-performance acceleration engine for developer resources
- * Copyright (C) 2025 Xi Xu
+ * Copyright (C) Xi Xu
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
@@ -32,41 +32,8 @@
  * @returns {boolean} True if this is an AI inference request
  */
 export function isAIInferenceRequest(request, url) {
-  // Check for AI inference provider paths (ip/{provider}/...)
-  if (url.pathname.startsWith('/ip/')) {
-    return true;
-  }
-
-  // Check for common AI inference API endpoints
-  const aiEndpoints = [
-    '/v1/chat/completions',
-    '/v1/completions',
-    '/v1/messages',
-    '/v1/predictions',
-    '/v1/generate',
-    '/v1/embeddings',
-    '/openai/v1/chat/completions'
-  ];
-
-  if (aiEndpoints.some(endpoint => url.pathname.includes(endpoint))) {
-    return true;
-  }
-
-  // Check for AI-specific content types
-  const contentType = request.headers.get('Content-Type') || '';
-  if (contentType.includes('application/json') && request.method === 'POST') {
-    // Additional check for common AI inference patterns in URL
-    if (
-      url.pathname.includes('/chat/') ||
-      url.pathname.includes('/completions') ||
-      url.pathname.includes('/generate') ||
-      url.pathname.includes('/predict')
-    ) {
-      return true;
-    }
-  }
-
-  return false;
+  void request;
+  return url.pathname.startsWith('/ip/');
 }
 
 /**

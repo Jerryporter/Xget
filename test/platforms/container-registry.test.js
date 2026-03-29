@@ -235,42 +235,6 @@ describe('Container Registry Support', () => {
     });
   });
 
-  describe('Container Registry Platform Support', () => {
-    const containerRegistries = [
-      { name: 'Docker Hub', prefix: 'cr/docker', expectedStatus: [200, 301, 302, 401, 404, 429] },
-      { name: 'Quay.io', prefix: 'cr/quay', expectedStatus: [200, 301, 302, 401, 404, 429] },
-      {
-        name: 'Google Container Registry',
-        prefix: 'cr/gcr',
-        expectedStatus: [200, 301, 302, 401, 404, 429]
-      },
-      {
-        name: 'Microsoft Container Registry',
-        prefix: 'cr/mcr',
-        expectedStatus: [200, 301, 302, 401, 404, 429]
-      },
-      {
-        name: 'GitHub Container Registry',
-        prefix: 'cr/ghcr',
-        expectedStatus: [200, 301, 302, 401, 404, 429]
-      },
-      {
-        name: 'Amazon ECR Public',
-        prefix: 'cr/ecr',
-        expectedStatus: [200, 301, 302, 401, 404, 429]
-      }
-    ];
-
-    containerRegistries.forEach(({ name, prefix, expectedStatus }) => {
-      it(`should support ${name} registry`, async () => {
-        const testUrl = `https://example.com/${prefix}/v2/test/image/manifests/latest`;
-        const response = await SELF.fetch(testUrl, { method: 'HEAD' });
-
-        expect(expectedStatus).toContain(response.status);
-      }, 10000);
-    });
-  });
-
   describe('Docker Hub Specific Tests', () => {
     it('should handle Docker Hub official images (single-name images)', async () => {
       // Official images like nginx, redis are stored as library/nginx in Docker Hub
