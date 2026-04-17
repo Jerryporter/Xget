@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Find matching Dependabot PR
         id: pr
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const branch = context.payload.workflow_run.head_branch;
@@ -52,7 +52,7 @@ jobs:
 
       - name: Merge PR when checks pass
         if: steps.pr.outputs.should_merge == 'true'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const owner = context.repo.owner;

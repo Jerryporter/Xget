@@ -7,8 +7,8 @@
 [![Ask Zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/xixu-me/Xget)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/xixu-me/Xget)
 [![codecov](https://codecov.io/github/xixu-me/xget/graph/badge.svg?token=KDFMG9YX8G)](https://codecov.io/github/xixu-me/xget)
-[![Chromium](https://img.shields.io/badge/Chromium-4285F4?logo=googlechrome&logoColor=white)](#-生態系統整合)
-[![Firefox](https://img.shields.io/badge/Firefox-FF7139?logo=Firefox&logoColor=white)](#-生態系統整合)
+[![Chromium](https://img.shields.io/badge/Chromium-4285F4?logo=googlechrome&logoColor=white)](#生態系統整合)
+[![Firefox](https://img.shields.io/badge/Firefox-FF7139?logo=Firefox&logoColor=white)](#生態系統整合)
 
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?&logo=cloudflare&logoColor=white)](#部署到-cloudflare-workers)
 [![EdgeOne](https://img.shields.io/badge/EdgeOne-006EFF?&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACNklEQVR4nJ1W7XHbMAx96ul/lQnCDapOUG3gdIIkG6QjdINOUGeDNhNYmUDuBHIWiNQF/PqDYAxDoMUGdzx+AXgAAQGqSKKAOgAbma8BXMn5DGAv4wlAv6qJ5KVxR3LkOR3NWu9HkcnqzF0EkoMDcsysLd8oOooAb0lOF7wqpYnkzRrgZkVJ8mp0jLFzotscYOC6ZyNjjLbOnTZI7weSjQc4ZoQmkjuSneIdMoADyR9iVKuB0qglWYOT0n9Uys/qPAD4ZHgfAXwzfO/6LLyxcTxbJEdufFi1aEk32l6Z+1Lhep1lQa1aVwI2O3wBsTIFxOoUADzVspgzQp6S1pztATRyvpG5lTNLTUVykssJwF91OQP4bATuAGzVngBexJD0vJW51/u5VpZc4VSUgViMLX1xlIUCoERNLoYE8Ns579S6chTngGYZh1oWjRGoEGOjKSAGP/HovqblDoiJtAfwLPv5xHnqCrbNeK3K8qX9juQDMx3CVpoesXLop7DeATF+2rsKsbo8oizD3zzsjLWk30RHw7N7R5V68/AgMUpeWg9bLLOxL/AniOw1Yp58t/FZi5+mzuFrJJY/Sb6qFzmmV9PMgzBsHUW/eN5gJwdk54Rm4YTXgHPx00p24qEGydFElb3e09nUbpXVuZ+oS/88Z62rJLMelHAJSDqf6LxWSXvS35/+Vr0SlqrPHsBXxOw/o5IGHDLKE4AucS8A7hG7zAIMACryv371WxkfxYhZFD8jFvt+TdE/deK28xBAUlEAAAAASUVORK5CYII=)](#部署到-edgeone-pages)
@@ -21,6 +21,24 @@
 [English](README.md) | [汉语（简体）](README.zh-Hans.md) | **漢語（繁體）**
 
 </div>
+
+> [!TIP]
+> 歡迎加入「Xget 開源與 AI 交流群」，一起交流開源專案、AI 應用、工程實踐、效率工具和獨立開發；如果你也在做產品、寫程式、折騰專案或者對開源和 AI 感興趣，歡迎[**進群**](https://file.xi-xu.me/QR%20Codes/%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)認識更多認真做事、樂於分享的朋友。
+
+面向開發者資源的超高效能、安全、一體化加速引擎，為程式碼託管、模型和資料集中心、軟體包管理儲存庫、容器註冊表、AI 推理供應商等提供統一、高效的加速，同時替你處理快取、重試、安全回應標頭，以及各種協定相容行為。
+
+技術深度解析文章：**[《深入剖析 Xget：一個高效能、多協定、高安全性的開發者資源加速引擎》](https://blog.xi-xu.me/en/2025/10/07/Deep-Dive-into-Xget.html)**。
+
+受邀入駐
+[GitCode](https://gitcode.com/xixu-me/xget)，並被認證為 G-Star 畢業專案。作為「一個被廣泛使用的公共專案」，獲得 OpenAI 的
+[Codex for Open Source](https://developers.openai.com/community/codex-for-oss)
+計畫支援，也獲得多位技術博主自發推薦，包括[阮一峰](https://www.ruanyifeng.com/blog/2025/12/weekly-issue-379.html#:~:text=Xget)、[GitHubDaily](https://x.com/i/status/1956204203937829256)、[魚 C](https://www.bilibili.com/video/BV1EeeBzVEop/)、[玄離 199](https://www.bilibili.com/video/BV197hqzsE8Y/?t=8)
+等。感謝所有支持、分享、推薦和實際使用 Xget 的個人、團隊與社群。
+
+## 支援的平台
+
+> [!NOTE]
+> 下方徽章會跳轉到 README 中對應的使用或部署章節。
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?&logo=github&logoColor=white)](#github)
 [![GitLab](https://img.shields.io/badge/GitLab-FC6D26?&logo=gitlab&logoColor=white)](#gitlab)
@@ -58,15 +76,7 @@
 [![容器註冊表](https://img.shields.io/badge/容器註冊表-262261?logo=opencontainersinitiative&logoColor=white)](#容器註冊表)
 [![AI 推理供應商](https://img.shields.io/badge/AI%20推理供應商-94A3B8?logo=openrouter&logoColor=white)](#ai-推理供應商)
 
-面向開發者資源的超高效能、安全、一體化加速引擎，其效能顯著優於傳統解決方案，為程式碼託管、模型和資料集中心、軟體包管理儲存庫、容器註冊表、AI 推理供應商等提供統一、高效的加速，同時替你處理快取、重試、安全回應標頭，以及各種協定相容行為。
-
-技術深度解析文章：**[《深入剖析 Xget：一個高效能、多協定、高安全性的開發者資源加速引擎》](https://blog.xi-xu.me/en/2025/10/07/Deep-Dive-into-Xget.html)**。
-
-Xget 已受邀入駐
-[GitCode 平台](https://gitcode.com/xixu-me/xget)，並被認證為 G-Star 畢業專案；同時也獲得多位技術博主自發推薦，包括[阮一峰](https://www.ruanyifeng.com/blog/2025/12/weekly-issue-379.html#:~:text=Xget)、[GitHubDaily](https://x.com/i/status/1956204203937829256)、[魚 C](https://www.bilibili.com/video/BV1EeeBzVEop/)、[玄離 199](https://www.bilibili.com/video/BV197hqzsE8Y/?t=8)
-等。在此感謝 GitCode 的肯定，也感謝每一位分享、推薦與實際使用 Xget 的朋友。
-
-## 🎯 快速開始
+## 快速開始
 
 **預部署實例：`xget.xi-xu.me`** - 僅適合評估與試用，正式環境或對可用性敏感的場景建議自行部署。
 
@@ -77,26 +87,26 @@ Xget 已受邀入駐
 
 **Agent Skills：`npx skills add xixu-me/skills -s xget`**
 
-## 🌟 核心優勢 - 為什麼選擇 Xget？
+## 為什麼選擇 Xget
 
-### ⚡ 面向效能的設計
+### 面向效能的設計
 
-- **🌐 全球邊緣執行環境**：基於 Cloudflare
+- **全球邊緣執行環境**：基於 Cloudflare
   Workers，盡量讓請求更靠近使用者與上游服務
-- **⚡ 協定感知處理**：支援 HTTP/3、Range 請求、Git 流量、容器註冊表流程與 AI 推理 API
-- **📦 快取與重試鏈路**：對可相容回應提供邊緣快取，對暫時性上游失敗提供重試，並對支援的平台做請求規範化
-- **🔗 連線重用**：在執行環境與上游允許的前提下，重用標準 HTTP
+- **協定感知處理**：支援 HTTP/3、Range 請求、Git 流量、容器註冊表流程與 AI 推理 API
+- **快取與重試鏈路**：對可相容回應提供邊緣快取，對暫時性上游失敗提供重試，並對支援的平台做請求規範化
+- **連線重用**：在執行環境與上游允許的前提下，重用標準 HTTP
   keep-alive 與連線重用能力
-- **📊 請求耗時可觀測**：在協定相容的情況下，可透過 `X-Performance-Metrics`
+- **請求耗時可觀測**：在協定相容的情況下，可透過 `X-Performance-Metrics`
   回應標頭暴露階段性耗時資訊
 
-### 🌐 多平台深度整合
+### 多平台深度整合
 
 - **一站式多平台支援**：統一支援各種開發場景中的主流平台
 - **智慧識別與轉換**：自動識別平台前綴並轉換為目標平台的正確 URL 結構
 - **一致的加速體驗**：無論檔案類型或來源，均可享受統一且穩定的極速下載體驗
 
-### 🔒 企業級安全保障
+### 企業級安全保障
 
 - **多層安全標頭**：
   - `Strict-Transport-Security`：強制 HTTPS 傳輸，預防中間人攻擊
@@ -112,7 +122,7 @@ Xget 已受邀入駐
   - 輸入清理：防止路徑遍歷和注入攻擊
 - **逾時保護**：30 秒請求逾時，防止資源耗盡和惡意請求
 
-### 🚀 現代架構與可靠性
+### 現代架構與可靠性
 
 - **智慧重試機制**：
   - 最大 3 次重試，線性延遲策略（1000ms × 重試次數）
@@ -127,7 +137,7 @@ Xget 已受邀入駐
   - 透過 `X-Performance-Metrics` 回應標頭提供詳細效能數據
   - 支援快取命中率統計和最佳化建議
 
-### 🎯 Git 協定完全相容
+### Git 協定完全相容
 
 - **智慧協定檢測**：
   - 自動識別 Git 特定端點（`/info/refs`、`/git-upload-pack`、`/git-receive-pack`）
@@ -143,7 +153,7 @@ Xget 已受邀入駐
   - 智慧 User-Agent 處理（預設 `git/2.34.1`）
   - 支援 Git LFS 大檔案傳輸
 
-### 📱 生態系統整合
+### 生態系統整合
 
 - **專用瀏覽器擴充功能**：[Xget Now](https://github.com/xixu-me/Xget-Now)
   提供無縫體驗
@@ -154,7 +164,7 @@ Xget 已受邀入駐
 - **下載工具相容性**：完美支援 wget、cURL、aria2、IDM 等主流下載工具
 - **CI/CD 整合**：可直接在 GitHub Actions、GitLab CI 等環境中使用
 
-## 🏗️ 系統架構
+## 系統架構
 
 ### 請求處理流程
 
@@ -249,7 +259,7 @@ classDiagram
     PlatformRouting --> PlatformCatalog
 ```
 
-## 📖 URL 轉換規則
+## URL 轉換規則
 
 使用預部署實例 **`xget.xi-xu.me`**
 或您自己部署的實例，只需簡單替換網域並新增平台前綴：
@@ -888,7 +898,7 @@ https://xget.xi-xu.me/ip/huggingface/hf-inference/models/openai/whisper-large-v3
 
 應用場景見 [AI 推理 API 加速](#ai-推理-api-加速)。
 
-## 🎯 應用場景
+## 應用場景
 
 ### Git 操作與配置
 
@@ -2522,7 +2532,7 @@ client = OpenAI(
 )
 ```
 
-## 🚀 部署
+## 部署
 
 ### 部署到 Cloudflare Workers
 
@@ -2787,7 +2797,7 @@ Platform 等資源：
 
 **注意**：自託管部署不包括全球邊緣網路加速，效能取決於您的伺服器配置和網路環境。
 
-## 🔧 配置
+## 配置
 
 ### 配置參數
 
@@ -2830,7 +2840,7 @@ const PLATFORM_PATH_TRANSFORMERS = {
 };
 ```
 
-## 🚧 開發
+## 開發
 
 1. **儲存庫設定**
 
@@ -2852,7 +2862,7 @@ const PLATFORM_PATH_TRANSFORMERS = {
    npm run deploy           # 部署到生產環境
    ```
 
-## 🧪 測試
+## 測試
 
 儲存庫包含完整的測試套件，確保程式碼品質和功能正確性。
 
@@ -2879,7 +2889,7 @@ npm run test:watch
 - **安全測試**: 輸入驗證、安全標頭、權限控制
 - **效能測試**: 回應時間、記憶體使用、並行處理
 
-## 🔍 故障排除
+## 故障排除
 
 ### 常見問題
 
@@ -2909,7 +2919,7 @@ A: 確認使用了正確的 URL 格式，且 Git 用戶端版本支援 HTTPS 代
 npx wrangler dev --log-level debug
 ```
 
-## ⚠️ 免責聲明
+## 免責聲明
 
 - **合法合規使用**：本儲存庫旨在為程式碼儲存庫、軟體包註冊表、AI 推理 API、容器鏡像、模型、資料集及更多合法開發者資源提供統一加速服務。使用者應嚴格遵守所在司法管轄區法律法規及相關平台服務條款，任何非法用途的法律責任由使用者自行承擔
 - **非關聯性與獨立責任**：本儲存庫與各第三方平台不存在任何隸屬、代理或合作關係。任何基於本儲存庫的 fork、二次開發、再分發或衍生版本均由其維護者獨立承擔全部責任；作者、維護者及貢獻者不對衍生儲存庫的任何行為或後果承擔法律或連帶責任
@@ -2923,23 +2933,27 @@ npx wrangler dev --log-level debug
 - **名稱使用規範**：嚴禁任何可能暗示作者或貢獻者提供商業合作、技術支援、擔保或背書的表述。涉及儲存庫名稱或作者標識的使用應遵循相關法律法規及通用規範
 - **免責聲明更新**：本免責聲明可能隨儲存庫發展或法律環境變化進行更新修訂。使用者繼續使用、複製、分發或修改本儲存庫即視為接受最新版本的免責聲明
 
-## 🤝 貢獻
+## 專案資源
 
-我們歡迎各種形式的貢獻！請檢視[貢獻指南](CONTRIBUTING.md)了解如何參與儲存庫開發。
-
-社群協作與維護者職責說明請參考：
+我們歡迎各種形式的貢獻。開始前請先閱讀[貢獻指南](CONTRIBUTING.md)，並在協作過程中參考這些專案文件：
 
 - [行為準則](CODE_OF_CONDUCT.md)
 - [安全政策](SECURITY.md)
 - [治理說明](GOVERNANCE.md)
 
-1. **報告問題**: 使用
-   [issue 範本](https://github.com/xixu-me/Xget/issues/new/choose)報告 bug 或提出功能請求
-2. **提交程式碼**: fork 儲存庫，建立功能分支，提交 pull request
-3. **改進文件**: 修正錯誤、新增範例、完善說明
-4. **測試反饋**: 在不同環境下測試並提供反饋
+你可以透過以下方式參與：
 
-## 🌟 Star 歷史
+1. **報告問題**: 使用
+   [issue 範本](https://github.com/xixu-me/Xget/issues/new/choose)回報 bug 或提出功能請求。
+2. **提交程式碼**: fork 儲存庫，建立功能分支並提交 pull request。
+3. **改進文件**: 修正錯誤、新增範例、完善說明。
+4. **測試回饋**: 在不同環境下測試並分享結果。
+
+版權所有 &copy; Xi Xu。
+
+本儲存庫採用 AGPL-3.0 許可證，詳見 [`LICENSE`](LICENSE)。
+
+## Star 歷史
 
 <a href="https://www.star-history.com/#xixu-me/Xget&Date">
  <picture>
@@ -2948,12 +2962,6 @@ npx wrangler dev --log-level debug
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xixu-me/Xget&type=Date" />
  </picture>
 </a>
-
-## 📝 許可證
-
-版權所有 &copy; Xi Xu。
-
-本儲存庫採用 AGPL-3.0 許可證 - 檢視 [`LICENSE`](LICENSE) 檔案了解詳情。
 
 ---
 
