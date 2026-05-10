@@ -11,6 +11,17 @@ import {
 import { getAllowedMethods, isDockerRequest, validateRequest } from '../../src/utils/validation.js';
 
 describe('Utility Functions', () => {
+  describe('createConfig', () => {
+    it.each([
+      ['-1', 300],
+      ['0', 300],
+      ['abc', 300],
+      ['60', 60]
+    ])('should parse CACHE_DURATION=%s as %i', (value, expected) => {
+      expect(createConfig({ CACHE_DURATION: value }).CACHE_DURATION).toBe(expected);
+    });
+  });
+
   describe('isGitRequest', () => {
     it('should identify Git info/refs requests', () => {
       const request = new Request('https://example.com/repo.git/info/refs');

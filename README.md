@@ -5,7 +5,7 @@
 <a href="https://trendshift.io/repositories/14768" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14768" alt="xixu-me%2FXget | Trendshift" width="250" height="55"/></a>
 
 [![Ask Zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/xixu-me/Xget)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/xixu-me/Xget)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/xixu-me/xget)
 [![codecov](https://codecov.io/github/xixu-me/xget/graph/badge.svg?token=KDFMG9YX8G)](https://codecov.io/github/xixu-me/xget)
 [![Chromium](https://img.shields.io/badge/Chromium-4285F4?logo=googlechrome&logoColor=white)](#ecosystem-integration)
 [![Firefox](https://img.shields.io/badge/Firefox-FF7139?logo=Firefox&logoColor=white)](#ecosystem-integration)
@@ -156,10 +156,11 @@ supported platform URL to Xget's acceleration format with one click
   - Automatic error recovery, improved download success rate
   - Timeout detection and interruption handling
 - **Efficient Caching Strategy**:
-  - 1800 seconds (30 minutes) default cache duration, significantly reduces
-    origin server pressure
+  - Strategy-based cache durations keep mutable metadata fresh while caching
+    immutable artifacts longer
   - Git operations skip caching to ensure real-time data
-  - Edge caching based on Cloudflare Cache API
+  - Edge caching based on Cloudflare Cache API and Cloudflare fetch cache
+    controls
 - **Performance Monitoring System**:
   - Built-in `PerformanceMonitor` class for real-time tracking of request stage
     durations
@@ -329,7 +330,7 @@ instance, simply replace the domain and add the platform prefix:
 | Flathub                | `flathub`       | `https://dl.flathub.org/...`                                         | `https://xget.xi-xu.me/flathub/...`                                               |
 | Debian                 | `debian`        | `https://deb.debian.org/...`                                         | `https://xget.xi-xu.me/debian/...`                                                |
 | Ubuntu                 | `ubuntu`        | `https://archive.ubuntu.com/...`                                     | `https://xget.xi-xu.me/ubuntu/...`                                                |
-| Fedora                 | `fedora`        | `https://dl.fedoraproject.org/...`                                   | `https://xget.xi-xu.me/fedora/...`                                                |
+| Fedora                 | `fedora`        | `https://mirrors.kernel.org/fedora/...`                              | `https://xget.xi-xu.me/fedora/...`                                                |
 | Rocky Linux            | `rocky`         | `https://download.rockylinux.org/...`                                | `https://xget.xi-xu.me/rocky/...`                                                 |
 | openSUSE               | `opensuse`      | `https://download.opensuse.org/...`                                  | `https://xget.xi-xu.me/opensuse/...`                                              |
 | Arch Linux             | `arch`          | `https://geo.mirror.pkgbuild.com/...`                                | `https://xget.xi-xu.me/arch/...`                                                  |
@@ -745,10 +746,10 @@ https://archive.ubuntu.com/ubuntu/pool/main/g/git/git_2.34.1-1ubuntu1.9_amd64.de
 https://xget.xi-xu.me/ubuntu/ubuntu/pool/main/g/git/git_2.34.1-1ubuntu1.9_amd64.deb
 
 # Fedora package original URL
-https://dl.fedoraproject.org/pub/fedora/linux/releases/39/Everything/x86_64/os/Packages/n/nginx-1.24.0-1.fc39.x86_64.rpm
+https://mirrors.kernel.org/fedora/releases/39/Everything/x86_64/os/Packages/n/nginx-1.24.0-1.fc39.x86_64.rpm
 
 # Converted (add fedora prefix)
-https://xget.xi-xu.me/fedora/pub/fedora/linux/releases/39/Everything/x86_64/os/Packages/n/nginx-1.24.0-1.fc39.x86_64.rpm
+https://xget.xi-xu.me/fedora/releases/39/Everything/x86_64/os/Packages/n/nginx-1.24.0-1.fc39.x86_64.rpm
 
 # Rocky Linux package original URL
 https://download.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os/Packages/b/bash-5.1.8-6.el9.x86_64.rpm
@@ -2892,7 +2893,7 @@ export const CONFIG = {
   TIMEOUT_SECONDS: 30, // Request timeout (seconds)
   MAX_RETRIES: 3, // Maximum retry count
   RETRY_DELAY_MS: 1000, // Retry delay (milliseconds)
-  CACHE_DURATION: 1800, // Cache duration (1800 seconds = 30 minutes)
+  CACHE_DURATION: 300, // Fallback mutable cache duration (300 seconds = 5 minutes)
   SECURITY: {
     ALLOWED_METHODS: ['GET', 'HEAD'], // Base allowlist for regular requests; protocol traffic has broader built-in allowances
     ALLOWED_ORIGINS: ['*'], // Allowed CORS origins
@@ -2903,8 +2904,8 @@ export const CONFIG = {
 
 ### Performance Tuning Recommendations
 
-- **Cache Optimization**: Adjust `CACHE_DURATION` based on usage patterns,
-  reduce appropriately for frequently updated repositories
+- **Cache Optimization**: Adjust the `CACHE_DURATION` fallback value based on
+  usage patterns; metadata and immutable artifacts use built-in policy TTLs
 - **Timeout Settings**: Increase `TIMEOUT_SECONDS` appropriately for poor
   network conditions
 - **Retry Strategy**: Increase `MAX_RETRIES` and `RETRY_DELAY_MS` in

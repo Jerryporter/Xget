@@ -19,6 +19,17 @@
 import { PLATFORMS } from './platform-catalog.js';
 
 /**
+ * Parses an environment value as a positive integer.
+ * @param {unknown} value Environment value.
+ * @param {number} fallback Fallback used for missing or invalid values.
+ * @returns {number} Parsed positive integer or fallback.
+ */
+function parsePositiveInteger(value, fallback) {
+  const parsed = parseInt(String(value), 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+/**
  * Security-related configuration options for request validation and CORS.
  * @typedef {object} SecurityConfig
  * @property {string[]} ALLOWED_METHODS - List of allowed HTTP methods for incoming requests
@@ -50,7 +61,7 @@ import { PLATFORMS } from './platform-catalog.js';
  * @property {number} TIMEOUT_SECONDS - Request timeout in seconds (default: 30)
  * @property {number} MAX_RETRIES - Maximum number of retry attempts for failed requests (default: 3)
  * @property {number} RETRY_DELAY_MS - Delay between retry attempts in milliseconds (default: 1000)
- * @property {number} CACHE_DURATION - Cache duration in seconds for successful responses (default: 1800)
+ * @property {number} CACHE_DURATION - Fallback cache duration in seconds for mutable successful responses (default: 300)
  * @property {SecurityConfig} SECURITY - Security-related configurations
  * @property {{ [key: string]: string }} PLATFORMS - Platform-specific base URL mappings
  * @example
@@ -59,7 +70,7 @@ import { PLATFORMS } from './platform-catalog.js';
  *   TIMEOUT_SECONDS: 30,
  *   MAX_RETRIES: 3,
  *   RETRY_DELAY_MS: 1000,
- *   CACHE_DURATION: 1800,
+ *   CACHE_DURATION: 300,
  *   SECURITY: {
  *     ALLOWED_METHODS: ['GET', 'HEAD'],
  *     ALLOWED_ORIGINS: ['*'],
@@ -89,7 +100,7 @@ import { PLATFORMS } from './platform-catalog.js';
  * - `TIMEOUT_SECONDS` - Override default timeout (default: 30)
  * - `MAX_RETRIES` - Override max retry attempts (default: 3)
  * - `RETRY_DELAY_MS` - Override retry delay (default: 1000)
- * - `CACHE_DURATION` - Override cache TTL (default: 1800 = 30 minutes)
+ * - `CACHE_DURATION` - Override fallback mutable cache TTL (default: 300 = 5 minutes)
  * - `ALLOWED_METHODS` - Comma-separated HTTP methods (default: 'GET,HEAD')
  * - `ALLOWED_ORIGINS` - Comma-separated CORS origins (default: '*')
  * - `MAX_PATH_LENGTH` - Override max path length (default: 2048)
@@ -99,7 +110,7 @@ import { PLATFORMS } from './platform-catalog.js';
  * // Create config with defaults (no environment variables)
  * const config = createConfig();
  * console.log(config.TIMEOUT_SECONDS); // 30
- * console.log(config.CACHE_DURATION); // 1800
+ * console.log(config.CACHE_DURATION); // 300
  * @example
  * // Create config with environment overrides
  * const env = {
@@ -149,7 +160,7 @@ export function createConfig(env = {}) {
     TIMEOUT_SECONDS: parseInt(String(env.TIMEOUT_SECONDS), 10) || 30,
     MAX_RETRIES: parseInt(String(env.MAX_RETRIES), 10) || 3,
     RETRY_DELAY_MS: parseInt(String(env.RETRY_DELAY_MS), 10) || 1000,
-    CACHE_DURATION: parseInt(String(env.CACHE_DURATION), 10) || 1800, // 30 minutes
+    CACHE_DURATION: parsePositiveInteger(env.CACHE_DURATION, 300), // 5 minutes
     SECURITY: {
       ALLOWED_METHODS: allowedMethods.length ? allowedMethods : ['GET', 'HEAD'],
       ALLOWED_ORIGINS: allowedOrigins.length ? allowedOrigins : ['*'],
