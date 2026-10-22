@@ -25,7 +25,7 @@ import {
   responseUnauthorized
 } from '../protocols/docker.js';
 import { configureGitHeaders } from '../protocols/git.js';
-import { configureHuggingFaceHeaders } from '../protocols/huggingface.js';
+import { configureHuggingFaceHeaders, fetchHuggingFaceFile } from '../protocols/huggingface.js';
 import { createErrorResponse } from '../utils/security.js';
 
 const MEDIA_FILE_PATTERN =
@@ -174,6 +174,7 @@ async function followDockerRedirectIfNeeded(response, targetUrl, finalFetchOptio
  * Executes the upstream fetch, including HEAD fallback probing and Docker redirect handling.
  * @param {{
  *   fetchOptions: RequestInit,
+ *   platform: string,
  *   request: Request,
  *   requestContext: {
  *     isDocker: boolean
@@ -183,7 +184,14 @@ async function followDockerRedirectIfNeeded(response, targetUrl, finalFetchOptio
  * }} options
  * @returns {Promise<Response>} Upstream response.
  */
-async function executeFetch({ fetchOptions, request, requestContext, requestHeaders, targetUrl }) {
+async function executeFetch({
+  fetchOptions,
+  platform,
+  request,
+  requestContext,
+  requestHeaders,
+  targetUrl
+}) {
   const finalFetchOptions = /** @type {RequestInit} */ ({
     ...fetchOptions,
     signal: /** @type {AbortSignal} */ (fetchOptions.signal)
@@ -193,15 +201,22 @@ async function executeFetch({ fetchOptions, request, requestContext, requestHead
     finalFetchOptions.redirect = 'manual';
   }
 
+  const fetchResource =
+    platform === 'hf' &&
+    new URL(targetUrl).pathname.includes('/resolve/') &&
+    ['GET', 'HEAD'].includes(request.method)
+      ? fetchHuggingFaceFile
+      : fetch;
+
   let response;
   if (request.method === 'HEAD') {
-    response = await fetch(targetUrl, finalFetchOptions);
+    response = await fetchResource(targetUrl, finalFetchOptions);
 
     if (response.ok && !response.headers.get('Content-Length')) {
       const rangeHeaders = new Headers(requestHeaders);
       rangeHeaders.set('Range', 'bytes=0-0');
 
-      const rangeResponse = await fetch(targetUrl, {
+      const rangeResponse = await fetchResource(targetUrl, {
         ...finalFetchOptions,
         method: 'GET',
         headers: rangeHeaders
@@ -232,7 +247,7 @@ async function executeFetch({ fetchOptions, request, requestContext, requestHead
       }
     }
   } else {
-    response = await fetch(targetUrl, finalFetchOptions);
+    response = await fetchResource(targetUrl, finalFetchOptions);
   }
 
   if (requestContext.isDocker) {
@@ -371,6 +386,7 @@ export async function fetchUpstreamResponse({
       fetchOptions.signal = controller.signal;
       response = await executeFetch({
         fetchOptions,
+        platform,
         request,
         requestContext,
         requestHeaders,

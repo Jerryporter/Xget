@@ -59,3 +59,70 @@ export function configureHuggingFaceHeaders(headers, request) {
     headers.set('Content-Type', 'application/json');
   }
 }
+
+/**
+ * Follows file redirects while retaining the Hub metadata required by its SDK.
+ * @param {string} targetUrl - Hub resolve URL
+ * @param {RequestInit} fetchOptions - Upstream options, including method and range
+ * @returns {Promise<Response>} Streamed file response with Hub metadata
+ */
+export async function fetchHuggingFaceFile(targetUrl, fetchOptions) {
+  const metadata = new Headers();
+  let currentUrl = new URL(targetUrl);
+  const headers = new Headers(fetchOptions.headers);
+  /** @type {RequestInit} */
+  const options = { ...fetchOptions, redirect: 'manual' };
+
+  // Cloudflare can serve a cached GET for HEAD; metadata must come from the Hub.
+  if (fetchOptions.method === 'HEAD') {
+    Object.assign(options, { cf: { cacheTtl: -1, cacheEverything: false } });
+  }
+
+  for (let redirects = 0; ; redirects++) {
+    const response = await fetch(currentUrl.toString(), {
+      ...options,
+      headers: new Headers(headers)
+    });
+
+    if (![301, 302, 303, 307, 308].includes(response.status)) {
+      if (!response.ok || metadata.keys().next().done) {
+        return response;
+      }
+
+      const responseHeaders = new Headers(response.headers);
+      for (const [key, value] of metadata) {
+        responseHeaders.set(key, value);
+      }
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: responseHeaders
+      });
+    }
+
+    const location = response.headers.get('Location');
+    if (!location) {
+      return response;
+    }
+
+    for (const key of ['X-Repo-Commit', 'X-Linked-Etag', 'X-Linked-Size']) {
+      const value = response.headers.get(key);
+      if (value !== null && !metadata.has(key)) {
+        metadata.set(key, value);
+      }
+    }
+
+    await response.body?.cancel();
+    if (redirects >= 20) {
+      throw new Error('Too many Hugging Face file redirects');
+    }
+
+    const nextUrl = new URL(location, currentUrl);
+    if (nextUrl.origin !== currentUrl.origin) {
+      headers.delete('Authorization');
+      headers.delete('Cookie');
+      headers.delete('Proxy-Authorization');
+    }
+    currentUrl = nextUrl;
+  }
+}

@@ -18,17 +18,7 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - "**.md"
-      - "LICENSE"
-      - ".gitignore"
-      - ".editorconfig"
-      - ".vscode/**"
-      - "docs/**"
-      - ".prettierrc*"
-      - ".eslintrc*"
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/PULL_REQUEST_TEMPLATE/**"
+    # Required checks must run for every PR, including documentation changes.
   workflow_dispatch:
 
 concurrency:
@@ -114,6 +104,8 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        # Coverage is checked above; reporting outages must not block deployment.
+        continue-on-error: true
         uses: codecov/codecov-action@v7
         with:
           files: ./coverage/lcov.info
