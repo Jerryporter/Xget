@@ -2591,15 +2591,22 @@ client = OpenAI(
    - Add the following secrets:
      - `CLOUDFLARE_API_TOKEN`: Your API token
      - `CLOUDFLARE_ACCOUNT_ID`: Your Account ID
+   - Cloud development environment credentials are separate from these
+     repository Actions secrets.
 
 4. **Trigger deployment**:
-   - Pushing code to the `main` branch will automatically trigger deployment
+   - Pushing code to `main` runs CI. A successful CI run automatically deploys
+     that tested commit to Cloudflare Workers.
    - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc.
      will not trigger deployment
-   - You can also manually trigger deployment in the GitHub Actions page
+   - You can also run **Deploy to Cloudflare Workers** manually in GitHub
+     Actions. Manual runs deploy the selected branch without waiting for CI, so
+     run the checks before using this option.
 
-5. **Bind custom domain** (optional): Bind your custom domain in the Cloudflare
-   Workers console
+5. **Configure the custom domain**: Set the custom domain route in
+   `wrangler.toml` to your hostname. This fork uses `xget.easysty.top`;
+   deployment creates or updates that binding. With `workers_dev = false`, the
+   custom domain is the public endpoint.
 
 ### Deploy to Cloudflare Pages
 

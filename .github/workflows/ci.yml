@@ -114,6 +114,8 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        # Coverage is checked above; reporting outages must not block deployment.
+        continue-on-error: true
         uses: codecov/codecov-action@v7
         with:
           files: ./coverage/lcov.info
