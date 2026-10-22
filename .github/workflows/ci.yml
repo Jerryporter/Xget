@@ -18,17 +18,7 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - "**.md"
-      - "LICENSE"
-      - ".gitignore"
-      - ".editorconfig"
-      - ".vscode/**"
-      - "docs/**"
-      - ".prettierrc*"
-      - ".eslintrc*"
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/PULL_REQUEST_TEMPLATE/**"
+    # Required checks must run for every PR, including documentation changes.
   workflow_dispatch:
 
 concurrency:

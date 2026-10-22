@@ -2608,6 +2608,14 @@ client = OpenAI(
    deployment creates or updates that binding. With `workers_dev = false`, the
    custom domain is the public endpoint.
 
+6. **Protect `main`**: In Settings → Rules → Rulesets, import
+   [`.github/rulesets/main.json`](.github/rulesets/main.json) and save it with
+   enforcement set to **Active**. The rules block branch deletion and force
+   pushes and require a pull request with passing Lint, Test and Coverage, and
+   Type Check checks. No additional reviewer approval is required. All pull
+   requests run CI, including documentation changes; documentation-only pushes
+   to `main` still skip deployment. The JSON file takes effect only after import.
+
 ### Deploy to Cloudflare Pages
 
 1. **Fork this repository**:
