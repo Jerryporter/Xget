@@ -1,12 +1,7 @@
 name: Build and Push Image
 
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
-    branches:
-      - main
+  # Optional image publishing: explicitly enable before running manually.
   workflow_dispatch:
 
 concurrency:
@@ -26,18 +21,6 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    if: >-
-      ${{
-        github.event_name == 'workflow_dispatch' ||
-        (
-          github.event_name == 'workflow_run' &&
-          github.event.workflow_run.conclusion == 'success' &&
-          github.event.workflow_run.event == 'push' &&
-          github.event.workflow_run.head_branch == 'main' &&
-          github.event.workflow_run.head_repository.full_name == github.repository
-        )
-      }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7

@@ -2574,6 +2574,12 @@ client = OpenAI(
 
 ### Deploy to Cloudflare Workers
 
+This fork automatically deploys only to Cloudflare Workers. Cloudflare Pages,
+EdgeOne, Vercel, Netlify, container image publishing, and Pages/Functions branch
+conversion workflows are disabled in this repository and have manual triggers
+only. To use an optional target, configure its credentials, enable that workflow
+in GitHub Actions, then run it manually.
+
 1. **Fork this repository**:
    [Fork xixu-me/Xget](https://github.com/xixu-me/Xget/fork)
 
@@ -2637,13 +2643,10 @@ client = OpenAI(
      - `CLOUDFLARE_ACCOUNT_ID`: Your Account ID
 
 4. **Trigger deployment**:
-   - The repository will automatically convert Workers code to Pages-compatible
-     format and sync to the `pages` branch
-   - Pushing code to the `main` branch will automatically trigger sync and
-     deployment workflows
-   - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc.
-     will not trigger deployment
-   - You can also manually trigger deployment in the GitHub Actions page
+   - Enable **Sync to Pages and Functions** in GitHub Actions, then run it
+     manually to generate the platform branches from `main`.
+   - After sync succeeds, enable **Deploy to Cloudflare Pages** and run it
+     manually. Pushes to `main` deploy only to Workers in this fork.
 
 5. **Bind custom domain** (optional): Bind your custom domain in the Cloudflare
    Pages console
@@ -2670,13 +2673,10 @@ workflow.
      - `EDGEONE_API_TOKEN`: Your API Token
 
 4. **Trigger deployment**:
-   - The repository will automatically convert Workers code to Pages-compatible
-     format and sync to the `pages` branch
-   - Pushing code to the `main` branch will automatically trigger sync and
-     deployment workflows
-   - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc.
-     will not trigger deployment
-   - You can also manually trigger deployment in the GitHub Actions page
+   - Enable **Sync to Pages and Functions** in GitHub Actions, then run it
+     manually to generate the platform branches from `main`.
+   - After sync succeeds, enable **Deploy to EdgeOne Pages** and run it manually.
+     Pushes to `main` deploy only to Workers in this fork.
 
 5. **Bind custom domain** (optional): Bind your custom domain in the EdgeOne
    Pages console
@@ -2705,13 +2705,10 @@ workflow.
      - `VERCEL_PROJECT_ID`: Your Project ID
 
 4. **Trigger deployment**:
-   - The repository will automatically convert Workers code to
-     Functions-compatible format and sync to the `functions` branch
-   - Pushing code to the `main` branch will automatically trigger sync and
-     deployment workflows
-   - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc.
-     will not trigger deployment
-   - You can also manually trigger deployment in the GitHub Actions page
+   - Enable **Sync to Pages and Functions** in GitHub Actions, then run it
+     manually to generate the platform branches from `main`.
+   - After sync succeeds, enable **Deploy to Vercel** and run it manually.
+     Pushes to `main` deploy only to Workers in this fork.
 
 5. **Bind custom domain** (optional): Bind your custom domain in the Vercel
    console
@@ -2738,13 +2735,10 @@ the sync workflow.
      - `NETLIFY_SITE_ID`: Your Project ID
 
 4. **Trigger deployment**:
-   - The repository will automatically convert Workers code to
-     Functions-compatible format and sync to the `functions` branch
-   - Pushing code to the `main` branch will automatically trigger sync and
-     deployment workflows
-   - Modifying only documentation files (`.md`), `LICENSE`, `.gitignore`, etc.
-     will not trigger deployment
-   - You can also manually trigger deployment in the GitHub Actions page
+   - Enable **Sync to Pages and Functions** in GitHub Actions, then run it
+     manually to generate the platform branches from `main`.
+   - After sync succeeds, enable **Deploy to Netlify** and run it manually.
+     Pushes to `main` deploy only to Workers in this fork.
 
 5. **Bind custom domain** (optional): Bind your custom domain in the Netlify
    console
